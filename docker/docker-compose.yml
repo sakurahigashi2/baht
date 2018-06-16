@@ -1,24 +1,29 @@
 version: '3'
 
 services:
-  mysql:
-    container_name: mysql
-    image: mariadb:latest
-    volumes:
-      - ../db/data:/var/lib/mysql
-    env_file: ../config/mysql.env
-    restart: always
+    mysql:
+        container_name: baht-mysql
+        hostname: baht-mysql
+        image: mariadb:10.3.7
+        volumes:
+            - ../db/data:/var/lib/mysql
+        env_file: ../config/mysql.env
+        restart: always
 
-  wordpress:
-    container_name: wordpress
-    image: wordpress:latest
-    ports:
-      - '8888:80'
-    volumes:
-      - ../wordpress:/var/www/html
-    env_file: ../config/wordpress.env
-    links:
-      - mysql
-    depends_on:
-      - mysql
-    restart: always
+    wordpress:
+        container_name: baht-app
+        hostname: baht-app
+        build: ./wordpress
+        volumes:
+            - ../wordpress:/var/www/html
+        env_file:
+            - ../config/wordpress.env
+            - ../config/letsencrypt.env
+        links:
+            - mysql
+        depends_on:
+            - mysql
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: always

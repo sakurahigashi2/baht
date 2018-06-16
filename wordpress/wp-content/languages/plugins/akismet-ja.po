@@ -19,7 +19,7 @@ msgstr "この機能を<a href=\"%s\">有効化</a>または<a href=\"%s\">無�
 msgid "Akismet & Privacy."
 msgstr "Akismet とプライバシーについて"
 
-#: views/config.php:162
+#: views/config.php:162 views/notice.php:138
 msgid "To help your site be compliant with GDPR and other laws requiring notification of tracking, Akismet can display a notice to your users on your contact form. This feature is disabled by default, however, if you or your audience is located in Europe, you need to turn it on."
 msgstr "このサイトの GDPR およびトラッキングの通知を必須とするその他の法律への準拠をお手伝いするため、Akismet はお問い合わせフォームにユーザーへの通知を表示できます。この機能はデフォルトでは無効になっていますが、あなたや読者がヨーロッパにいる場合は有効化する必要があります。"
 
@@ -38,6 +38,10 @@ msgstr "Akismet プライバシー通知"
 #: views/config.php:155
 msgid "Privacy"
 msgstr "プライバシー"
+
+#: class.akismet.php:1419
+msgid "This site uses Akismet to reduce spam. <a href=\"%s\">Learn how your comment data is processed</a>."
+msgstr "このサイトはスパムを低減するために Akismet を使っています。<a href=\"%s\">コメントデータがどう処理されているか知りたい方はこちらをお読みください</a>。"
 
 #: class.akismet.php:226
 msgid "Comment discarded."
@@ -95,7 +99,7 @@ msgstr "このページで、Akismet の設定を更新し、スパム統計情�
 msgid "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. It keeps your site protected even while you sleep. To get started: activate the Akismet plugin and then go to your Akismet Settings page to set up your API key."
 msgstr "何百万もの利用実績がある Akismet は<strong>あなたのブログをスパムから保護する</strong>最良の方法といえるでしょう。あなたが眠りについている時間でさえ、Akismet は常時サイトを守り続けます。始めるのは簡単。Akismet プラグインを有効化したら設定ページで API キーを設定するだけです。"
 
-#. #-#-#-#-#  akismet-code.pot (Akismet Anti-Spam 4.0.7)  #-#-#-#-#
+#. #-#-#-#-#  akismet-code.pot (Akismet Anti-Spam 4.0.5)  #-#-#-#-#
 #. Plugin Name of the plugin/theme
 #: class.akismet-admin.php:111 class.akismet-admin.php:114
 msgid "Akismet Anti-Spam"
@@ -165,11 +169,11 @@ msgstr "詳しい統計情報"
 msgid "Statistics"
 msgstr "統計情報"
 
-#: class.akismet-admin.php:1167
+#: class.akismet-admin.php:1161
 msgid "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. It keeps your site protected even while you sleep. To get started, just go to <a href=\"admin.php?page=akismet-key-config\">your Akismet Settings page</a> to set up your API key."
 msgstr "何百万もの利用実績がある Akismet は<strong>あなたのブログをスパムから保護する</strong>最良の方法といえるでしょう。あなたが眠りについている時間でさえ、Akismet は常時サイトを守り続けます。始めるには、<a href=\"admin.php?page=akismet-key-config\">Akismet 設定ページ</a>に移動してあなたの API キーを設定しましょう。"
 
-#: class.akismet-admin.php:1164
+#: class.akismet-admin.php:1158
 msgid "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. Your site is fully configured and being protected, even while you sleep."
 msgstr "何百万もの利用実績がある Akismet は<strong>あなたのブログをスパムから保護する</strong>最良の方法といえるでしょう。このサイトでの設定は完了しており Akismet が常時保護しています。"
 
