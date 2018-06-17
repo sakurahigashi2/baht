@@ -1,0 +1,12 @@
+{
+  "name": "postcss",
+  "version": "0.0.0",
+  "description": "postcss変換用",
+  "private": true,
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^7.0.1",
+    "postcss-cssnext": "^3.0.2",
+    "postcss-import": "^11.0.0"
+  }
+}
