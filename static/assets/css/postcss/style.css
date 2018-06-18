@@ -282,7 +282,10 @@ img {
 .main {
   padding: 30px 40px 30px 0;
   @media (--md) {
-    padding: 12px;
+    padding: 25px 12px 12px 12px;
+  }
+  @media (--xs) {
+    padding-top: 12px;
   }
 }
 
@@ -762,4 +765,46 @@ img {
     top:0;
     width:100%;
   }
+}
+
+
+/*********************
+  Pages Parts
+*********************/
+.header-pages {
+  margin-bottom: 35px;
+  @media (--xs) {
+    margin-bottom: 20px;
+  }
+}
+
+.header-pages-catch {
+  border-radius: 120px;
+  height: 120px;
+  margin-right: 2rem;
+  overflow: hidden;
+  width: 120px;
+  @media (--xs) {
+    border-radius: 0;
+    height: 220px;
+    width: 100%;
+  }
+  & img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+.header-pages-info-ttl {
+  color: var(--gray-dark);
+  font-size: 2rem;
+  margin-bottom: 10px;
+  @media (--xs) {
+    font-size: 1.6rem;
+  }
+}
+
+.header-pages-info-txt {
+  color: var(--secondary);
 }
