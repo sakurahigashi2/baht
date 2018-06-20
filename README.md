@@ -55,6 +55,27 @@ RewriteRule . /index.php [L]
 </IfModule>
 # END WordPress
 ```
+## バッチの設定
+### 環境設定ファイルの用意
+config配下に `db.env` を配置。
+#### db.env
+```
+DB_HOST=mysql(docker-composeのDBに指定している識別名)
+DB_PORT=docker-composeのDBに指定しているポート番号
+DB_USER=WordPressで使用しているDBユーザー名
+DB_PASSWORD=上記ユーザーのパスワード
+DB_DATABASE=WordPressで使用しているdatabase
+```
+### バッチの実行
+#### バッチコンテナ内から
+```
+$ docker exec -it baht-batch bash
+$ ruby /usr/local/batch/currency_exchange/runner.rb  "CurrencyExchangeBatch.execute"
+```
+#### コンテナ外から
+```
+$ docker exec baht-batch ruby /usr/local/batch/currency_exchange/runner.rb  "CurrencyExchangeBatch.execute"
+```
 ## 起動
 ### コンテナ起動
 dockerディレクトリまで移動してdocker-composeコマンドを実行。
@@ -73,7 +94,13 @@ $ docker exec baht-app letsencrypt.sh
 $ echo "0 3 1,15 * *   docker exec baht-app letsencrypt.sh" >> /var/spool/cron/crontabs/root
 ```
 ### ブラウザからアクセス
-※ SSL転送を行っていない場合  
 <http://localhost>
 ## 備考
+### エラー関連
 2回目以降の起動時にDBコンテナが起動せず、エラーになってしまう場合には `db/data/tc.log` を削除してから起動する。
+### DB関連
+DBのデータを確認する場合、DBコンテナに接続してからmysqlを起動する。
+```
+$ docker exec -it baht-mysql bash
+$ mysql -u root -p
+```

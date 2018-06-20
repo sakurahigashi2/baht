@@ -27,3 +27,16 @@ services:
             - "80:80"
             - "443:443"
         restart: always
+
+    batch:
+        container_name: baht-batch
+        hostname: baht-batch
+        build: ./batch
+        volumes:
+            - ../batch:/usr/local/batch
+        env_file: ../config/db.env
+        links:
+            - mysql
+        depends_on:
+            - mysql
+        restart: always
