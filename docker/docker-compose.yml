@@ -4,9 +4,10 @@ services:
     mysql:
         container_name: baht-mysql
         hostname: baht-mysql
-        image: mariadb:10.3.7
+        build: ./mysql
         volumes:
             - ../db/data:/var/lib/mysql
+            - ../db/backup:/backup
         env_file: ../config/mysql.env
         restart: always
 
