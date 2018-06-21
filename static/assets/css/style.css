@@ -297,7 +297,7 @@ img {
 /**** .main ****/
 
 .main {
-  padding: 35px 40px 30px 0;
+  padding: 35px 40px 80px 0;
 }
 
 @media screen and (max-width: 991px) {
@@ -888,6 +888,51 @@ img {
 }
 
 /*********************
+  Index page Parts
+*********************/
+
+.index {
+  padding: 35px 0 80px 0;
+}
+
+@media screen and (max-width: 575px) {
+
+  .index {
+    padding: 0 0 15px 0;
+  }
+}
+
+.header-index {
+  margin-bottom: 35px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-index {
+    margin-bottom: 0;
+  }
+}
+
+.header-index-info-ttl {
+  color: #343a40;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-index-info-ttl {
+    background-color: #6c757d;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+/*********************
   Pages Parts
 *********************/
 
@@ -941,4 +986,88 @@ img {
 
 .header-pages-info-txt {
   color: #6c757d;
+}
+
+/*********************
+  Original Parts
+*********************/
+
+.feature-list-box {
+  border-bottom: 1px solid #6c757d;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: block;
+  margin-bottom: 40px;
+  width: 32%
+}
+
+.feature-list-box:hover {
+  opacity: .8;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 991px) {
+
+  .feature-list-box {
+    width: 48%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+
+  .feature-list-box {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
+
+.feature-list-box-img {
+  height: 230px;
+  margin-bottom: 20px;
+  overflow: hidden
+}
+
+.feature-list-box-img img {
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+}
+
+@media screen and (max-width: 575px) {
+
+  .feature-list-box-img {
+    height: 200px;
+    margin-bottom: 15px;
+  }
+}
+
+.feature-list-box-info {
+  padding-bottom: 25px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .feature-list-box-info {
+    padding: 0 15px 20px 15px;
+  }
+}
+
+.feature-list-box-ttl {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+@media screen and (max-width: 575px) {
+
+  .feature-list-box-ttl {
+    font-size: 1.35rem;
+    text-align: left;
+  }
+}
+
+.feature-list-box-txt {
+  font-size: .8rem;
+  margin-bottom: 0;
 }

@@ -280,7 +280,7 @@ img {
 
 /**** .main ****/
 .main {
-  padding: 35px 40px 30px 0;
+  padding: 35px 40px 80px 0;
   @media (--md) {
     padding: 25px 12px 12px 12px;
   }
@@ -769,6 +769,39 @@ img {
 
 
 /*********************
+  Index page Parts
+*********************/
+.index {
+  padding: 35px 0 80px 0;
+  @media (--xs) {
+    padding: 0 0 15px 0;
+  }
+}
+
+.header-index {
+  margin-bottom: 35px;
+  @media (--xs) {
+    margin-bottom: 0;
+  }
+}
+
+.header-index-info-ttl {
+  color: var(--gray-dark);
+  font-size: 2rem;
+  margin-bottom: 10px;
+  @media (--xs) {
+    background-color: var(--gray);
+    color: var(--white);
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0;
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+
+/*********************
   Pages Parts
 *********************/
 .header-pages {
@@ -807,4 +840,64 @@ img {
 
 .header-pages-info-txt {
   color: var(--secondary);
+}
+
+
+/*********************
+  Original Parts
+*********************/
+.feature-list-box {
+  border-bottom: 1px solid var(--gray);
+  box-sizing: border-box;
+  display: block;
+  margin-bottom: 40px;
+  width: 32%;
+  &:hover {
+    opacity: .8;
+    text-decoration: none;
+  }
+  @media (--md) {
+    width: 48%;
+  }
+  @media (--sm) {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
+
+.feature-list-box-img {
+  height: 230px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  & img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+  @media (--xs) {
+    height: 200px;
+    margin-bottom: 15px;
+  }
+}
+
+.feature-list-box-info {
+  padding-bottom: 25px;
+  @media (--xs) {
+    padding: 0 15px 20px 15px;
+  }
+}
+
+.feature-list-box-ttl {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  @media (--xs) {
+    font-size: 1.35rem;
+    text-align: left;
+  }
+}
+
+.feature-list-box-txt {
+  font-size: .8rem;
+  margin-bottom: 0;
 }
