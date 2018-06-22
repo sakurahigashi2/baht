@@ -888,32 +888,21 @@ img {
 }
 
 /*********************
-  Index page Parts
+  Category
 *********************/
 
-.index {
-  padding: 35px 0 80px 0;
-}
-
-@media screen and (max-width: 575px) {
-
-  .index {
-    padding: 0 0 15px 0;
-  }
-}
-
-.header-index {
+.header-category {
   margin-bottom: 35px;
 }
 
 @media screen and (max-width: 575px) {
 
-  .header-index {
+  .header-category {
     margin-bottom: 0;
   }
 }
 
-.header-index-info-ttl {
+.header-category-info-ttl {
   color: #343a40;
   font-size: 2rem;
   margin-bottom: 10px;
@@ -921,7 +910,132 @@ img {
 
 @media screen and (max-width: 575px) {
 
-  .header-index-info-ttl {
+  .header-category-info-ttl {
+    background-color: #6c757d;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+.category-list {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin-bottom: 25px;
+  width: 23%;
+}
+
+@media screen and (max-width: 575px) {
+
+  .category-list {
+    width: 48%;
+  }
+}
+
+.category-list-ttl {
+  border-bottom: 1px solid #343a40;
+  color: #343a40;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+}
+
+/*********************
+  Tags
+*********************/
+
+.header-tags {
+  margin-bottom: 35px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-tags {
+    margin-bottom: 0;
+  }
+}
+
+.header-tags-info-ttl {
+  color: #343a40;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-tags-info-ttl {
+    background-color: #6c757d;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+  }
+}
+
+.tags-list {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin-bottom: 25px;
+  width: 23%;
+}
+
+@media screen and (max-width: 575px) {
+
+  .tags-list {
+    width: 33%;
+  }
+}
+
+.tags-list-ttl {
+  border-bottom: 1px solid #343a40;
+  color: #343a40;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+}
+
+/*********************
+  Feature
+*********************/
+
+.feature {
+  padding: 35px 0 80px 0;
+}
+
+@media screen and (max-width: 575px) {
+
+  .feature {
+    padding: 0 0 15px 0;
+  }
+}
+
+.header-feature {
+  margin-bottom: 35px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-feature {
+    margin-bottom: 0;
+  }
+}
+
+.header-feature-info-ttl {
+  color: #343a40;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-feature-info-ttl {
     background-color: #6c757d;
     color: #fff;
     font-size: 1.2rem;
@@ -931,66 +1045,6 @@ img {
     text-align: center;
   }
 }
-
-/*********************
-  Pages Parts
-*********************/
-
-.header-pages {
-  margin-bottom: 35px;
-}
-
-@media screen and (max-width: 575px) {
-
-  .header-pages {
-    margin-bottom: 20px;
-  }
-}
-
-.header-pages-catch {
-  border-radius: 120px;
-  height: 120px;
-  margin-right: 2rem;
-  overflow: hidden;
-  width: 120px;
-}
-
-@media screen and (max-width: 575px) {
-
-  .header-pages-catch {
-    border-radius: 0;
-    height: 220px;
-    width: 100%;
-  }
-}
-
-.header-pages-catch img {
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-  width: 100%;
-}
-
-.header-pages-info-ttl {
-  color: #343a40;
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-@media screen and (max-width: 575px) {
-
-  .header-pages-info-ttl {
-    font-size: 1.6rem;
-  }
-}
-
-.header-pages-info-txt {
-  color: #6c757d;
-}
-
-/*********************
-  Original Parts
-*********************/
 
 .feature-list-box {
   border-bottom: 1px solid #6c757d;
@@ -1070,4 +1124,60 @@ img {
 .feature-list-box-txt {
   font-size: .8rem;
   margin-bottom: 0;
+}
+
+/*********************
+  Pages
+*********************/
+
+.header-pages {
+  margin-bottom: 35px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-pages {
+    margin-bottom: 20px;
+  }
+}
+
+.header-pages-catch {
+  border-radius: 120px;
+  height: 120px;
+  margin-right: 2rem;
+  overflow: hidden;
+  width: 120px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-pages-catch {
+    border-radius: 0;
+    height: 220px;
+    width: 100%;
+  }
+}
+
+.header-pages-catch img {
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  width: 100%;
+}
+
+.header-pages-info-ttl {
+  color: #343a40;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 575px) {
+
+  .header-pages-info-ttl {
+    font-size: 1.6rem;
+  }
+}
+
+.header-pages-info-txt {
+  color: #6c757d;
 }
