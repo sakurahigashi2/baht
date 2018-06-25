@@ -10,5 +10,5 @@ RUN echo "export TERM=xterm LANG=en_US.UTF-8" >> ~/.bashrc \
     && ./letsencrypt-auto --version
 
 COPY letsencrypt.sh /usr/local/bin/
-RUN letsencrypt.sh
+
 RUN chmod 775 /usr/local/bin/letsencrypt.sh
