@@ -8041,7 +8041,7 @@ msgstr "URL から挿入"
 
 #. translators: This is a would-be plural string used in the media manager.
 #. If there is not a word you can use in your language to avoid issues with
-#. the 		   lack of plural support here, turn it into "selected: %d" then
+#. the        lack of plural support here, turn it into "selected: %d" then
 #. translate it.
 #: wp-includes/media.php:3507
 msgid "%d selected"

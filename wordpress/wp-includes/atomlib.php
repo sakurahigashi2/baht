@@ -16,11 +16,11 @@
  * @package AtomLib
  */
 class AtomFeed {
-	/**
-	 * Stores Links
-	 * @var array
-	 * @access public
-	 */
+  /**
+   * Stores Links
+   * @var array
+   * @access public
+   */
     var $links = array();
     /**
      * Stores Categories
@@ -28,12 +28,12 @@ class AtomFeed {
      * @access public
      */
     var $categories = array();
-	/**
-	 * Stores Entries
-	 *
-	 * @var array
-	 * @access public
-	 */
+  /**
+   * Stores Entries
+   *
+   * @var array
+   * @access public
+   */
     var $entries = array();
 }
 
@@ -43,16 +43,16 @@ class AtomFeed {
  * @package AtomLib
  */
 class AtomEntry {
-	/**
-	 * Stores Links
-	 * @var array
-	 * @access public
-	 */
+  /**
+   * Stores Links
+   * @var array
+   * @access public
+   */
     var $links = array();
     /**
      * Stores Categories
      * @var array
-	 * @access public
+   * @access public
      */
     var $categories = array();
 }
@@ -87,9 +87,9 @@ class AtomParser {
     var $feed;
     var $current;
 
-	/**
-	 * PHP5 constructor.
-	 */
+  /**
+   * PHP5 constructor.
+   */
     function __construct() {
 
         $this->feed = new AtomFeed();
@@ -98,38 +98,38 @@ class AtomParser {
         $this->map_xmlns_func = array( __CLASS__, 'map_xmlns' );
     }
 
-	/**
-	 * PHP4 constructor.
-	 */
-	public function AtomParser() {
-		self::__construct();
-	}
+  /**
+   * PHP4 constructor.
+   */
+  public function AtomParser() {
+    self::__construct();
+  }
 
-	/**
-	 * Map attributes to key="val"
-	 *
-	 * @param string $k Key
-	 * @param string $v Value
-	 * @return string
-	 */
-	public static function map_attrs($k, $v) {
-		return "$k=\"$v\"";
-	}
+  /**
+   * Map attributes to key="val"
+   *
+   * @param string $k Key
+   * @param string $v Value
+   * @return string
+   */
+  public static function map_attrs($k, $v) {
+    return "$k=\"$v\"";
+  }
 
-	/**
-	 * Map XML namespace to string.
-	 *
-	 * @param indexish $p XML Namespace element index
-	 * @param array $n Two-element array pair. [ 0 => {namespace}, 1 => {url} ]
-	 * @return string 'xmlns="{url}"' or 'xmlns:{namespace}="{url}"'
-	 */
-	public static function map_xmlns($p, $n) {
-		$xd = "xmlns";
-		if( 0 < strlen($n[0]) ) {
-			$xd .= ":{$n[0]}";
-		}
-		return "{$xd}=\"{$n[1]}\"";
-	}
+  /**
+   * Map XML namespace to string.
+   *
+   * @param indexish $p XML Namespace element index
+   * @param array $n Two-element array pair. [ 0 => {namespace}, 1 => {url} ]
+   * @return string 'xmlns="{url}"' or 'xmlns:{namespace}="{url}"'
+   */
+  public static function map_xmlns($p, $n) {
+    $xd = "xmlns";
+    if( 0 < strlen($n[0]) ) {
+      $xd .= ":{$n[0]}";
+    }
+    return "{$xd}=\"{$n[1]}\"";
+  }
 
     function _p($msg) {
         if($this->debug) {
@@ -148,8 +148,8 @@ class AtomParser {
         array_unshift($this->ns_contexts, array());
 
         if ( ! function_exists( 'xml_parser_create_ns' ) ) {
-        	trigger_error( __( "PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension." ) );
-        	return false;
+          trigger_error( __( "PHP's XML extension is not available. Please contact your hosting provider to enable PHP's XML extension." ) );
+          return false;
         }
 
         $parser = xml_parser_create_ns();

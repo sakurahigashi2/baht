@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: WordPress - 4.9.x - Development - Administration\n"
 
 #. translators: default GMT offset or timezone string. Must be either a valid
-#. offset (-12 to 14) 	   or a valid timezone string (America/New_York). See
-#. https://secure.php.net/manual/en/timezones.php 	   for all timezone strings
+#. offset (-12 to 14)      or a valid timezone string (America/New_York). See
+#. https://secure.php.net/manual/en/timezones.php      for all timezone strings
 #. supported by PHP.
 #: wp-admin/includes/schema.php:387
 msgctxt "default GMT offset or timezone string"

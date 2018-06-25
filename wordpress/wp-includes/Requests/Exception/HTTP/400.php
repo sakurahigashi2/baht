@@ -11,17 +11,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_400 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 400;
+  /**
+   * HTTP status code
+   *
+   * @var integer
+   */
+  protected $code = 400;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Bad Request';
+  /**
+   * Reason phrase
+   *
+   * @var string
+   */
+  protected $reason = 'Bad Request';
 }

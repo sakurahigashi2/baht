@@ -1,34 +1,65 @@
-<?php
-/**
- * The template for displaying 404 pages (not found)
- *
- * @link https://codex.wordpress.org/Creating_an_Error_404_Page
- *
- * @package WordPress
- * @subpackage Twenty_Seventeen
- * @since 1.0
- * @version 1.0
- */
+<?php get_header(); ?>
 
-get_header(); ?>
-
-<div class="wrap">
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
-
-			<section class="error-404 not-found">
-				<header class="page-header">
-					<h1 class="page-title"><?php _e( 'Oops! That page can&rsquo;t be found.', 'twentyseventeen' ); ?></h1>
-				</header><!-- .page-header -->
-				<div class="page-content">
-					<p><?php _e( 'It looks like nothing was found at this location. Maybe try a search?', 'twentyseventeen' ); ?></p>
-
-					<?php get_search_form(); ?>
-
-				</div><!-- .page-content -->
-			</section><!-- .error-404 -->
-		</main><!-- #main -->
-	</div><!-- #primary -->
-</div><!-- .wrap -->
+<main>
+  <div class="header-pankuzu d-none d-sm-block">
+    <div class="container">
+      <ul class="row list-unstyled d-flex flex-wrap align-items-center mb-0">
+        <?php breadcrumb(); ?>
+      </ul>
+    </div><!-- //.container -->
+  </div><!-- //.header-pankuzu -->
+  <div class="container">
+    <div class="row">
+      <div class="main col-12 col-lg-8">
+        <h1>404 Not Found</h1>
+        <p class="mb-5">ページが見つかりません。</p>
+        <div class="medias">
+          <h2 class="media-list-ttl">新着の記事</h2>
+          <ul class="medias-list list-unstyled">
+            <?php
+              $args = array(
+                'post_type'=>'post',
+                'posts_per_page' => 10
+              );
+              $q = new WP_Query($args);
+            ?>
+            <?php if($q->have_posts()) : while ($q->have_posts()) : $q->the_post(); ?>
+              <li class="media">
+                <a class="media-anchor d-flex" href="<?php echo get_permalink(); ?>">
+                  <div class="media-catch">
+                    <img class="widget-list-img" src="<?php the_post_thumbnail_url('medium'); ?>">
+                  </div>
+                  <div class="media-body">
+                    <h3 class="media-body-ttl">
+                      <?php echo mb_strimwidth(get_the_title(), 0, 76, '...'); ?>
+                    </h3>
+                    <div class="media-body-sub">
+                      <p class="media-body-description d-none d-md-block">
+                        <?php echo mb_substr(strip_tags($post-> post_content), 0, 60).'...'; ?>
+                      </p>
+                      <p class="media-body-meta">
+                        <span class="media-body-meta-date"><?php the_time("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            <?php endwhile; endif; ?>
+          </ul>
+          <?php pc_pagination(); ?>
+          <?php sp_pagination(); ?>
+        </div><!-- //.medias -->
+      </div><!-- //.main -->
+      <?php get_sidebar(); ?>
+    </div><!-- //.row -->
+  </div><!-- //.container -->
+  <div class="footer-pankuzu d-none d-sm-block">
+    <div class="container">
+      <ul class="row list-unstyled d-flex flex-wrap align-items-center mb-0">
+        <?php breadcrumb(); ?>
+      </ul>
+    </div><!-- //.container -->
+  </div><!-- //.footer-pankuzu -->
+</main>
 
 <?php get_footer();

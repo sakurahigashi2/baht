@@ -6,15 +6,15 @@
  */
 
 if ( 'POST' != $_SERVER['REQUEST_METHOD'] ) {
-	$protocol = $_SERVER['SERVER_PROTOCOL'];
-	if ( ! in_array( $protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0' ) ) ) {
-		$protocol = 'HTTP/1.0';
-	}
+  $protocol = $_SERVER['SERVER_PROTOCOL'];
+  if ( ! in_array( $protocol, array( 'HTTP/1.1', 'HTTP/2', 'HTTP/2.0' ) ) ) {
+    $protocol = 'HTTP/1.0';
+  }
 
-	header('Allow: POST');
-	header("$protocol 405 Method Not Allowed");
-	header('Content-Type: text/plain');
-	exit;
+  header('Allow: POST');
+  header("$protocol 405 Method Not Allowed");
+  header('Content-Type: text/plain');
+  exit;
 }
 
 /** Sets up the WordPress Environment. */
@@ -24,12 +24,12 @@ nocache_headers();
 
 $comment = wp_handle_comment_submission( wp_unslash( $_POST ) );
 if ( is_wp_error( $comment ) ) {
-	$data = intval( $comment->get_error_data() );
-	if ( ! empty( $data ) ) {
-		wp_die( '<p>' . $comment->get_error_message() . '</p>', __( 'Comment Submission Failure' ), array( 'response' => $data, 'back_link' => true ) );
-	} else {
-		exit;
-	}
+  $data = intval( $comment->get_error_data() );
+  if ( ! empty( $data ) ) {
+    wp_die( '<p>' . $comment->get_error_message() . '</p>', __( 'Comment Submission Failure' ), array( 'response' => $data, 'back_link' => true ) );
+  } else {
+    exit;
+  }
 }
 
 $user = wp_get_current_user();

@@ -28,11 +28,11 @@ $menu-collapse-focus-icon: #555;
 #wpadminbar.nojq .quicklinks .ab-top-menu > li > .ab-item:focus,
 #wpadminbar.nojs .ab-top-menu > li.menupop:hover > .ab-item,
 #wpadminbar .ab-top-menu > li.menupop.hover > .ab-item {
-	color: $text-color;
+  color: $text-color;
 }
 
 /* Override the theme filter highlight color for this scheme */
 .theme-section.current,
 .theme-filter.current {
-	border-bottom-color: $highlight-color;
+  border-bottom-color: $highlight-color;
 }

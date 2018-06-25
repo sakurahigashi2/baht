@@ -14,17 +14,17 @@
  * @since MU (3.0.0)
  */
 function wpmu_update_blogs_date() {
-	$site_id = get_current_blog_id();
+  $site_id = get_current_blog_id();
 
-	update_blog_details( $site_id, array( 'last_updated' => current_time( 'mysql', true ) ) );
-	/**
-	 * Fires after the blog details are updated.
-	 *
-	 * @since MU (3.0.0)
-	 *
-	 * @param int $blog_id Site ID.
-	 */
-	do_action( 'wpmu_blog_updated', $site_id );
+  update_blog_details( $site_id, array( 'last_updated' => current_time( 'mysql', true ) ) );
+  /**
+   * Fires after the blog details are updated.
+   *
+   * @since MU (3.0.0)
+   *
+   * @param int $blog_id Site ID.
+   */
+  do_action( 'wpmu_blog_updated', $site_id );
 }
 
 /**
@@ -36,16 +36,16 @@ function wpmu_update_blogs_date() {
  * @return string Full URL of the blog if found. Empty string if not.
  */
 function get_blogaddress_by_id( $blog_id ) {
-	$bloginfo = get_site( (int) $blog_id );
+  $bloginfo = get_site( (int) $blog_id );
 
-	if ( empty( $bloginfo ) ) {
-		return '';
-	}
+  if ( empty( $bloginfo ) ) {
+    return '';
+  }
 
-	$scheme = parse_url( $bloginfo->home, PHP_URL_SCHEME );
-	$scheme = empty( $scheme ) ? 'http' : $scheme;
+  $scheme = parse_url( $bloginfo->home, PHP_URL_SCHEME );
+  $scheme = empty( $scheme ) ? 'http' : $scheme;
 
-	return esc_url( $scheme . '://' . $bloginfo->domain . $bloginfo->path );
+  return esc_url( $scheme . '://' . $bloginfo->domain . $bloginfo->path );
 }
 
 /**
@@ -57,16 +57,16 @@ function get_blogaddress_by_id( $blog_id ) {
  * @return string
  */
 function get_blogaddress_by_name( $blogname ) {
-	if ( is_subdomain_install() ) {
-		if ( $blogname == 'main' )
-			$blogname = 'www';
-		$url = rtrim( network_home_url(), '/' );
-		if ( !empty( $blogname ) )
-			$url = preg_replace( '|^([^\.]+://)|', "\${1}" . $blogname . '.', $url );
-	} else {
-		$url = network_home_url( $blogname );
-	}
-	return esc_url( $url . '/' );
+  if ( is_subdomain_install() ) {
+    if ( $blogname == 'main' )
+      $blogname = 'www';
+    $url = rtrim( network_home_url(), '/' );
+    if ( !empty( $blogname ) )
+      $url = preg_replace( '|^([^\.]+://)|', "\${1}" . $blogname . '.', $url );
+  } else {
+    $url = network_home_url( $blogname );
+  }
+  return esc_url( $url . '/' );
 }
 
 /**
@@ -79,29 +79,29 @@ function get_blogaddress_by_name( $blogname ) {
  * @return int|null The site ID, or null if no site is found for the given slug.
  */
 function get_id_from_blogname( $slug ) {
-	$current_network = get_network();
-	$slug = trim( $slug, '/' );
+  $current_network = get_network();
+  $slug = trim( $slug, '/' );
 
-	if ( is_subdomain_install() ) {
-		$domain = $slug . '.' . preg_replace( '|^www\.|', '', $current_network->domain );
-		$path = $current_network->path;
-	} else {
-		$domain = $current_network->domain;
-		$path = $current_network->path . $slug . '/';
-	}
+  if ( is_subdomain_install() ) {
+    $domain = $slug . '.' . preg_replace( '|^www\.|', '', $current_network->domain );
+    $path = $current_network->path;
+  } else {
+    $domain = $current_network->domain;
+    $path = $current_network->path . $slug . '/';
+  }
 
-	$site_ids = get_sites( array(
-		'number' => 1,
-		'fields' => 'ids',
-		'domain' => $domain,
-		'path' => $path,
-	) );
+  $site_ids = get_sites( array(
+    'number' => 1,
+    'fields' => 'ids',
+    'domain' => $domain,
+    'path' => $path,
+  ) );
 
-	if ( empty( $site_ids ) ) {
-		return null;
-	}
+  if ( empty( $site_ids ) ) {
+    return null;
+  }
 
-	return array_shift( $site_ids );
+  return array_shift( $site_ids );
 }
 
 /**
@@ -118,138 +118,138 @@ function get_id_from_blogname( $slug ) {
  * @return WP_Site|false Blog details on success. False on failure.
  */
 function get_blog_details( $fields = null, $get_all = true ) {
-	global $wpdb;
+  global $wpdb;
 
-	if ( is_array($fields ) ) {
-		if ( isset($fields['blog_id']) ) {
-			$blog_id = $fields['blog_id'];
-		} elseif ( isset($fields['domain']) && isset($fields['path']) ) {
-			$key = md5( $fields['domain'] . $fields['path'] );
-			$blog = wp_cache_get($key, 'blog-lookup');
-			if ( false !== $blog )
-				return $blog;
-			if ( substr( $fields['domain'], 0, 4 ) == 'www.' ) {
-				$nowww = substr( $fields['domain'], 4 );
-				$blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) AND path = %s ORDER BY CHAR_LENGTH(domain) DESC", $nowww, $fields['domain'], $fields['path'] ) );
-			} else {
-				$blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain = %s AND path = %s", $fields['domain'], $fields['path'] ) );
-			}
-			if ( $blog ) {
-				wp_cache_set($blog->blog_id . 'short', $blog, 'blog-details');
-				$blog_id = $blog->blog_id;
-			} else {
-				return false;
-			}
-		} elseif ( isset($fields['domain']) && is_subdomain_install() ) {
-			$key = md5( $fields['domain'] );
-			$blog = wp_cache_get($key, 'blog-lookup');
-			if ( false !== $blog )
-				return $blog;
-			if ( substr( $fields['domain'], 0, 4 ) == 'www.' ) {
-				$nowww = substr( $fields['domain'], 4 );
-				$blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) ORDER BY CHAR_LENGTH(domain) DESC", $nowww, $fields['domain'] ) );
-			} else {
-				$blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain = %s", $fields['domain'] ) );
-			}
-			if ( $blog ) {
-				wp_cache_set($blog->blog_id . 'short', $blog, 'blog-details');
-				$blog_id = $blog->blog_id;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	} else {
-		if ( ! $fields )
-			$blog_id = get_current_blog_id();
-		elseif ( ! is_numeric( $fields ) )
-			$blog_id = get_id_from_blogname( $fields );
-		else
-			$blog_id = $fields;
-	}
+  if ( is_array($fields ) ) {
+    if ( isset($fields['blog_id']) ) {
+      $blog_id = $fields['blog_id'];
+    } elseif ( isset($fields['domain']) && isset($fields['path']) ) {
+      $key = md5( $fields['domain'] . $fields['path'] );
+      $blog = wp_cache_get($key, 'blog-lookup');
+      if ( false !== $blog )
+        return $blog;
+      if ( substr( $fields['domain'], 0, 4 ) == 'www.' ) {
+        $nowww = substr( $fields['domain'], 4 );
+        $blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) AND path = %s ORDER BY CHAR_LENGTH(domain) DESC", $nowww, $fields['domain'], $fields['path'] ) );
+      } else {
+        $blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain = %s AND path = %s", $fields['domain'], $fields['path'] ) );
+      }
+      if ( $blog ) {
+        wp_cache_set($blog->blog_id . 'short', $blog, 'blog-details');
+        $blog_id = $blog->blog_id;
+      } else {
+        return false;
+      }
+    } elseif ( isset($fields['domain']) && is_subdomain_install() ) {
+      $key = md5( $fields['domain'] );
+      $blog = wp_cache_get($key, 'blog-lookup');
+      if ( false !== $blog )
+        return $blog;
+      if ( substr( $fields['domain'], 0, 4 ) == 'www.' ) {
+        $nowww = substr( $fields['domain'], 4 );
+        $blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain IN (%s,%s) ORDER BY CHAR_LENGTH(domain) DESC", $nowww, $fields['domain'] ) );
+      } else {
+        $blog = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->blogs WHERE domain = %s", $fields['domain'] ) );
+      }
+      if ( $blog ) {
+        wp_cache_set($blog->blog_id . 'short', $blog, 'blog-details');
+        $blog_id = $blog->blog_id;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    if ( ! $fields )
+      $blog_id = get_current_blog_id();
+    elseif ( ! is_numeric( $fields ) )
+      $blog_id = get_id_from_blogname( $fields );
+    else
+      $blog_id = $fields;
+  }
 
-	$blog_id = (int) $blog_id;
+  $blog_id = (int) $blog_id;
 
-	$all = $get_all == true ? '' : 'short';
-	$details = wp_cache_get( $blog_id . $all, 'blog-details' );
+  $all = $get_all == true ? '' : 'short';
+  $details = wp_cache_get( $blog_id . $all, 'blog-details' );
 
-	if ( $details ) {
-		if ( ! is_object( $details ) ) {
-			if ( $details == -1 ) {
-				return false;
-			} else {
-				// Clear old pre-serialized objects. Cache clients do better with that.
-				wp_cache_delete( $blog_id . $all, 'blog-details' );
-				unset($details);
-			}
-		} else {
-			return $details;
-		}
-	}
+  if ( $details ) {
+    if ( ! is_object( $details ) ) {
+      if ( $details == -1 ) {
+        return false;
+      } else {
+        // Clear old pre-serialized objects. Cache clients do better with that.
+        wp_cache_delete( $blog_id . $all, 'blog-details' );
+        unset($details);
+      }
+    } else {
+      return $details;
+    }
+  }
 
-	// Try the other cache.
-	if ( $get_all ) {
-		$details = wp_cache_get( $blog_id . 'short', 'blog-details' );
-	} else {
-		$details = wp_cache_get( $blog_id, 'blog-details' );
-		// If short was requested and full cache is set, we can return.
-		if ( $details ) {
-			if ( ! is_object( $details ) ) {
-				if ( $details == -1 ) {
-					return false;
-				} else {
-					// Clear old pre-serialized objects. Cache clients do better with that.
-					wp_cache_delete( $blog_id, 'blog-details' );
-					unset($details);
-				}
-			} else {
-				return $details;
-			}
-		}
-	}
+  // Try the other cache.
+  if ( $get_all ) {
+    $details = wp_cache_get( $blog_id . 'short', 'blog-details' );
+  } else {
+    $details = wp_cache_get( $blog_id, 'blog-details' );
+    // If short was requested and full cache is set, we can return.
+    if ( $details ) {
+      if ( ! is_object( $details ) ) {
+        if ( $details == -1 ) {
+          return false;
+        } else {
+          // Clear old pre-serialized objects. Cache clients do better with that.
+          wp_cache_delete( $blog_id, 'blog-details' );
+          unset($details);
+        }
+      } else {
+        return $details;
+      }
+    }
+  }
 
-	if ( empty($details) ) {
-		$details = WP_Site::get_instance( $blog_id );
-		if ( ! $details ) {
-			// Set the full cache.
-			wp_cache_set( $blog_id, -1, 'blog-details' );
-			return false;
-		}
-	}
+  if ( empty($details) ) {
+    $details = WP_Site::get_instance( $blog_id );
+    if ( ! $details ) {
+      // Set the full cache.
+      wp_cache_set( $blog_id, -1, 'blog-details' );
+      return false;
+    }
+  }
 
-	if ( ! $details instanceof WP_Site ) {
-		$details = new WP_Site( $details );
-	}
+  if ( ! $details instanceof WP_Site ) {
+    $details = new WP_Site( $details );
+  }
 
-	if ( ! $get_all ) {
-		wp_cache_set( $blog_id . $all, $details, 'blog-details' );
-		return $details;
-	}
+  if ( ! $get_all ) {
+    wp_cache_set( $blog_id . $all, $details, 'blog-details' );
+    return $details;
+  }
 
-	switch_to_blog( $blog_id );
-	$details->blogname   = get_option( 'blogname' );
-	$details->siteurl    = get_option( 'siteurl' );
-	$details->post_count = get_option( 'post_count' );
-	$details->home       = get_option( 'home' );
-	restore_current_blog();
+  switch_to_blog( $blog_id );
+  $details->blogname   = get_option( 'blogname' );
+  $details->siteurl    = get_option( 'siteurl' );
+  $details->post_count = get_option( 'post_count' );
+  $details->home       = get_option( 'home' );
+  restore_current_blog();
 
-	/**
-	 * Filters a blog's details.
-	 *
-	 * @since MU (3.0.0)
-	 * @deprecated 4.7.0 Use site_details
-	 *
-	 * @param object $details The blog details.
-	 */
-	$details = apply_filters_deprecated( 'blog_details', array( $details ), '4.7.0', 'site_details' );
+  /**
+   * Filters a blog's details.
+   *
+   * @since MU (3.0.0)
+   * @deprecated 4.7.0 Use site_details
+   *
+   * @param object $details The blog details.
+   */
+  $details = apply_filters_deprecated( 'blog_details', array( $details ), '4.7.0', 'site_details' );
 
-	wp_cache_set( $blog_id . $all, $details, 'blog-details' );
+  wp_cache_set( $blog_id . $all, $details, 'blog-details' );
 
-	$key = md5( $details->domain . $details->path );
-	wp_cache_set( $key, $details, 'blog-lookup' );
+  $key = md5( $details->domain . $details->path );
+  wp_cache_set( $key, $details, 'blog-lookup' );
 
-	return $details;
+  return $details;
 }
 
 /**
@@ -260,12 +260,12 @@ function get_blog_details( $fields = null, $get_all = true ) {
  * @param int $blog_id Optional. Blog ID. Defaults to current blog.
  */
 function refresh_blog_details( $blog_id = 0 ) {
-	$blog_id = (int) $blog_id;
-	if ( ! $blog_id ) {
-		$blog_id = get_current_blog_id();
-	}
+  $blog_id = (int) $blog_id;
+  if ( ! $blog_id ) {
+    $blog_id = get_current_blog_id();
+  }
 
-	clean_blog_cache( $blog_id );
+  clean_blog_cache( $blog_id );
 }
 
 /**
@@ -280,139 +280,139 @@ function refresh_blog_details( $blog_id = 0 ) {
  * @return bool True if update succeeds, false otherwise.
  */
 function update_blog_details( $blog_id, $details = array() ) {
-	global $wpdb;
+  global $wpdb;
 
-	if ( empty($details) )
-		return false;
+  if ( empty($details) )
+    return false;
 
-	if ( is_object($details) )
-		$details = get_object_vars($details);
+  if ( is_object($details) )
+    $details = get_object_vars($details);
 
-	$current_details = get_site( $blog_id );
-	if ( empty($current_details) )
-		return false;
+  $current_details = get_site( $blog_id );
+  if ( empty($current_details) )
+    return false;
 
-	$current_details = get_object_vars($current_details);
+  $current_details = get_object_vars($current_details);
 
-	$details = array_merge($current_details, $details);
-	$details['last_updated'] = current_time('mysql', true);
+  $details = array_merge($current_details, $details);
+  $details['last_updated'] = current_time('mysql', true);
 
-	$update_details = array();
-	$fields = array( 'site_id', 'domain', 'path', 'registered', 'last_updated', 'public', 'archived', 'mature', 'spam', 'deleted', 'lang_id');
-	foreach ( array_intersect( array_keys( $details ), $fields ) as $field ) {
-		if ( 'path' === $field ) {
-			$details[ $field ] = trailingslashit( '/' . trim( $details[ $field ], '/' ) );
-		}
+  $update_details = array();
+  $fields = array( 'site_id', 'domain', 'path', 'registered', 'last_updated', 'public', 'archived', 'mature', 'spam', 'deleted', 'lang_id');
+  foreach ( array_intersect( array_keys( $details ), $fields ) as $field ) {
+    if ( 'path' === $field ) {
+      $details[ $field ] = trailingslashit( '/' . trim( $details[ $field ], '/' ) );
+    }
 
-		$update_details[ $field ] = $details[ $field ];
-	}
+    $update_details[ $field ] = $details[ $field ];
+  }
 
-	$result = $wpdb->update( $wpdb->blogs, $update_details, array('blog_id' => $blog_id) );
+  $result = $wpdb->update( $wpdb->blogs, $update_details, array('blog_id' => $blog_id) );
 
-	if ( false === $result )
-		return false;
+  if ( false === $result )
+    return false;
 
-	// If spam status changed, issue actions.
-	if ( $details['spam'] != $current_details['spam'] ) {
-		if ( $details['spam'] == 1 ) {
-			/**
-			 * Fires when the 'spam' status is added to a blog.
-			 *
-			 * @since MU (3.0.0)
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'make_spam_blog', $blog_id );
-		} else {
-			/**
-			 * Fires when the 'spam' status is removed from a blog.
-			 *
-			 * @since MU (3.0.0)
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'make_ham_blog', $blog_id );
-		}
-	}
+  // If spam status changed, issue actions.
+  if ( $details['spam'] != $current_details['spam'] ) {
+    if ( $details['spam'] == 1 ) {
+      /**
+       * Fires when the 'spam' status is added to a blog.
+       *
+       * @since MU (3.0.0)
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'make_spam_blog', $blog_id );
+    } else {
+      /**
+       * Fires when the 'spam' status is removed from a blog.
+       *
+       * @since MU (3.0.0)
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'make_ham_blog', $blog_id );
+    }
+  }
 
-	// If mature status changed, issue actions.
-	if ( $details['mature'] != $current_details['mature'] ) {
-		if ( $details['mature'] == 1 ) {
-			/**
-			 * Fires when the 'mature' status is added to a blog.
-			 *
-			 * @since 3.1.0
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'mature_blog', $blog_id );
-		} else {
-			/**
-			 * Fires when the 'mature' status is removed from a blog.
-			 *
-			 * @since 3.1.0
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'unmature_blog', $blog_id );
-		}
-	}
+  // If mature status changed, issue actions.
+  if ( $details['mature'] != $current_details['mature'] ) {
+    if ( $details['mature'] == 1 ) {
+      /**
+       * Fires when the 'mature' status is added to a blog.
+       *
+       * @since 3.1.0
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'mature_blog', $blog_id );
+    } else {
+      /**
+       * Fires when the 'mature' status is removed from a blog.
+       *
+       * @since 3.1.0
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'unmature_blog', $blog_id );
+    }
+  }
 
-	// If archived status changed, issue actions.
-	if ( $details['archived'] != $current_details['archived'] ) {
-		if ( $details['archived'] == 1 ) {
-			/**
-			 * Fires when the 'archived' status is added to a blog.
-			 *
-			 * @since MU (3.0.0)
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'archive_blog', $blog_id );
-		} else {
-			/**
-			 * Fires when the 'archived' status is removed from a blog.
-			 *
-			 * @since MU (3.0.0)
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'unarchive_blog', $blog_id );
-		}
-	}
+  // If archived status changed, issue actions.
+  if ( $details['archived'] != $current_details['archived'] ) {
+    if ( $details['archived'] == 1 ) {
+      /**
+       * Fires when the 'archived' status is added to a blog.
+       *
+       * @since MU (3.0.0)
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'archive_blog', $blog_id );
+    } else {
+      /**
+       * Fires when the 'archived' status is removed from a blog.
+       *
+       * @since MU (3.0.0)
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'unarchive_blog', $blog_id );
+    }
+  }
 
-	// If deleted status changed, issue actions.
-	if ( $details['deleted'] != $current_details['deleted'] ) {
-		if ( $details['deleted'] == 1 ) {
-			/**
-			 * Fires when the 'deleted' status is added to a blog.
-			 *
-			 * @since 3.5.0
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'make_delete_blog', $blog_id );
-		} else {
-			/**
-			 * Fires when the 'deleted' status is removed from a blog.
-			 *
-			 * @since 3.5.0
-			 *
-			 * @param int $blog_id Blog ID.
-			 */
-			do_action( 'make_undelete_blog', $blog_id );
-		}
-	}
+  // If deleted status changed, issue actions.
+  if ( $details['deleted'] != $current_details['deleted'] ) {
+    if ( $details['deleted'] == 1 ) {
+      /**
+       * Fires when the 'deleted' status is added to a blog.
+       *
+       * @since 3.5.0
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'make_delete_blog', $blog_id );
+    } else {
+      /**
+       * Fires when the 'deleted' status is removed from a blog.
+       *
+       * @since 3.5.0
+       *
+       * @param int $blog_id Blog ID.
+       */
+      do_action( 'make_undelete_blog', $blog_id );
+    }
+  }
 
-	if ( isset( $details['public'] ) ) {
-		switch_to_blog( $blog_id );
-		update_option( 'blog_public', $details['public'] );
-		restore_current_blog();
-	}
+  if ( isset( $details['public'] ) ) {
+    switch_to_blog( $blog_id );
+    update_option( 'blog_public', $details['public'] );
+    restore_current_blog();
+  }
 
-	clean_blog_cache( $blog_id );
+  clean_blog_cache( $blog_id );
 
-	return true;
+  return true;
 }
 
 /**
@@ -425,65 +425,65 @@ function update_blog_details( $blog_id, $details = array() ) {
  * @param WP_Site|int $blog The site object or ID to be cleared from cache.
  */
 function clean_blog_cache( $blog ) {
-	global $_wp_suspend_cache_invalidation;
+  global $_wp_suspend_cache_invalidation;
 
-	if ( ! empty( $_wp_suspend_cache_invalidation ) ) {
-		return;
-	}
+  if ( ! empty( $_wp_suspend_cache_invalidation ) ) {
+    return;
+  }
 
-	if ( empty( $blog ) ) {
-		return;
-	}
+  if ( empty( $blog ) ) {
+    return;
+  }
 
-	$blog_id = $blog;
-	$blog = get_site( $blog_id );
-	if ( ! $blog ) {
-		if ( ! is_numeric( $blog_id ) ) {
-			return;
-		}
+  $blog_id = $blog;
+  $blog = get_site( $blog_id );
+  if ( ! $blog ) {
+    if ( ! is_numeric( $blog_id ) ) {
+      return;
+    }
 
-		// Make sure a WP_Site object exists even when the site has been deleted.
-		$blog = new WP_Site( (object) array(
-			'blog_id' => $blog_id,
-			'domain'  => null,
-			'path'    => null,
-		) );
-	}
+    // Make sure a WP_Site object exists even when the site has been deleted.
+    $blog = new WP_Site( (object) array(
+      'blog_id' => $blog_id,
+      'domain'  => null,
+      'path'    => null,
+    ) );
+  }
 
-	$blog_id = $blog->blog_id;
-	$domain_path_key = md5( $blog->domain . $blog->path );
+  $blog_id = $blog->blog_id;
+  $domain_path_key = md5( $blog->domain . $blog->path );
 
-	wp_cache_delete( $blog_id, 'sites' );
-	wp_cache_delete( $blog_id, 'site-details' );
-	wp_cache_delete( $blog_id, 'blog-details' );
-	wp_cache_delete( $blog_id . 'short' , 'blog-details' );
-	wp_cache_delete( $domain_path_key, 'blog-lookup' );
-	wp_cache_delete( $domain_path_key, 'blog-id-cache' );
-	wp_cache_delete( 'current_blog_' . $blog->domain, 'site-options' );
-	wp_cache_delete( 'current_blog_' . $blog->domain . $blog->path, 'site-options' );
+  wp_cache_delete( $blog_id, 'sites' );
+  wp_cache_delete( $blog_id, 'site-details' );
+  wp_cache_delete( $blog_id, 'blog-details' );
+  wp_cache_delete( $blog_id . 'short' , 'blog-details' );
+  wp_cache_delete( $domain_path_key, 'blog-lookup' );
+  wp_cache_delete( $domain_path_key, 'blog-id-cache' );
+  wp_cache_delete( 'current_blog_' . $blog->domain, 'site-options' );
+  wp_cache_delete( 'current_blog_' . $blog->domain . $blog->path, 'site-options' );
 
-	/**
-	 * Fires immediately after a site has been removed from the object cache.
-	 *
-	 * @since 4.6.0
-	 *
-	 * @param int     $id              Blog ID.
-	 * @param WP_Site $blog            Site object.
-	 * @param string  $domain_path_key md5 hash of domain and path.
-	 */
-	do_action( 'clean_site_cache', $blog_id, $blog, $domain_path_key );
+  /**
+   * Fires immediately after a site has been removed from the object cache.
+   *
+   * @since 4.6.0
+   *
+   * @param int     $id              Blog ID.
+   * @param WP_Site $blog            Site object.
+   * @param string  $domain_path_key md5 hash of domain and path.
+   */
+  do_action( 'clean_site_cache', $blog_id, $blog, $domain_path_key );
 
-	wp_cache_set( 'last_changed', microtime(), 'sites' );
+  wp_cache_set( 'last_changed', microtime(), 'sites' );
 
-	/**
-	 * Fires after the blog details cache is cleared.
-	 *
-	 * @since 3.4.0
-	 * @deprecated 4.9.0 Use clean_site_cache
-	 *
-	 * @param int $blog_id Blog ID.
-	 */
-	do_action_deprecated( 'refresh_blog_details', array( $blog_id ), '4.9.0', 'clean_site_cache' );
+  /**
+   * Fires after the blog details cache is cleared.
+   *
+   * @since 3.4.0
+   * @deprecated 4.9.0 Use clean_site_cache
+   *
+   * @param int $blog_id Blog ID.
+   */
+  do_action_deprecated( 'refresh_blog_details', array( $blog_id ), '4.9.0', 'clean_site_cache' );
 }
 
 /**
@@ -494,13 +494,13 @@ function clean_blog_cache( $blog ) {
  * @param int $site_id Optional. Site ID. Default is the current site ID.
  */
 function clean_site_details_cache( $site_id = 0 ) {
-	$site_id = (int) $site_id;
-	if ( ! $site_id ) {
-		$site_id = get_current_blog_id();
-	}
+  $site_id = (int) $site_id;
+  if ( ! $site_id ) {
+    $site_id = get_current_blog_id();
+  }
 
-	wp_cache_delete( $site_id, 'site-details' );
-	wp_cache_delete( $site_id, 'blog-details' );
+  wp_cache_delete( $site_id, 'site-details' );
+  wp_cache_delete( $site_id, 'blog-details' );
 }
 
 /**
@@ -515,32 +515,32 @@ function clean_site_details_cache( $site_id = 0 ) {
  * @return WP_Site|null The site object or null if not found.
  */
 function get_site( $site = null ) {
-	if ( empty( $site ) ) {
-		$site = get_current_blog_id();
-	}
+  if ( empty( $site ) ) {
+    $site = get_current_blog_id();
+  }
 
-	if ( $site instanceof WP_Site ) {
-		$_site = $site;
-	} elseif ( is_object( $site ) ) {
-		$_site = new WP_Site( $site );
-	} else {
-		$_site = WP_Site::get_instance( $site );
-	}
+  if ( $site instanceof WP_Site ) {
+    $_site = $site;
+  } elseif ( is_object( $site ) ) {
+    $_site = new WP_Site( $site );
+  } else {
+    $_site = WP_Site::get_instance( $site );
+  }
 
-	if ( ! $_site ) {
-		return null;
-	}
+  if ( ! $_site ) {
+    return null;
+  }
 
-	/**
-	 * Fires after a site is retrieved.
-	 *
-	 * @since 4.6.0
-	 *
-	 * @param WP_Site $_site Site data.
-	 */
-	$_site = apply_filters( 'get_site', $_site );
+  /**
+   * Fires after a site is retrieved.
+   *
+   * @since 4.6.0
+   *
+   * @param WP_Site $_site Site data.
+   */
+  $_site = apply_filters( 'get_site', $_site );
 
-	return $_site;
+  return $_site;
 }
 
 /**
@@ -555,14 +555,14 @@ function get_site( $site = null ) {
  * @param array $ids ID list.
  */
 function _prime_site_caches( $ids ) {
-	global $wpdb;
+  global $wpdb;
 
-	$non_cached_ids = _get_non_cached_ids( $ids, 'sites' );
-	if ( ! empty( $non_cached_ids ) ) {
-		$fresh_sites = $wpdb->get_results( sprintf( "SELECT * FROM $wpdb->blogs WHERE blog_id IN (%s)", join( ",", array_map( 'intval', $non_cached_ids ) ) ) );
+  $non_cached_ids = _get_non_cached_ids( $ids, 'sites' );
+  if ( ! empty( $non_cached_ids ) ) {
+    $fresh_sites = $wpdb->get_results( sprintf( "SELECT * FROM $wpdb->blogs WHERE blog_id IN (%s)", join( ",", array_map( 'intval', $non_cached_ids ) ) ) );
 
-		update_site_cache( $fresh_sites );
-	}
+    update_site_cache( $fresh_sites );
+  }
 }
 
 /**
@@ -573,14 +573,14 @@ function _prime_site_caches( $ids ) {
  * @param array $sites Array of site objects.
  */
 function update_site_cache( $sites ) {
-	if ( ! $sites ) {
-		return;
-	}
+  if ( ! $sites ) {
+    return;
+  }
 
-	foreach ( $sites as $site ) {
-		wp_cache_add( $site->blog_id, $site, 'sites' );
-		wp_cache_add( $site->blog_id . 'short', $site, 'blog-details' );
-	}
+  foreach ( $sites as $site ) {
+    wp_cache_add( $site->blog_id, $site, 'sites' );
+    wp_cache_add( $site->blog_id . 'short', $site, 'blog-details' );
+  }
 }
 
 /**
@@ -640,9 +640,9 @@ function update_site_cache( $sites ) {
  *                   or the number of sites when 'count' is passed as a query var.
  */
 function get_sites( $args = array() ) {
-	$query = new WP_Site_Query();
+  $query = new WP_Site_Query();
 
-	return $query->query( $args );
+  return $query->query( $args );
 }
 
 /**
@@ -663,29 +663,29 @@ function get_sites( $args = array() ) {
  * @return mixed Value set for the option.
  */
 function get_blog_option( $id, $option, $default = false ) {
-	$id = (int) $id;
+  $id = (int) $id;
 
-	if ( empty( $id ) )
-		$id = get_current_blog_id();
+  if ( empty( $id ) )
+    $id = get_current_blog_id();
 
-	if ( get_current_blog_id() == $id )
-		return get_option( $option, $default );
+  if ( get_current_blog_id() == $id )
+    return get_option( $option, $default );
 
-	switch_to_blog( $id );
-	$value = get_option( $option, $default );
-	restore_current_blog();
+  switch_to_blog( $id );
+  $value = get_option( $option, $default );
+  restore_current_blog();
 
-	/**
-	 * Filters a blog option value.
-	 *
-	 * The dynamic portion of the hook name, `$option`, refers to the blog option name.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @param string  $value The option value.
-	 * @param int     $id    Blog ID.
-	 */
-	return apply_filters( "blog_option_{$option}", $value, $id );
+  /**
+   * Filters a blog option value.
+   *
+   * The dynamic portion of the hook name, `$option`, refers to the blog option name.
+   *
+   * @since 3.5.0
+   *
+   * @param string  $value The option value.
+   * @param int     $id    Blog ID.
+   */
+  return apply_filters( "blog_option_{$option}", $value, $id );
 }
 
 /**
@@ -708,19 +708,19 @@ function get_blog_option( $id, $option, $default = false ) {
  * @return bool False if option was not added and true if option was added.
  */
 function add_blog_option( $id, $option, $value ) {
-	$id = (int) $id;
+  $id = (int) $id;
 
-	if ( empty( $id ) )
-		$id = get_current_blog_id();
+  if ( empty( $id ) )
+    $id = get_current_blog_id();
 
-	if ( get_current_blog_id() == $id )
-		return add_option( $option, $value );
+  if ( get_current_blog_id() == $id )
+    return add_option( $option, $value );
 
-	switch_to_blog( $id );
-	$return = add_option( $option, $value );
-	restore_current_blog();
+  switch_to_blog( $id );
+  $return = add_option( $option, $value );
+  restore_current_blog();
 
-	return $return;
+  return $return;
 }
 
 /**
@@ -733,19 +733,19 @@ function add_blog_option( $id, $option, $value ) {
  * @return bool True, if option is successfully deleted. False on failure.
  */
 function delete_blog_option( $id, $option ) {
-	$id = (int) $id;
+  $id = (int) $id;
 
-	if ( empty( $id ) )
-		$id = get_current_blog_id();
+  if ( empty( $id ) )
+    $id = get_current_blog_id();
 
-	if ( get_current_blog_id() == $id )
-		return delete_option( $option );
+  if ( get_current_blog_id() == $id )
+    return delete_option( $option );
 
-	switch_to_blog( $id );
-	$return = delete_option( $option );
-	restore_current_blog();
+  switch_to_blog( $id );
+  $return = delete_option( $option );
+  restore_current_blog();
 
-	return $return;
+  return $return;
 }
 
 /**
@@ -760,19 +760,19 @@ function delete_blog_option( $id, $option ) {
  * @return bool True on success, false on failure.
  */
 function update_blog_option( $id, $option, $value, $deprecated = null ) {
-	$id = (int) $id;
+  $id = (int) $id;
 
-	if ( null !== $deprecated  )
-		_deprecated_argument( __FUNCTION__, '3.1.0' );
+  if ( null !== $deprecated  )
+    _deprecated_argument( __FUNCTION__, '3.1.0' );
 
-	if ( get_current_blog_id() == $id )
-		return update_option( $option, $value );
+  if ( get_current_blog_id() == $id )
+    return update_option( $option, $value );
 
-	switch_to_blog( $id );
-	$return = update_option( $option, $value );
-	restore_current_blog();
+  switch_to_blog( $id );
+  $return = update_option( $option, $value );
+  restore_current_blog();
 
-	return $return;
+  return $return;
 }
 
 /**
@@ -799,66 +799,66 @@ function update_blog_option( $id, $option, $value, $deprecated = null ) {
  * @return true Always returns True.
  */
 function switch_to_blog( $new_blog, $deprecated = null ) {
-	global $wpdb;
+  global $wpdb;
 
-	$blog_id = get_current_blog_id();
-	if ( empty( $new_blog ) ) {
-		$new_blog = $blog_id;
-	}
+  $blog_id = get_current_blog_id();
+  if ( empty( $new_blog ) ) {
+    $new_blog = $blog_id;
+  }
 
-	$GLOBALS['_wp_switched_stack'][] = $blog_id;
+  $GLOBALS['_wp_switched_stack'][] = $blog_id;
 
-	/*
-	 * If we're switching to the same blog id that we're on,
-	 * set the right vars, do the associated actions, but skip
-	 * the extra unnecessary work
-	 */
-	if ( $new_blog == $blog_id ) {
-		/**
-		 * Fires when the blog is switched.
-		 *
-		 * @since MU (3.0.0)
-		 *
-		 * @param int $new_blog New blog ID.
-		 * @param int $new_blog Blog ID.
-		 */
-		do_action( 'switch_blog', $new_blog, $new_blog );
-		$GLOBALS['switched'] = true;
-		return true;
-	}
+  /*
+   * If we're switching to the same blog id that we're on,
+   * set the right vars, do the associated actions, but skip
+   * the extra unnecessary work
+   */
+  if ( $new_blog == $blog_id ) {
+    /**
+     * Fires when the blog is switched.
+     *
+     * @since MU (3.0.0)
+     *
+     * @param int $new_blog New blog ID.
+     * @param int $new_blog Blog ID.
+     */
+    do_action( 'switch_blog', $new_blog, $new_blog );
+    $GLOBALS['switched'] = true;
+    return true;
+  }
 
-	$wpdb->set_blog_id( $new_blog );
-	$GLOBALS['table_prefix'] = $wpdb->get_blog_prefix();
-	$prev_blog_id = $blog_id;
-	$GLOBALS['blog_id'] = $new_blog;
+  $wpdb->set_blog_id( $new_blog );
+  $GLOBALS['table_prefix'] = $wpdb->get_blog_prefix();
+  $prev_blog_id = $blog_id;
+  $GLOBALS['blog_id'] = $new_blog;
 
-	if ( function_exists( 'wp_cache_switch_to_blog' ) ) {
-		wp_cache_switch_to_blog( $new_blog );
-	} else {
-		global $wp_object_cache;
+  if ( function_exists( 'wp_cache_switch_to_blog' ) ) {
+    wp_cache_switch_to_blog( $new_blog );
+  } else {
+    global $wp_object_cache;
 
-		if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
-			$global_groups = $wp_object_cache->global_groups;
-		} else {
-			$global_groups = false;
-		}
-		wp_cache_init();
+    if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
+      $global_groups = $wp_object_cache->global_groups;
+    } else {
+      $global_groups = false;
+    }
+    wp_cache_init();
 
-		if ( function_exists( 'wp_cache_add_global_groups' ) ) {
-			if ( is_array( $global_groups ) ) {
-				wp_cache_add_global_groups( $global_groups );
-			} else {
-				wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'user_meta', 'useremail', 'userslugs', 'site-transient', 'site-options', 'blog-lookup', 'blog-details', 'rss', 'global-posts', 'blog-id-cache', 'networks', 'sites', 'site-details' ) );
-			}
-			wp_cache_add_non_persistent_groups( array( 'counts', 'plugins' ) );
-		}
-	}
+    if ( function_exists( 'wp_cache_add_global_groups' ) ) {
+      if ( is_array( $global_groups ) ) {
+        wp_cache_add_global_groups( $global_groups );
+      } else {
+        wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'user_meta', 'useremail', 'userslugs', 'site-transient', 'site-options', 'blog-lookup', 'blog-details', 'rss', 'global-posts', 'blog-id-cache', 'networks', 'sites', 'site-details' ) );
+      }
+      wp_cache_add_non_persistent_groups( array( 'counts', 'plugins' ) );
+    }
+  }
 
-	/** This filter is documented in wp-includes/ms-blogs.php */
-	do_action( 'switch_blog', $new_blog, $prev_blog_id );
-	$GLOBALS['switched'] = true;
+  /** This filter is documented in wp-includes/ms-blogs.php */
+  do_action( 'switch_blog', $new_blog, $prev_blog_id );
+  $GLOBALS['switched'] = true;
 
-	return true;
+  return true;
 }
 
 /**
@@ -877,58 +877,58 @@ function switch_to_blog( $new_blog, $deprecated = null ) {
  * @return bool True on success, false if we're already on the current blog
  */
 function restore_current_blog() {
-	global $wpdb;
+  global $wpdb;
 
-	if ( empty( $GLOBALS['_wp_switched_stack'] ) ) {
-		return false;
-	}
+  if ( empty( $GLOBALS['_wp_switched_stack'] ) ) {
+    return false;
+  }
 
-	$blog = array_pop( $GLOBALS['_wp_switched_stack'] );
-	$blog_id = get_current_blog_id();
+  $blog = array_pop( $GLOBALS['_wp_switched_stack'] );
+  $blog_id = get_current_blog_id();
 
-	if ( $blog_id == $blog ) {
-		/** This filter is documented in wp-includes/ms-blogs.php */
-		do_action( 'switch_blog', $blog, $blog );
-		// If we still have items in the switched stack, consider ourselves still 'switched'
-		$GLOBALS['switched'] = ! empty( $GLOBALS['_wp_switched_stack'] );
-		return true;
-	}
+  if ( $blog_id == $blog ) {
+    /** This filter is documented in wp-includes/ms-blogs.php */
+    do_action( 'switch_blog', $blog, $blog );
+    // If we still have items in the switched stack, consider ourselves still 'switched'
+    $GLOBALS['switched'] = ! empty( $GLOBALS['_wp_switched_stack'] );
+    return true;
+  }
 
-	$wpdb->set_blog_id( $blog );
-	$prev_blog_id = $blog_id;
-	$GLOBALS['blog_id'] = $blog;
-	$GLOBALS['table_prefix'] = $wpdb->get_blog_prefix();
+  $wpdb->set_blog_id( $blog );
+  $prev_blog_id = $blog_id;
+  $GLOBALS['blog_id'] = $blog;
+  $GLOBALS['table_prefix'] = $wpdb->get_blog_prefix();
 
-	if ( function_exists( 'wp_cache_switch_to_blog' ) ) {
-		wp_cache_switch_to_blog( $blog );
-	} else {
-		global $wp_object_cache;
+  if ( function_exists( 'wp_cache_switch_to_blog' ) ) {
+    wp_cache_switch_to_blog( $blog );
+  } else {
+    global $wp_object_cache;
 
-		if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
-			$global_groups = $wp_object_cache->global_groups;
-		} else {
-			$global_groups = false;
-		}
+    if ( is_object( $wp_object_cache ) && isset( $wp_object_cache->global_groups ) ) {
+      $global_groups = $wp_object_cache->global_groups;
+    } else {
+      $global_groups = false;
+    }
 
-		wp_cache_init();
+    wp_cache_init();
 
-		if ( function_exists( 'wp_cache_add_global_groups' ) ) {
-			if ( is_array( $global_groups ) ) {
-				wp_cache_add_global_groups( $global_groups );
-			} else {
-				wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'user_meta', 'useremail', 'userslugs', 'site-transient', 'site-options', 'blog-lookup', 'blog-details', 'rss', 'global-posts', 'blog-id-cache', 'networks', 'sites', 'site-details' ) );
-			}
-			wp_cache_add_non_persistent_groups( array( 'counts', 'plugins' ) );
-		}
-	}
+    if ( function_exists( 'wp_cache_add_global_groups' ) ) {
+      if ( is_array( $global_groups ) ) {
+        wp_cache_add_global_groups( $global_groups );
+      } else {
+        wp_cache_add_global_groups( array( 'users', 'userlogins', 'usermeta', 'user_meta', 'useremail', 'userslugs', 'site-transient', 'site-options', 'blog-lookup', 'blog-details', 'rss', 'global-posts', 'blog-id-cache', 'networks', 'sites', 'site-details' ) );
+      }
+      wp_cache_add_non_persistent_groups( array( 'counts', 'plugins' ) );
+    }
+  }
 
-	/** This filter is documented in wp-includes/ms-blogs.php */
-	do_action( 'switch_blog', $blog, $prev_blog_id );
+  /** This filter is documented in wp-includes/ms-blogs.php */
+  do_action( 'switch_blog', $blog, $prev_blog_id );
 
-	// If we still have items in the switched stack, consider ourselves still 'switched'
-	$GLOBALS['switched'] = ! empty( $GLOBALS['_wp_switched_stack'] );
+  // If we still have items in the switched stack, consider ourselves still 'switched'
+  $GLOBALS['switched'] = ! empty( $GLOBALS['_wp_switched_stack'] );
 
-	return true;
+  return true;
 }
 
 /**
@@ -940,16 +940,16 @@ function restore_current_blog() {
  * @param int $old_site_id Old site ID.
  */
 function wp_switch_roles_and_user( $new_site_id, $old_site_id ) {
-	if ( $new_site_id == $old_site_id ) {
-		return;
-	}
+  if ( $new_site_id == $old_site_id ) {
+    return;
+  }
 
-	if ( ! did_action( 'init' ) ) {
-		return;
-	}
+  if ( ! did_action( 'init' ) ) {
+    return;
+  }
 
-	wp_roles()->for_site( $new_site_id );
-	wp_get_current_user()->for_site( $new_site_id );
+  wp_roles()->for_site( $new_site_id );
+  wp_get_current_user()->for_site( $new_site_id );
 }
 
 /**
@@ -962,7 +962,7 @@ function wp_switch_roles_and_user( $new_site_id, $old_site_id ) {
  * @return bool True if switched, false otherwise.
  */
 function ms_is_switched() {
-	return ! empty( $GLOBALS['_wp_switched_stack'] );
+  return ! empty( $GLOBALS['_wp_switched_stack'] );
 }
 
 /**
@@ -974,7 +974,7 @@ function ms_is_switched() {
  * @return string Whether the blog is archived or not
  */
 function is_archived( $id ) {
-	return get_blog_status($id, 'archived');
+  return get_blog_status($id, 'archived');
 }
 
 /**
@@ -987,8 +987,8 @@ function is_archived( $id ) {
  * @return string $archived
  */
 function update_archived( $id, $archived ) {
-	update_blog_status($id, 'archived', $archived);
-	return $archived;
+  update_blog_status($id, 'archived', $archived);
+  return $archived;
 }
 
 /**
@@ -1005,66 +1005,66 @@ function update_archived( $id, $archived ) {
  * @return string|false $value
  */
 function update_blog_status( $blog_id, $pref, $value, $deprecated = null ) {
-	global $wpdb;
+  global $wpdb;
 
-	if ( null !== $deprecated  )
-		_deprecated_argument( __FUNCTION__, '3.1.0' );
+  if ( null !== $deprecated  )
+    _deprecated_argument( __FUNCTION__, '3.1.0' );
 
-	if ( ! in_array( $pref, array( 'site_id', 'domain', 'path', 'registered', 'last_updated', 'public', 'archived', 'mature', 'spam', 'deleted', 'lang_id') ) )
-		return $value;
+  if ( ! in_array( $pref, array( 'site_id', 'domain', 'path', 'registered', 'last_updated', 'public', 'archived', 'mature', 'spam', 'deleted', 'lang_id') ) )
+    return $value;
 
-	$result = $wpdb->update( $wpdb->blogs, array($pref => $value, 'last_updated' => current_time('mysql', true)), array('blog_id' => $blog_id) );
+  $result = $wpdb->update( $wpdb->blogs, array($pref => $value, 'last_updated' => current_time('mysql', true)), array('blog_id' => $blog_id) );
 
-	if ( false === $result )
-		return false;
+  if ( false === $result )
+    return false;
 
-	clean_blog_cache( $blog_id );
+  clean_blog_cache( $blog_id );
 
-	if ( 'spam' == $pref ) {
-		if ( $value == 1 ) {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'make_spam_blog', $blog_id );
-		} else {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'make_ham_blog', $blog_id );
-		}
-	} elseif ( 'mature' == $pref ) {
-		if ( $value == 1 ) {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'mature_blog', $blog_id );
-		} else {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'unmature_blog', $blog_id );
-		}
-	} elseif ( 'archived' == $pref ) {
-		if ( $value == 1 ) {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'archive_blog', $blog_id );
-		} else {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'unarchive_blog', $blog_id );
-		}
-	} elseif ( 'deleted' == $pref ) {
-		if ( $value == 1 ) {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'make_delete_blog', $blog_id );
-		} else {
-			/** This filter is documented in wp-includes/ms-blogs.php */
-			do_action( 'make_undelete_blog', $blog_id );
-		}
-	} elseif ( 'public' == $pref ) {
-		/**
-		 * Fires after the current blog's 'public' setting is updated.
-		 *
-		 * @since MU (3.0.0)
-		 *
-		 * @param int    $blog_id Blog ID.
-		 * @param string $value   The value of blog status.
- 		 */
-		do_action( 'update_blog_public', $blog_id, $value ); // Moved here from update_blog_public().
-	}
+  if ( 'spam' == $pref ) {
+    if ( $value == 1 ) {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'make_spam_blog', $blog_id );
+    } else {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'make_ham_blog', $blog_id );
+    }
+  } elseif ( 'mature' == $pref ) {
+    if ( $value == 1 ) {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'mature_blog', $blog_id );
+    } else {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'unmature_blog', $blog_id );
+    }
+  } elseif ( 'archived' == $pref ) {
+    if ( $value == 1 ) {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'archive_blog', $blog_id );
+    } else {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'unarchive_blog', $blog_id );
+    }
+  } elseif ( 'deleted' == $pref ) {
+    if ( $value == 1 ) {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'make_delete_blog', $blog_id );
+    } else {
+      /** This filter is documented in wp-includes/ms-blogs.php */
+      do_action( 'make_undelete_blog', $blog_id );
+    }
+  } elseif ( 'public' == $pref ) {
+    /**
+     * Fires after the current blog's 'public' setting is updated.
+     *
+     * @since MU (3.0.0)
+     *
+     * @param int    $blog_id Blog ID.
+     * @param string $value   The value of blog status.
+      */
+    do_action( 'update_blog_public', $blog_id, $value ); // Moved here from update_blog_public().
+  }
 
-	return $value;
+  return $value;
 }
 
 /**
@@ -1079,13 +1079,13 @@ function update_blog_status( $blog_id, $pref, $value, $deprecated = null ) {
  * @return bool|string|null $value
  */
 function get_blog_status( $id, $pref ) {
-	global $wpdb;
+  global $wpdb;
 
-	$details = get_site( $id );
-	if ( $details )
-		return $details->$pref;
+  $details = get_site( $id );
+  if ( $details )
+    return $details->$pref;
 
-	return $wpdb->get_var( $wpdb->prepare("SELECT %s FROM {$wpdb->blogs} WHERE blog_id = %d", $pref, $id) );
+  return $wpdb->get_var( $wpdb->prepare("SELECT %s FROM {$wpdb->blogs} WHERE blog_id = %d", $pref, $id) );
 }
 
 /**
@@ -1101,12 +1101,12 @@ function get_blog_status( $id, $pref ) {
  * @return array The list of blogs
  */
 function get_last_updated( $deprecated = '', $start = 0, $quantity = 40 ) {
-	global $wpdb;
+  global $wpdb;
 
-	if ( ! empty( $deprecated ) )
-		_deprecated_argument( __FUNCTION__, 'MU' ); // never used
+  if ( ! empty( $deprecated ) )
+    _deprecated_argument( __FUNCTION__, 'MU' ); // never used
 
-	return $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d", get_current_network_id(), $start, $quantity ), ARRAY_A );
+  return $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND public = '1' AND archived = '0' AND mature = '0' AND spam = '0' AND deleted = '0' AND last_updated != '0000-00-00 00:00:00' ORDER BY last_updated DESC limit %d, %d", get_current_network_id(), $start, $quantity ), ARRAY_A );
 }
 
 /**
@@ -1120,9 +1120,9 @@ function get_last_updated( $deprecated = '', $start = 0, $quantity = 40 ) {
  *                   or the number of networks when 'count' is passed as a query var.
  */
 function get_networks( $args = array() ) {
-	$query = new WP_Network_Query();
+  $query = new WP_Network_Query();
 
-	return $query->query( $args );
+  return $query->query( $args );
 }
 
 /**
@@ -1139,33 +1139,33 @@ function get_networks( $args = array() ) {
  * @return WP_Network|null The network object or null if not found.
  */
 function get_network( $network = null ) {
-	global $current_site;
-	if ( empty( $network ) && isset( $current_site ) ) {
-		$network = $current_site;
-	}
+  global $current_site;
+  if ( empty( $network ) && isset( $current_site ) ) {
+    $network = $current_site;
+  }
 
-	if ( $network instanceof WP_Network ) {
-		$_network = $network;
-	} elseif ( is_object( $network ) ) {
-		$_network = new WP_Network( $network );
-	} else {
-		$_network = WP_Network::get_instance( $network );
-	}
+  if ( $network instanceof WP_Network ) {
+    $_network = $network;
+  } elseif ( is_object( $network ) ) {
+    $_network = new WP_Network( $network );
+  } else {
+    $_network = WP_Network::get_instance( $network );
+  }
 
-	if ( ! $_network ) {
-		return null;
-	}
+  if ( ! $_network ) {
+    return null;
+  }
 
-	/**
-	 * Fires after a network is retrieved.
-	 *
-	 * @since 4.6.0
-	 *
-	 * @param WP_Network $_network Network data.
-	 */
-	$_network = apply_filters( 'get_network', $_network );
+  /**
+   * Fires after a network is retrieved.
+   *
+   * @since 4.6.0
+   *
+   * @param WP_Network $_network Network data.
+   */
+  $_network = apply_filters( 'get_network', $_network );
 
-	return $_network;
+  return $_network;
 }
 
 /**
@@ -1178,26 +1178,26 @@ function get_network( $network = null ) {
  * @param int|array $ids Network ID or an array of network IDs to remove from cache.
  */
 function clean_network_cache( $ids ) {
-	global $_wp_suspend_cache_invalidation;
+  global $_wp_suspend_cache_invalidation;
 
-	if ( ! empty( $_wp_suspend_cache_invalidation ) ) {
-		return;
-	}
+  if ( ! empty( $_wp_suspend_cache_invalidation ) ) {
+    return;
+  }
 
-	foreach ( (array) $ids as $id ) {
-		wp_cache_delete( $id, 'networks' );
+  foreach ( (array) $ids as $id ) {
+    wp_cache_delete( $id, 'networks' );
 
-		/**
-		 * Fires immediately after a network has been removed from the object cache.
-		 *
-		 * @since 4.6.0
-		 *
-		 * @param int $id Network ID.
-		 */
-		do_action( 'clean_network_cache', $id );
-	}
+    /**
+     * Fires immediately after a network has been removed from the object cache.
+     *
+     * @since 4.6.0
+     *
+     * @param int $id Network ID.
+     */
+    do_action( 'clean_network_cache', $id );
+  }
 
-	wp_cache_set( 'last_changed', microtime(), 'networks' );
+  wp_cache_set( 'last_changed', microtime(), 'networks' );
 }
 
 /**
@@ -1212,9 +1212,9 @@ function clean_network_cache( $ids ) {
  * @param array $networks Array of network row objects.
  */
 function update_network_cache( $networks ) {
-	foreach ( (array) $networks as $network ) {
-		wp_cache_add( $network->id, $network, 'networks' );
-	}
+  foreach ( (array) $networks as $network ) {
+    wp_cache_add( $network->id, $network, 'networks' );
+  }
 }
 
 /**
@@ -1229,14 +1229,14 @@ function update_network_cache( $networks ) {
  * @param array $network_ids Array of network IDs.
  */
 function _prime_network_caches( $network_ids ) {
-	global $wpdb;
+  global $wpdb;
 
-	$non_cached_ids = _get_non_cached_ids( $network_ids, 'networks' );
-	if ( !empty( $non_cached_ids ) ) {
-		$fresh_networks = $wpdb->get_results( sprintf( "SELECT $wpdb->site.* FROM $wpdb->site WHERE id IN (%s)", join( ",", array_map( 'intval', $non_cached_ids ) ) ) );
+  $non_cached_ids = _get_non_cached_ids( $network_ids, 'networks' );
+  if ( !empty( $non_cached_ids ) ) {
+    $fresh_networks = $wpdb->get_results( sprintf( "SELECT $wpdb->site.* FROM $wpdb->site WHERE id IN (%s)", join( ",", array_map( 'intval', $non_cached_ids ) ) ) );
 
-		update_network_cache( $fresh_networks );
-	}
+    update_network_cache( $fresh_networks );
+  }
 }
 
 /**
@@ -1250,18 +1250,18 @@ function _prime_network_caches( $network_ids ) {
  * @param object $post       Post object
  */
 function _update_blog_date_on_post_publish( $new_status, $old_status, $post ) {
-	$post_type_obj = get_post_type_object( $post->post_type );
-	if ( ! $post_type_obj || ! $post_type_obj->public ) {
-		return;
-	}
+  $post_type_obj = get_post_type_object( $post->post_type );
+  if ( ! $post_type_obj || ! $post_type_obj->public ) {
+    return;
+  }
 
-	if ( 'publish' != $new_status && 'publish' != $old_status ) {
-		return;
-	}
+  if ( 'publish' != $new_status && 'publish' != $old_status ) {
+    return;
+  }
 
-	// Post was freshly published, published post was saved, or published post was unpublished.
+  // Post was freshly published, published post was saved, or published post was unpublished.
 
-	wpmu_update_blogs_date();
+  wpmu_update_blogs_date();
 }
 
 /**
@@ -1273,18 +1273,18 @@ function _update_blog_date_on_post_publish( $new_status, $old_status, $post ) {
  * @param int $post_id Post ID
  */
 function _update_blog_date_on_post_delete( $post_id ) {
-	$post = get_post( $post_id );
+  $post = get_post( $post_id );
 
-	$post_type_obj = get_post_type_object( $post->post_type );
-	if ( ! $post_type_obj || ! $post_type_obj->public ) {
-		return;
-	}
+  $post_type_obj = get_post_type_object( $post->post_type );
+  if ( ! $post_type_obj || ! $post_type_obj->public ) {
+    return;
+  }
 
-	if ( 'publish' != $post->post_status ) {
-		return;
-	}
+  if ( 'publish' != $post->post_status ) {
+    return;
+  }
 
-	wpmu_update_blogs_date();
+  wpmu_update_blogs_date();
 }
 
 /**
@@ -1295,13 +1295,13 @@ function _update_blog_date_on_post_delete( $post_id ) {
  * @param int $post_id Post ID.
  */
 function _update_posts_count_on_delete( $post_id ) {
-	$post = get_post( $post_id );
+  $post = get_post( $post_id );
 
-	if ( ! $post || 'publish' !== $post->post_status || 'post' !== $post->post_type ) {
-		return;
-	}
+  if ( ! $post || 'publish' !== $post->post_status || 'post' !== $post->post_type ) {
+    return;
+  }
 
-	update_posts_count();
+  update_posts_count();
 }
 
 /**
@@ -1315,17 +1315,17 @@ function _update_posts_count_on_delete( $post_id ) {
  * @param WP_Post $post       Post object
  */
 function _update_posts_count_on_transition_post_status( $new_status, $old_status, $post = null ) {
-	if ( $new_status === $old_status ) {
-		return;
-	}
+  if ( $new_status === $old_status ) {
+    return;
+  }
 
-	if ( 'post' !== get_post_type( $post ) ) {
-		return;
-	}
+  if ( 'post' !== get_post_type( $post ) ) {
+    return;
+  }
 
-	if ( 'publish' !== $new_status && 'publish' !== $old_status ) {
-		return;
-	}
+  if ( 'publish' !== $new_status && 'publish' !== $old_status ) {
+    return;
+  }
 
-	update_posts_count();
+  update_posts_count();
 }

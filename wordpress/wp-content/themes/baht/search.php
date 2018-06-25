@@ -1,62 +1,74 @@
+<?php get_header(); ?>
+
 <?php
-/**
- * The template for displaying search results pages
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
- *
- * @package WordPress
- * @subpackage Twenty_Seventeen
- * @since 1.0
- * @version 1.0
- */
+global $wp_query;
+query_posts($query_string.'&posts_per_page=30');
+$total_results = $wp_query->found_posts;
+$search_query = get_search_query();
+?>
 
-get_header(); ?>
+<main>
+  <div class="header-pankuzu d-none d-sm-block">
+    <div class="container">
+      <ul class="row list-unstyled d-flex flex-wrap align-items-center mb-0">
+        <?php breadcrumb(); ?>
+      </ul>
+    </div><!-- //.container -->
+  </div><!-- //.header-pankuzu -->
+  <div class="header-category d-sm-none">
+    <h1 class="header-category-info-ttl"><i class="fas fa-search"></i>&nbsp;検索結果</h1>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="main col-12 col-lg-8">
+        <div class="header-category d-none d-sm-block">
+          <div class="header-category-info">
+            <h1 class="header-category-info-ttl"><i class="fas fa-search"></i>&nbsp;検索結果</h1>
+            <p class="header-category-info-txt">「<?php echo $search_query; ?>」に関連する記事一覧です。</p>
+          </div>
+        </div><!-- //.header-category -->
+        <div>
+          <h2 class="category-list-ttl">「<?php echo $search_query; ?>」の検索結果<span>(<?php echo $total_results; ?>件)</span></h2>
+          <ul class="medias-list list-unstyled">
+            <?php if($total_results > 0 && have_posts()) : while(have_posts()) : the_post(); ?>
+              <li class="media">
+                <a class="media-anchor d-flex" href="<?php echo get_permalink(); ?>">
+                  <div class="media-catch">
+                    <img class="widget-list-img" src="<?php the_post_thumbnail_url('medium'); ?>">
+                  </div>
+                  <div class="media-body">
+                    <h3 class="media-body-ttl">
+                      <?php echo mb_strimwidth(get_the_title(), 0, 76, '...'); ?>
+                    </h3>
+                    <div class="media-body-sub">
+                      <p class="media-body-description d-none d-md-block">
+                        <?php echo mb_substr(strip_tags($post-> post_content), 0, 60).'...'; ?>
+                      </p>
+                      <p class="media-body-meta">
+                        <span class="media-body-meta-date"><?php the_time("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
+                      </p>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            <?php endwhile; else: ?>
+              <?php echo $search_query; ?> に一致する情報は見つかりませんでした。
+            <?php endif; ?>
+          </ul>
+          <?php pc_pagination($wp_query->max_num_pages); ?>
+          <?php sp_pagination($wp_query->max_num_pages); ?>
+        </div>
+      </div><!-- //.main -->
+      <?php get_sidebar(); ?>
+    </div><!-- //.row -->
+  </div><!-- //.container -->
+  <div class="footer-pankuzu d-none d-sm-block">
+    <div class="container">
+      <ul class="row list-unstyled d-flex flex-wrap align-items-center mb-0">
+        <?php breadcrumb(); ?>
+      </ul>
+    </div><!-- //.container -->
+  </div><!-- //.footer-pankuzu -->
+</main>
 
-<div class="wrap">
-
-	<header class="page-header">
-		<?php if ( have_posts() ) : ?>
-			<h1 class="page-title"><?php printf( __( 'Search Results for: %s', 'twentyseventeen' ), '<span>' . get_search_query() . '</span>' ); ?></h1>
-		<?php else : ?>
-			<h1 class="page-title"><?php _e( 'Nothing Found', 'twentyseventeen' ); ?></h1>
-		<?php endif; ?>
-	</header><!-- .page-header -->
-
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main" role="main">
-
-		<?php
-		if ( have_posts() ) :
-			/* Start the Loop */
-			while ( have_posts() ) : the_post();
-
-				/**
-				 * Run the loop for the search to output the results.
-				 * If you want to overload this in a child theme then include a file
-				 * called content-search.php and that will be used instead.
-				 */
-				get_template_part( 'template-parts/post/content', 'excerpt' );
-
-			endwhile; // End of the loop.
-
-			the_posts_pagination( array(
-				'prev_text' => twentyseventeen_get_svg( array( 'icon' => 'arrow-left' ) ) . '<span class="screen-reader-text">' . __( 'Previous page', 'twentyseventeen' ) . '</span>',
-				'next_text' => '<span class="screen-reader-text">' . __( 'Next page', 'twentyseventeen' ) . '</span>' . twentyseventeen_get_svg( array( 'icon' => 'arrow-right' ) ),
-				'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentyseventeen' ) . ' </span>',
-			) );
-
-		else : ?>
-
-			<p><?php _e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords.', 'twentyseventeen' ); ?></p>
-			<?php
-				get_search_form();
-
-		endif;
-		?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-	<?php get_sidebar(); ?>
-</div><!-- .wrap -->
-
-<?php get_footer();
+<?php get_footer(); ?>

@@ -14,7 +14,7 @@
  * @since 0.71
  */
 function the_ID() {
-	echo get_the_ID();
+  echo get_the_ID();
 }
 
 /**
@@ -25,8 +25,8 @@ function the_ID() {
  * @return int|false The ID of the current item in the WordPress Loop. False if $post is not set.
  */
 function get_the_ID() {
-	$post = get_post();
-	return ! empty( $post ) ? $post->ID : false;
+  $post = get_post();
+  return ! empty( $post ) ? $post->ID : false;
 }
 
 /**
@@ -40,17 +40,17 @@ function get_the_ID() {
  * @return string|void Current post title if $echo is false.
  */
 function the_title( $before = '', $after = '', $echo = true ) {
-	$title = get_the_title();
+  $title = get_the_title();
 
-	if ( strlen($title) == 0 )
-		return;
+  if ( strlen($title) == 0 )
+    return;
 
-	$title = $before . $title . $after;
+  $title = $before . $title . $after;
 
-	if ( $echo )
-		echo $title;
-	else
-		return $title;
+  if ( $echo )
+    echo $title;
+  else
+    return $title;
 }
 
 /**
@@ -76,23 +76,23 @@ function the_title( $before = '', $after = '', $echo = true ) {
  * @return string|void String when echo is false.
  */
 function the_title_attribute( $args = '' ) {
-	$defaults = array( 'before' => '', 'after' =>  '', 'echo' => true, 'post' => get_post() );
-	$r = wp_parse_args( $args, $defaults );
+  $defaults = array( 'before' => '', 'after' =>  '', 'echo' => true, 'post' => get_post() );
+  $r = wp_parse_args( $args, $defaults );
 
-	$title = get_the_title( $r['post'] );
+  $title = get_the_title( $r['post'] );
 
-	if ( strlen( $title ) == 0 ) {
-		return;
-	}
+  if ( strlen( $title ) == 0 ) {
+    return;
+  }
 
-	$title = $r['before'] . $title . $r['after'];
-	$title = esc_attr( strip_tags( $title ) );
+  $title = $r['before'] . $title . $r['after'];
+  $title = esc_attr( strip_tags( $title ) );
 
-	if ( $r['echo'] ) {
-		echo $title;
-	} else {
-		return $title;
-	}
+  if ( $r['echo'] ) {
+    echo $title;
+  } else {
+    return $title;
+  }
 }
 
 /**
@@ -108,54 +108,54 @@ function the_title_attribute( $args = '' ) {
  * @return string
  */
 function get_the_title( $post = 0 ) {
-	$post = get_post( $post );
+  $post = get_post( $post );
 
-	$title = isset( $post->post_title ) ? $post->post_title : '';
-	$id = isset( $post->ID ) ? $post->ID : 0;
+  $title = isset( $post->post_title ) ? $post->post_title : '';
+  $id = isset( $post->ID ) ? $post->ID : 0;
 
-	if ( ! is_admin() ) {
-		if ( ! empty( $post->post_password ) ) {
+  if ( ! is_admin() ) {
+    if ( ! empty( $post->post_password ) ) {
 
-			/**
-			 * Filters the text prepended to the post title for protected posts.
-			 *
-			 * The filter is only applied on the front end.
-			 *
-			 * @since 2.8.0
-			 *
-			 * @param string  $prepend Text displayed before the post title.
-			 *                         Default 'Protected: %s'.
-			 * @param WP_Post $post    Current post object.
-			 */
-			$protected_title_format = apply_filters( 'protected_title_format', __( 'Protected: %s' ), $post );
-			$title = sprintf( $protected_title_format, $title );
-		} elseif ( isset( $post->post_status ) && 'private' == $post->post_status ) {
+      /**
+       * Filters the text prepended to the post title for protected posts.
+       *
+       * The filter is only applied on the front end.
+       *
+       * @since 2.8.0
+       *
+       * @param string  $prepend Text displayed before the post title.
+       *                         Default 'Protected: %s'.
+       * @param WP_Post $post    Current post object.
+       */
+      $protected_title_format = apply_filters( 'protected_title_format', __( 'Protected: %s' ), $post );
+      $title = sprintf( $protected_title_format, $title );
+    } elseif ( isset( $post->post_status ) && 'private' == $post->post_status ) {
 
-			/**
-			 * Filters the text prepended to the post title of private posts.
-			 *
-			 * The filter is only applied on the front end.
-			 *
-			 * @since 2.8.0
-			 *
-			 * @param string  $prepend Text displayed before the post title.
-			 *                         Default 'Private: %s'.
-			 * @param WP_Post $post    Current post object.
-			 */
-			$private_title_format = apply_filters( 'private_title_format', __( 'Private: %s' ), $post );
-			$title = sprintf( $private_title_format, $title );
-		}
-	}
+      /**
+       * Filters the text prepended to the post title of private posts.
+       *
+       * The filter is only applied on the front end.
+       *
+       * @since 2.8.0
+       *
+       * @param string  $prepend Text displayed before the post title.
+       *                         Default 'Private: %s'.
+       * @param WP_Post $post    Current post object.
+       */
+      $private_title_format = apply_filters( 'private_title_format', __( 'Private: %s' ), $post );
+      $title = sprintf( $private_title_format, $title );
+    }
+  }
 
-	/**
-	 * Filters the post title.
-	 *
-	 * @since 0.71
-	 *
-	 * @param string $title The post title.
-	 * @param int    $id    The post ID.
-	 */
-	return apply_filters( 'the_title', $title, $id );
+  /**
+   * Filters the post title.
+   *
+   * @since 0.71
+   *
+   * @param string $title The post title.
+   * @param int    $id    The post ID.
+   */
+  return apply_filters( 'the_title', $title, $id );
 }
 
 /**
@@ -172,22 +172,22 @@ function get_the_title( $post = 0 ) {
  * @param int|WP_Post $post Optional. Post ID or post object. Default is global $post.
  */
 function the_guid( $post = 0 ) {
-	$post = get_post( $post );
+  $post = get_post( $post );
 
-	$guid = isset( $post->guid ) ? get_the_guid( $post ) : '';
-	$id   = isset( $post->ID ) ? $post->ID : 0;
+  $guid = isset( $post->guid ) ? get_the_guid( $post ) : '';
+  $id   = isset( $post->ID ) ? $post->ID : 0;
 
-	/**
-	 * Filters the escaped Global Unique Identifier (guid) of the post.
-	 *
-	 * @since 4.2.0
-	 *
-	 * @see get_the_guid()
-	 *
-	 * @param string $guid Escaped Global Unique Identifier (guid) of the post.
-	 * @param int    $id   The post ID.
-	 */
-	echo apply_filters( 'the_guid', $guid, $id );
+  /**
+   * Filters the escaped Global Unique Identifier (guid) of the post.
+   *
+   * @since 4.2.0
+   *
+   * @see get_the_guid()
+   *
+   * @param string $guid Escaped Global Unique Identifier (guid) of the post.
+   * @param int    $id   The post ID.
+   */
+  echo apply_filters( 'the_guid', $guid, $id );
 }
 
 /**
@@ -203,20 +203,20 @@ function the_guid( $post = 0 ) {
  * @return string
  */
 function get_the_guid( $post = 0 ) {
-	$post = get_post( $post );
+  $post = get_post( $post );
 
-	$guid = isset( $post->guid ) ? $post->guid : '';
-	$id   = isset( $post->ID ) ? $post->ID : 0;
+  $guid = isset( $post->guid ) ? $post->guid : '';
+  $id   = isset( $post->ID ) ? $post->ID : 0;
 
-	/**
-	 * Filters the Global Unique Identifier (guid) of the post.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param string $guid Global Unique Identifier (guid) of the post.
-	 * @param int    $id   The post ID.
-	 */
-	return apply_filters( 'get_the_guid', $guid, $id );
+  /**
+   * Filters the Global Unique Identifier (guid) of the post.
+   *
+   * @since 1.5.0
+   *
+   * @param string $guid Global Unique Identifier (guid) of the post.
+   * @param int    $id   The post ID.
+   */
+  return apply_filters( 'get_the_guid', $guid, $id );
 }
 
 /**
@@ -228,18 +228,18 @@ function get_the_guid( $post = 0 ) {
  * @param bool   $strip_teaser   Optional. Strip teaser content before the more text. Default is false.
  */
 function the_content( $more_link_text = null, $strip_teaser = false) {
-	$content = get_the_content( $more_link_text, $strip_teaser );
+  $content = get_the_content( $more_link_text, $strip_teaser );
 
-	/**
-	 * Filters the post content.
-	 *
-	 * @since 0.71
-	 *
-	 * @param string $content Content of the current post.
-	 */
-	$content = apply_filters( 'the_content', $content );
-	$content = str_replace( ']]>', ']]&gt;', $content );
-	echo $content;
+  /**
+   * Filters the post content.
+   *
+   * @since 0.71
+   *
+   * @param string $content Content of the current post.
+   */
+  $content = apply_filters( 'the_content', $content );
+  $content = str_replace( ']]>', ']]&gt;', $content );
+  echo $content;
 }
 
 /**
@@ -258,76 +258,76 @@ function the_content( $more_link_text = null, $strip_teaser = false) {
  * @return string
  */
 function get_the_content( $more_link_text = null, $strip_teaser = false ) {
-	global $page, $more, $preview, $pages, $multipage;
+  global $page, $more, $preview, $pages, $multipage;
 
-	$post = get_post();
+  $post = get_post();
 
-	if ( null === $more_link_text ) {
-		$more_link_text = sprintf(
-			'<span aria-label="%1$s">%2$s</span>',
-			sprintf(
-				/* translators: %s: Name of current post */
-				__( 'Continue reading %s' ),
-				the_title_attribute( array( 'echo' => false ) )
-			),
-			__( '(more&hellip;)' )
-		);
-	}
+  if ( null === $more_link_text ) {
+    $more_link_text = sprintf(
+      '<span aria-label="%1$s">%2$s</span>',
+      sprintf(
+        /* translators: %s: Name of current post */
+        __( 'Continue reading %s' ),
+        the_title_attribute( array( 'echo' => false ) )
+      ),
+      __( '(more&hellip;)' )
+    );
+  }
 
-	$output = '';
-	$has_teaser = false;
+  $output = '';
+  $has_teaser = false;
 
-	// If post password required and it doesn't match the cookie.
-	if ( post_password_required( $post ) )
-		return get_the_password_form( $post );
+  // If post password required and it doesn't match the cookie.
+  if ( post_password_required( $post ) )
+    return get_the_password_form( $post );
 
-	if ( $page > count( $pages ) ) // if the requested page doesn't exist
-		$page = count( $pages ); // give them the highest numbered page that DOES exist
+  if ( $page > count( $pages ) ) // if the requested page doesn't exist
+    $page = count( $pages ); // give them the highest numbered page that DOES exist
 
-	$content = $pages[$page - 1];
-	if ( preg_match( '/<!--more(.*?)?-->/', $content, $matches ) ) {
-		$content = explode( $matches[0], $content, 2 );
-		if ( ! empty( $matches[1] ) && ! empty( $more_link_text ) )
-			$more_link_text = strip_tags( wp_kses_no_null( trim( $matches[1] ) ) );
+  $content = $pages[$page - 1];
+  if ( preg_match( '/<!--more(.*?)?-->/', $content, $matches ) ) {
+    $content = explode( $matches[0], $content, 2 );
+    if ( ! empty( $matches[1] ) && ! empty( $more_link_text ) )
+      $more_link_text = strip_tags( wp_kses_no_null( trim( $matches[1] ) ) );
 
-		$has_teaser = true;
-	} else {
-		$content = array( $content );
-	}
+    $has_teaser = true;
+  } else {
+    $content = array( $content );
+  }
 
-	if ( false !== strpos( $post->post_content, '<!--noteaser-->' ) && ( ! $multipage || $page == 1 ) )
-		$strip_teaser = true;
+  if ( false !== strpos( $post->post_content, '<!--noteaser-->' ) && ( ! $multipage || $page == 1 ) )
+    $strip_teaser = true;
 
-	$teaser = $content[0];
+  $teaser = $content[0];
 
-	if ( $more && $strip_teaser && $has_teaser )
-		$teaser = '';
+  if ( $more && $strip_teaser && $has_teaser )
+    $teaser = '';
 
-	$output .= $teaser;
+  $output .= $teaser;
 
-	if ( count( $content ) > 1 ) {
-		if ( $more ) {
-			$output .= '<span id="more-' . $post->ID . '"></span>' . $content[1];
-		} else {
-			if ( ! empty( $more_link_text ) )
+  if ( count( $content ) > 1 ) {
+    if ( $more ) {
+      $output .= '<span id="more-' . $post->ID . '"></span>' . $content[1];
+    } else {
+      if ( ! empty( $more_link_text ) )
 
-				/**
-				 * Filters the Read More link text.
-				 *
-				 * @since 2.8.0
-				 *
-				 * @param string $more_link_element Read More link element.
-				 * @param string $more_link_text    Read More text.
-				 */
-				$output .= apply_filters( 'the_content_more_link', ' <a href="' . get_permalink() . "#more-{$post->ID}\" class=\"more-link\">$more_link_text</a>", $more_link_text );
-			$output = force_balance_tags( $output );
-		}
-	}
+        /**
+         * Filters the Read More link text.
+         *
+         * @since 2.8.0
+         *
+         * @param string $more_link_element Read More link element.
+         * @param string $more_link_text    Read More text.
+         */
+        $output .= apply_filters( 'the_content_more_link', ' <a href="' . get_permalink() . "#more-{$post->ID}\" class=\"more-link\">$more_link_text</a>", $more_link_text );
+      $output = force_balance_tags( $output );
+    }
+  }
 
-	if ( $preview ) // Preview fix for JavaScript bug with foreign languages.
-		$output =	preg_replace_callback( '/\%u([0-9A-F]{4})/', '_convert_urlencoded_to_entities', $output );
+  if ( $preview ) // Preview fix for JavaScript bug with foreign languages.
+    $output =  preg_replace_callback( '/\%u([0-9A-F]{4})/', '_convert_urlencoded_to_entities', $output );
 
-	return $output;
+  return $output;
 }
 
 /**
@@ -340,7 +340,7 @@ function get_the_content( $more_link_text = null, $strip_teaser = false ) {
  * @return string
  */
 function _convert_urlencoded_to_entities( $match ) {
-	return '&#' . base_convert( $match[1], 16, 10 ) . ';';
+  return '&#' . base_convert( $match[1], 16, 10 ) . ';';
 }
 
 /**
@@ -350,16 +350,16 @@ function _convert_urlencoded_to_entities( $match ) {
  */
 function the_excerpt() {
 
-	/**
-	 * Filters the displayed post excerpt.
-	 *
-	 * @since 0.71
-	 *
-	 * @see get_the_excerpt()
-	 *
-	 * @param string $post_excerpt The post excerpt.
-	 */
-	echo apply_filters( 'the_excerpt', get_the_excerpt() );
+  /**
+   * Filters the displayed post excerpt.
+   *
+   * @since 0.71
+   *
+   * @see get_the_excerpt()
+   *
+   * @param string $post_excerpt The post excerpt.
+   */
+  echo apply_filters( 'the_excerpt', get_the_excerpt() );
 }
 
 /**
@@ -372,29 +372,29 @@ function the_excerpt() {
  * @return string Post excerpt.
  */
 function get_the_excerpt( $post = null ) {
-	if ( is_bool( $post ) ) {
-		_deprecated_argument( __FUNCTION__, '2.3.0' );
-	}
+  if ( is_bool( $post ) ) {
+    _deprecated_argument( __FUNCTION__, '2.3.0' );
+  }
 
-	$post = get_post( $post );
-	if ( empty( $post ) ) {
-		return '';
-	}
+  $post = get_post( $post );
+  if ( empty( $post ) ) {
+    return '';
+  }
 
-	if ( post_password_required( $post ) ) {
-		return __( 'There is no excerpt because this is a protected post.' );
-	}
+  if ( post_password_required( $post ) ) {
+    return __( 'There is no excerpt because this is a protected post.' );
+  }
 
-	/**
-	 * Filters the retrieved post excerpt.
-	 *
-	 * @since 1.2.0
-	 * @since 4.5.0 Introduced the `$post` parameter.
-	 *
-	 * @param string $post_excerpt The post excerpt.
-	 * @param WP_Post $post Post object.
-	 */
-	return apply_filters( 'get_the_excerpt', $post->post_excerpt, $post );
+  /**
+   * Filters the retrieved post excerpt.
+   *
+   * @since 1.2.0
+   * @since 4.5.0 Introduced the `$post` parameter.
+   *
+   * @param string $post_excerpt The post excerpt.
+   * @param WP_Post $post Post object.
+   */
+  return apply_filters( 'get_the_excerpt', $post->post_excerpt, $post );
 }
 
 /**
@@ -406,8 +406,8 @@ function get_the_excerpt( $post = null ) {
  * @return bool True if the post has a custom excerpt, false otherwise.
  */
 function has_excerpt( $post = 0 ) {
-	$post = get_post( $post );
-	return ( !empty( $post->post_excerpt ) );
+  $post = get_post( $post );
+  return ( !empty( $post->post_excerpt ) );
 }
 
 /**
@@ -419,8 +419,8 @@ function has_excerpt( $post = 0 ) {
  * @param int|WP_Post  $post_id Optional. Post ID or post object. Defaults to the global `$post`.
  */
 function post_class( $class = '', $post_id = null ) {
-	// Separates classes with a single space, collates classes for post DIV
-	echo 'class="' . join( ' ', get_post_class( $class, $post_id ) ) . '"';
+  // Separates classes with a single space, collates classes for post DIV
+  echo 'class="' . join( ' ', get_post_class( $class, $post_id ) ) . '"';
 }
 
 /**
@@ -445,104 +445,104 @@ function post_class( $class = '', $post_id = null ) {
  * @return array Array of classes.
  */
 function get_post_class( $class = '', $post_id = null ) {
-	$post = get_post( $post_id );
+  $post = get_post( $post_id );
 
-	$classes = array();
+  $classes = array();
 
-	if ( $class ) {
-		if ( ! is_array( $class ) ) {
-			$class = preg_split( '#\s+#', $class );
-		}
-		$classes = array_map( 'esc_attr', $class );
-	} else {
-		// Ensure that we always coerce class to being an array.
-		$class = array();
-	}
+  if ( $class ) {
+    if ( ! is_array( $class ) ) {
+      $class = preg_split( '#\s+#', $class );
+    }
+    $classes = array_map( 'esc_attr', $class );
+  } else {
+    // Ensure that we always coerce class to being an array.
+    $class = array();
+  }
 
-	if ( ! $post ) {
-		return $classes;
-	}
+  if ( ! $post ) {
+    return $classes;
+  }
 
-	$classes[] = 'post-' . $post->ID;
-	if ( ! is_admin() )
-		$classes[] = $post->post_type;
-	$classes[] = 'type-' . $post->post_type;
-	$classes[] = 'status-' . $post->post_status;
+  $classes[] = 'post-' . $post->ID;
+  if ( ! is_admin() )
+    $classes[] = $post->post_type;
+  $classes[] = 'type-' . $post->post_type;
+  $classes[] = 'status-' . $post->post_status;
 
-	// Post Format
-	if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
-		$post_format = get_post_format( $post->ID );
+  // Post Format
+  if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
+    $post_format = get_post_format( $post->ID );
 
-		if ( $post_format && !is_wp_error($post_format) )
-			$classes[] = 'format-' . sanitize_html_class( $post_format );
-		else
-			$classes[] = 'format-standard';
-	}
+    if ( $post_format && !is_wp_error($post_format) )
+      $classes[] = 'format-' . sanitize_html_class( $post_format );
+    else
+      $classes[] = 'format-standard';
+  }
 
-	$post_password_required = post_password_required( $post->ID );
+  $post_password_required = post_password_required( $post->ID );
 
-	// Post requires password.
-	if ( $post_password_required ) {
-		$classes[] = 'post-password-required';
-	} elseif ( ! empty( $post->post_password ) ) {
-		$classes[] = 'post-password-protected';
-	}
+  // Post requires password.
+  if ( $post_password_required ) {
+    $classes[] = 'post-password-required';
+  } elseif ( ! empty( $post->post_password ) ) {
+    $classes[] = 'post-password-protected';
+  }
 
-	// Post thumbnails.
-	if ( current_theme_supports( 'post-thumbnails' ) && has_post_thumbnail( $post->ID ) && ! is_attachment( $post ) && ! $post_password_required ) {
-		$classes[] = 'has-post-thumbnail';
-	}
+  // Post thumbnails.
+  if ( current_theme_supports( 'post-thumbnails' ) && has_post_thumbnail( $post->ID ) && ! is_attachment( $post ) && ! $post_password_required ) {
+    $classes[] = 'has-post-thumbnail';
+  }
 
-	// sticky for Sticky Posts
-	if ( is_sticky( $post->ID ) ) {
-		if ( is_home() && ! is_paged() ) {
-			$classes[] = 'sticky';
-		} elseif ( is_admin() ) {
-			$classes[] = 'status-sticky';
-		}
-	}
+  // sticky for Sticky Posts
+  if ( is_sticky( $post->ID ) ) {
+    if ( is_home() && ! is_paged() ) {
+      $classes[] = 'sticky';
+    } elseif ( is_admin() ) {
+      $classes[] = 'status-sticky';
+    }
+  }
 
-	// hentry for hAtom compliance
-	$classes[] = 'hentry';
+  // hentry for hAtom compliance
+  $classes[] = 'hentry';
 
-	// All public taxonomies
-	$taxonomies = get_taxonomies( array( 'public' => true ) );
-	foreach ( (array) $taxonomies as $taxonomy ) {
-		if ( is_object_in_taxonomy( $post->post_type, $taxonomy ) ) {
-			foreach ( (array) get_the_terms( $post->ID, $taxonomy ) as $term ) {
-				if ( empty( $term->slug ) ) {
-					continue;
-				}
+  // All public taxonomies
+  $taxonomies = get_taxonomies( array( 'public' => true ) );
+  foreach ( (array) $taxonomies as $taxonomy ) {
+    if ( is_object_in_taxonomy( $post->post_type, $taxonomy ) ) {
+      foreach ( (array) get_the_terms( $post->ID, $taxonomy ) as $term ) {
+        if ( empty( $term->slug ) ) {
+          continue;
+        }
 
-				$term_class = sanitize_html_class( $term->slug, $term->term_id );
-				if ( is_numeric( $term_class ) || ! trim( $term_class, '-' ) ) {
-					$term_class = $term->term_id;
-				}
+        $term_class = sanitize_html_class( $term->slug, $term->term_id );
+        if ( is_numeric( $term_class ) || ! trim( $term_class, '-' ) ) {
+          $term_class = $term->term_id;
+        }
 
-				// 'post_tag' uses the 'tag' prefix for backward compatibility.
-				if ( 'post_tag' == $taxonomy ) {
-					$classes[] = 'tag-' . $term_class;
-				} else {
-					$classes[] = sanitize_html_class( $taxonomy . '-' . $term_class, $taxonomy . '-' . $term->term_id );
-				}
-			}
-		}
-	}
+        // 'post_tag' uses the 'tag' prefix for backward compatibility.
+        if ( 'post_tag' == $taxonomy ) {
+          $classes[] = 'tag-' . $term_class;
+        } else {
+          $classes[] = sanitize_html_class( $taxonomy . '-' . $term_class, $taxonomy . '-' . $term->term_id );
+        }
+      }
+    }
+  }
 
-	$classes = array_map( 'esc_attr', $classes );
+  $classes = array_map( 'esc_attr', $classes );
 
-	/**
-	 * Filters the list of CSS classes for the current post.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array $classes An array of post classes.
-	 * @param array $class   An array of additional classes added to the post.
-	 * @param int   $post_id The post ID.
-	 */
-	$classes = apply_filters( 'post_class', $classes, $class, $post->ID );
+  /**
+   * Filters the list of CSS classes for the current post.
+   *
+   * @since 2.7.0
+   *
+   * @param array $classes An array of post classes.
+   * @param array $class   An array of additional classes added to the post.
+   * @param int   $post_id The post ID.
+   */
+  $classes = apply_filters( 'post_class', $classes, $class, $post->ID );
 
-	return array_unique( $classes );
+  return array_unique( $classes );
 }
 
 /**
@@ -553,8 +553,8 @@ function get_post_class( $class = '', $post_id = null ) {
  * @param string|array $class One or more classes to add to the class list.
  */
 function body_class( $class = '' ) {
-	// Separates classes with a single space, collates classes for body element
-	echo 'class="' . join( ' ', get_body_class( $class ) ) . '"';
+  // Separates classes with a single space, collates classes for body element
+  echo 'class="' . join( ' ', get_body_class( $class ) ) . '"';
 }
 
 /**
@@ -568,208 +568,208 @@ function body_class( $class = '' ) {
  * @return array Array of classes.
  */
 function get_body_class( $class = '' ) {
-	global $wp_query;
+  global $wp_query;
 
-	$classes = array();
+  $classes = array();
 
-	if ( is_rtl() )
-		$classes[] = 'rtl';
+  if ( is_rtl() )
+    $classes[] = 'rtl';
 
-	if ( is_front_page() )
-		$classes[] = 'home';
-	if ( is_home() )
-		$classes[] = 'blog';
-	if ( is_archive() )
-		$classes[] = 'archive';
-	if ( is_date() )
-		$classes[] = 'date';
-	if ( is_search() ) {
-		$classes[] = 'search';
-		$classes[] = $wp_query->posts ? 'search-results' : 'search-no-results';
-	}
-	if ( is_paged() )
-		$classes[] = 'paged';
-	if ( is_attachment() )
-		$classes[] = 'attachment';
-	if ( is_404() )
-		$classes[] = 'error404';
+  if ( is_front_page() )
+    $classes[] = 'home';
+  if ( is_home() )
+    $classes[] = 'blog';
+  if ( is_archive() )
+    $classes[] = 'archive';
+  if ( is_date() )
+    $classes[] = 'date';
+  if ( is_search() ) {
+    $classes[] = 'search';
+    $classes[] = $wp_query->posts ? 'search-results' : 'search-no-results';
+  }
+  if ( is_paged() )
+    $classes[] = 'paged';
+  if ( is_attachment() )
+    $classes[] = 'attachment';
+  if ( is_404() )
+    $classes[] = 'error404';
 
-	if ( is_singular() ) {
-		$post_id = $wp_query->get_queried_object_id();
-		$post = $wp_query->get_queried_object();
-		$post_type = $post->post_type;
+  if ( is_singular() ) {
+    $post_id = $wp_query->get_queried_object_id();
+    $post = $wp_query->get_queried_object();
+    $post_type = $post->post_type;
 
-		if ( is_page_template() ) {
-			$classes[] = "{$post_type}-template";
+    if ( is_page_template() ) {
+      $classes[] = "{$post_type}-template";
 
-			$template_slug  = get_page_template_slug( $post_id );
-			$template_parts = explode( '/', $template_slug );
+      $template_slug  = get_page_template_slug( $post_id );
+      $template_parts = explode( '/', $template_slug );
 
-			foreach ( $template_parts as $part ) {
-				$classes[] = "{$post_type}-template-" . sanitize_html_class( str_replace( array( '.', '/' ), '-', basename( $part, '.php' ) ) );
-			}
-			$classes[] = "{$post_type}-template-" . sanitize_html_class( str_replace( '.', '-', $template_slug ) );
-		} else {
-			$classes[] = "{$post_type}-template-default";
-		}
+      foreach ( $template_parts as $part ) {
+        $classes[] = "{$post_type}-template-" . sanitize_html_class( str_replace( array( '.', '/' ), '-', basename( $part, '.php' ) ) );
+      }
+      $classes[] = "{$post_type}-template-" . sanitize_html_class( str_replace( '.', '-', $template_slug ) );
+    } else {
+      $classes[] = "{$post_type}-template-default";
+    }
 
-		if ( is_single() ) {
-			$classes[] = 'single';
-			if ( isset( $post->post_type ) ) {
-				$classes[] = 'single-' . sanitize_html_class( $post->post_type, $post_id );
-				$classes[] = 'postid-' . $post_id;
+    if ( is_single() ) {
+      $classes[] = 'single';
+      if ( isset( $post->post_type ) ) {
+        $classes[] = 'single-' . sanitize_html_class( $post->post_type, $post_id );
+        $classes[] = 'postid-' . $post_id;
 
-				// Post Format
-				if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
-					$post_format = get_post_format( $post->ID );
+        // Post Format
+        if ( post_type_supports( $post->post_type, 'post-formats' ) ) {
+          $post_format = get_post_format( $post->ID );
 
-					if ( $post_format && !is_wp_error($post_format) )
-						$classes[] = 'single-format-' . sanitize_html_class( $post_format );
-					else
-						$classes[] = 'single-format-standard';
-				}
-			}
-		}
+          if ( $post_format && !is_wp_error($post_format) )
+            $classes[] = 'single-format-' . sanitize_html_class( $post_format );
+          else
+            $classes[] = 'single-format-standard';
+        }
+      }
+    }
 
-		if ( is_attachment() ) {
-			$mime_type = get_post_mime_type($post_id);
-			$mime_prefix = array( 'application/', 'image/', 'text/', 'audio/', 'video/', 'music/' );
-			$classes[] = 'attachmentid-' . $post_id;
-			$classes[] = 'attachment-' . str_replace( $mime_prefix, '', $mime_type );
-		} elseif ( is_page() ) {
-			$classes[] = 'page';
+    if ( is_attachment() ) {
+      $mime_type = get_post_mime_type($post_id);
+      $mime_prefix = array( 'application/', 'image/', 'text/', 'audio/', 'video/', 'music/' );
+      $classes[] = 'attachmentid-' . $post_id;
+      $classes[] = 'attachment-' . str_replace( $mime_prefix, '', $mime_type );
+    } elseif ( is_page() ) {
+      $classes[] = 'page';
 
-			$page_id = $wp_query->get_queried_object_id();
+      $page_id = $wp_query->get_queried_object_id();
 
-			$post = get_post($page_id);
+      $post = get_post($page_id);
 
-			$classes[] = 'page-id-' . $page_id;
+      $classes[] = 'page-id-' . $page_id;
 
-			if ( get_pages( array( 'parent' => $page_id, 'number' => 1 ) ) ) {
-				$classes[] = 'page-parent';
-			}
+      if ( get_pages( array( 'parent' => $page_id, 'number' => 1 ) ) ) {
+        $classes[] = 'page-parent';
+      }
 
-			if ( $post->post_parent ) {
-				$classes[] = 'page-child';
-				$classes[] = 'parent-pageid-' . $post->post_parent;
-			}
-		}
-	} elseif ( is_archive() ) {
-		if ( is_post_type_archive() ) {
-			$classes[] = 'post-type-archive';
-			$post_type = get_query_var( 'post_type' );
-			if ( is_array( $post_type ) )
-				$post_type = reset( $post_type );
-			$classes[] = 'post-type-archive-' . sanitize_html_class( $post_type );
-		} elseif ( is_author() ) {
-			$author = $wp_query->get_queried_object();
-			$classes[] = 'author';
-			if ( isset( $author->user_nicename ) ) {
-				$classes[] = 'author-' . sanitize_html_class( $author->user_nicename, $author->ID );
-				$classes[] = 'author-' . $author->ID;
-			}
-		} elseif ( is_category() ) {
-			$cat = $wp_query->get_queried_object();
-			$classes[] = 'category';
-			if ( isset( $cat->term_id ) ) {
-				$cat_class = sanitize_html_class( $cat->slug, $cat->term_id );
-				if ( is_numeric( $cat_class ) || ! trim( $cat_class, '-' ) ) {
-					$cat_class = $cat->term_id;
-				}
+      if ( $post->post_parent ) {
+        $classes[] = 'page-child';
+        $classes[] = 'parent-pageid-' . $post->post_parent;
+      }
+    }
+  } elseif ( is_archive() ) {
+    if ( is_post_type_archive() ) {
+      $classes[] = 'post-type-archive';
+      $post_type = get_query_var( 'post_type' );
+      if ( is_array( $post_type ) )
+        $post_type = reset( $post_type );
+      $classes[] = 'post-type-archive-' . sanitize_html_class( $post_type );
+    } elseif ( is_author() ) {
+      $author = $wp_query->get_queried_object();
+      $classes[] = 'author';
+      if ( isset( $author->user_nicename ) ) {
+        $classes[] = 'author-' . sanitize_html_class( $author->user_nicename, $author->ID );
+        $classes[] = 'author-' . $author->ID;
+      }
+    } elseif ( is_category() ) {
+      $cat = $wp_query->get_queried_object();
+      $classes[] = 'category';
+      if ( isset( $cat->term_id ) ) {
+        $cat_class = sanitize_html_class( $cat->slug, $cat->term_id );
+        if ( is_numeric( $cat_class ) || ! trim( $cat_class, '-' ) ) {
+          $cat_class = $cat->term_id;
+        }
 
-				$classes[] = 'category-' . $cat_class;
-				$classes[] = 'category-' . $cat->term_id;
-			}
-		} elseif ( is_tag() ) {
-			$tag = $wp_query->get_queried_object();
-			$classes[] = 'tag';
-			if ( isset( $tag->term_id ) ) {
-				$tag_class = sanitize_html_class( $tag->slug, $tag->term_id );
-				if ( is_numeric( $tag_class ) || ! trim( $tag_class, '-' ) ) {
-					$tag_class = $tag->term_id;
-				}
+        $classes[] = 'category-' . $cat_class;
+        $classes[] = 'category-' . $cat->term_id;
+      }
+    } elseif ( is_tag() ) {
+      $tag = $wp_query->get_queried_object();
+      $classes[] = 'tag';
+      if ( isset( $tag->term_id ) ) {
+        $tag_class = sanitize_html_class( $tag->slug, $tag->term_id );
+        if ( is_numeric( $tag_class ) || ! trim( $tag_class, '-' ) ) {
+          $tag_class = $tag->term_id;
+        }
 
-				$classes[] = 'tag-' . $tag_class;
-				$classes[] = 'tag-' . $tag->term_id;
-			}
-		} elseif ( is_tax() ) {
-			$term = $wp_query->get_queried_object();
-			if ( isset( $term->term_id ) ) {
-				$term_class = sanitize_html_class( $term->slug, $term->term_id );
-				if ( is_numeric( $term_class ) || ! trim( $term_class, '-' ) ) {
-					$term_class = $term->term_id;
-				}
+        $classes[] = 'tag-' . $tag_class;
+        $classes[] = 'tag-' . $tag->term_id;
+      }
+    } elseif ( is_tax() ) {
+      $term = $wp_query->get_queried_object();
+      if ( isset( $term->term_id ) ) {
+        $term_class = sanitize_html_class( $term->slug, $term->term_id );
+        if ( is_numeric( $term_class ) || ! trim( $term_class, '-' ) ) {
+          $term_class = $term->term_id;
+        }
 
-				$classes[] = 'tax-' . sanitize_html_class( $term->taxonomy );
-				$classes[] = 'term-' . $term_class;
-				$classes[] = 'term-' . $term->term_id;
-			}
-		}
-	}
+        $classes[] = 'tax-' . sanitize_html_class( $term->taxonomy );
+        $classes[] = 'term-' . $term_class;
+        $classes[] = 'term-' . $term->term_id;
+      }
+    }
+  }
 
-	if ( is_user_logged_in() )
-		$classes[] = 'logged-in';
+  if ( is_user_logged_in() )
+    $classes[] = 'logged-in';
 
-	if ( is_admin_bar_showing() ) {
-		$classes[] = 'admin-bar';
-		$classes[] = 'no-customize-support';
-	}
+  if ( is_admin_bar_showing() ) {
+    $classes[] = 'admin-bar';
+    $classes[] = 'no-customize-support';
+  }
 
-	if ( get_background_color() !== get_theme_support( 'custom-background', 'default-color' ) || get_background_image() )
-		$classes[] = 'custom-background';
+  if ( get_background_color() !== get_theme_support( 'custom-background', 'default-color' ) || get_background_image() )
+    $classes[] = 'custom-background';
 
-	if ( has_custom_logo() ) {
-		$classes[] = 'wp-custom-logo';
-	}
+  if ( has_custom_logo() ) {
+    $classes[] = 'wp-custom-logo';
+  }
 
-	$page = $wp_query->get( 'page' );
+  $page = $wp_query->get( 'page' );
 
-	if ( ! $page || $page < 2 )
-		$page = $wp_query->get( 'paged' );
+  if ( ! $page || $page < 2 )
+    $page = $wp_query->get( 'paged' );
 
-	if ( $page && $page > 1 && ! is_404() ) {
-		$classes[] = 'paged-' . $page;
+  if ( $page && $page > 1 && ! is_404() ) {
+    $classes[] = 'paged-' . $page;
 
-		if ( is_single() )
-			$classes[] = 'single-paged-' . $page;
-		elseif ( is_page() )
-			$classes[] = 'page-paged-' . $page;
-		elseif ( is_category() )
-			$classes[] = 'category-paged-' . $page;
-		elseif ( is_tag() )
-			$classes[] = 'tag-paged-' . $page;
-		elseif ( is_date() )
-			$classes[] = 'date-paged-' . $page;
-		elseif ( is_author() )
-			$classes[] = 'author-paged-' . $page;
-		elseif ( is_search() )
-			$classes[] = 'search-paged-' . $page;
-		elseif ( is_post_type_archive() )
-			$classes[] = 'post-type-paged-' . $page;
-	}
+    if ( is_single() )
+      $classes[] = 'single-paged-' . $page;
+    elseif ( is_page() )
+      $classes[] = 'page-paged-' . $page;
+    elseif ( is_category() )
+      $classes[] = 'category-paged-' . $page;
+    elseif ( is_tag() )
+      $classes[] = 'tag-paged-' . $page;
+    elseif ( is_date() )
+      $classes[] = 'date-paged-' . $page;
+    elseif ( is_author() )
+      $classes[] = 'author-paged-' . $page;
+    elseif ( is_search() )
+      $classes[] = 'search-paged-' . $page;
+    elseif ( is_post_type_archive() )
+      $classes[] = 'post-type-paged-' . $page;
+  }
 
-	if ( ! empty( $class ) ) {
-		if ( !is_array( $class ) )
-			$class = preg_split( '#\s+#', $class );
-		$classes = array_merge( $classes, $class );
-	} else {
-		// Ensure that we always coerce class to being an array.
-		$class = array();
-	}
+  if ( ! empty( $class ) ) {
+    if ( !is_array( $class ) )
+      $class = preg_split( '#\s+#', $class );
+    $classes = array_merge( $classes, $class );
+  } else {
+    // Ensure that we always coerce class to being an array.
+    $class = array();
+  }
 
-	$classes = array_map( 'esc_attr', $classes );
+  $classes = array_map( 'esc_attr', $classes );
 
-	/**
-	 * Filters the list of CSS body classes for the current post or page.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param array $classes An array of body classes.
-	 * @param array $class   An array of additional classes added to the body.
-	 */
-	$classes = apply_filters( 'body_class', $classes, $class );
+  /**
+   * Filters the list of CSS body classes for the current post or page.
+   *
+   * @since 2.8.0
+   *
+   * @param array $classes An array of body classes.
+   * @param array $class   An array of additional classes added to the body.
+   */
+  $classes = apply_filters( 'body_class', $classes, $class );
 
-	return array_unique( $classes );
+  return array_unique( $classes );
 }
 
 /**
@@ -781,38 +781,38 @@ function get_body_class( $class = '' ) {
  * @return bool false if a password is not required or the correct password cookie is present, true otherwise.
  */
 function post_password_required( $post = null ) {
-	$post = get_post($post);
+  $post = get_post($post);
 
-	if ( empty( $post->post_password ) ) {
-		/** This filter is documented in wp-includes/post-template.php */
-		return apply_filters( 'post_password_required', false, $post );
-	}
+  if ( empty( $post->post_password ) ) {
+    /** This filter is documented in wp-includes/post-template.php */
+    return apply_filters( 'post_password_required', false, $post );
+  }
 
-	if ( ! isset( $_COOKIE[ 'wp-postpass_' . COOKIEHASH ] ) ) {
-		/** This filter is documented in wp-includes/post-template.php */
-		return apply_filters( 'post_password_required', true, $post );
-	}
+  if ( ! isset( $_COOKIE[ 'wp-postpass_' . COOKIEHASH ] ) ) {
+    /** This filter is documented in wp-includes/post-template.php */
+    return apply_filters( 'post_password_required', true, $post );
+  }
 
-	require_once ABSPATH . WPINC . '/class-phpass.php';
-	$hasher = new PasswordHash( 8, true );
+  require_once ABSPATH . WPINC . '/class-phpass.php';
+  $hasher = new PasswordHash( 8, true );
 
-	$hash = wp_unslash( $_COOKIE[ 'wp-postpass_' . COOKIEHASH ] );
-	if ( 0 !== strpos( $hash, '$P$B' ) ) {
-		$required = true;
-	} else {
-		$required = ! $hasher->CheckPassword( $post->post_password, $hash );
-	}
+  $hash = wp_unslash( $_COOKIE[ 'wp-postpass_' . COOKIEHASH ] );
+  if ( 0 !== strpos( $hash, '$P$B' ) ) {
+    $required = true;
+  } else {
+    $required = ! $hasher->CheckPassword( $post->post_password, $hash );
+  }
 
-	/**
-	 * Filters whether a post requires the user to supply a password.
-	 *
-	 * @since 4.7.0
-	 *
-	 * @param bool    $required Whether the user needs to supply a password. True if password has not been
-	 *                          provided or is incorrect, false if password has been supplied or is not required.
-	 * @param WP_Post $post     Post data.
-	 */
-	return apply_filters( 'post_password_required', $required, $post );
+  /**
+   * Filters whether a post requires the user to supply a password.
+   *
+   * @since 4.7.0
+   *
+   * @param bool    $required Whether the user needs to supply a password. True if password has not been
+   *                          provided or is incorrect, false if password has been supplied or is not required.
+   * @param WP_Post $post     Post data.
+   */
+  return apply_filters( 'post_password_required', $required, $post );
 }
 
 //
@@ -854,93 +854,93 @@ function post_password_required( $post = null ) {
  * @return string Formatted output in HTML.
  */
 function wp_link_pages( $args = '' ) {
-	global $page, $numpages, $multipage, $more;
+  global $page, $numpages, $multipage, $more;
 
-	$defaults = array(
-		'before'           => '<p>' . __( 'Pages:' ),
-		'after'            => '</p>',
-		'link_before'      => '',
-		'link_after'       => '',
-		'next_or_number'   => 'number',
-		'separator'        => ' ',
-		'nextpagelink'     => __( 'Next page' ),
-		'previouspagelink' => __( 'Previous page' ),
-		'pagelink'         => '%',
-		'echo'             => 1
-	);
+  $defaults = array(
+    'before'           => '<p>' . __( 'Pages:' ),
+    'after'            => '</p>',
+    'link_before'      => '',
+    'link_after'       => '',
+    'next_or_number'   => 'number',
+    'separator'        => ' ',
+    'nextpagelink'     => __( 'Next page' ),
+    'previouspagelink' => __( 'Previous page' ),
+    'pagelink'         => '%',
+    'echo'             => 1
+  );
 
-	$params = wp_parse_args( $args, $defaults );
+  $params = wp_parse_args( $args, $defaults );
 
-	/**
-	 * Filters the arguments used in retrieving page links for paginated posts.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @param array $params An array of arguments for page links for paginated posts.
-	 */
-	$r = apply_filters( 'wp_link_pages_args', $params );
+  /**
+   * Filters the arguments used in retrieving page links for paginated posts.
+   *
+   * @since 3.0.0
+   *
+   * @param array $params An array of arguments for page links for paginated posts.
+   */
+  $r = apply_filters( 'wp_link_pages_args', $params );
 
-	$output = '';
-	if ( $multipage ) {
-		if ( 'number' == $r['next_or_number'] ) {
-			$output .= $r['before'];
-			for ( $i = 1; $i <= $numpages; $i++ ) {
-				$link = $r['link_before'] . str_replace( '%', $i, $r['pagelink'] ) . $r['link_after'];
-				if ( $i != $page || ! $more && 1 == $page ) {
-					$link = _wp_link_page( $i ) . $link . '</a>';
-				}
-				/**
-				 * Filters the HTML output of individual page number links.
-				 *
-				 * @since 3.6.0
-				 *
-				 * @param string $link The page number HTML output.
-				 * @param int    $i    Page number for paginated posts' page links.
-				 */
-				$link = apply_filters( 'wp_link_pages_link', $link, $i );
+  $output = '';
+  if ( $multipage ) {
+    if ( 'number' == $r['next_or_number'] ) {
+      $output .= $r['before'];
+      for ( $i = 1; $i <= $numpages; $i++ ) {
+        $link = $r['link_before'] . str_replace( '%', $i, $r['pagelink'] ) . $r['link_after'];
+        if ( $i != $page || ! $more && 1 == $page ) {
+          $link = _wp_link_page( $i ) . $link . '</a>';
+        }
+        /**
+         * Filters the HTML output of individual page number links.
+         *
+         * @since 3.6.0
+         *
+         * @param string $link The page number HTML output.
+         * @param int    $i    Page number for paginated posts' page links.
+         */
+        $link = apply_filters( 'wp_link_pages_link', $link, $i );
 
-				// Use the custom links separator beginning with the second link.
-				$output .= ( 1 === $i ) ? ' ' : $r['separator'];
-				$output .= $link;
-			}
-			$output .= $r['after'];
-		} elseif ( $more ) {
-			$output .= $r['before'];
-			$prev = $page - 1;
-			if ( $prev > 0 ) {
-				$link = _wp_link_page( $prev ) . $r['link_before'] . $r['previouspagelink'] . $r['link_after'] . '</a>';
+        // Use the custom links separator beginning with the second link.
+        $output .= ( 1 === $i ) ? ' ' : $r['separator'];
+        $output .= $link;
+      }
+      $output .= $r['after'];
+    } elseif ( $more ) {
+      $output .= $r['before'];
+      $prev = $page - 1;
+      if ( $prev > 0 ) {
+        $link = _wp_link_page( $prev ) . $r['link_before'] . $r['previouspagelink'] . $r['link_after'] . '</a>';
 
-				/** This filter is documented in wp-includes/post-template.php */
-				$output .= apply_filters( 'wp_link_pages_link', $link, $prev );
-			}
-			$next = $page + 1;
-			if ( $next <= $numpages ) {
-				if ( $prev ) {
-					$output .= $r['separator'];
-				}
-				$link = _wp_link_page( $next ) . $r['link_before'] . $r['nextpagelink'] . $r['link_after'] . '</a>';
+        /** This filter is documented in wp-includes/post-template.php */
+        $output .= apply_filters( 'wp_link_pages_link', $link, $prev );
+      }
+      $next = $page + 1;
+      if ( $next <= $numpages ) {
+        if ( $prev ) {
+          $output .= $r['separator'];
+        }
+        $link = _wp_link_page( $next ) . $r['link_before'] . $r['nextpagelink'] . $r['link_after'] . '</a>';
 
-				/** This filter is documented in wp-includes/post-template.php */
-				$output .= apply_filters( 'wp_link_pages_link', $link, $next );
-			}
-			$output .= $r['after'];
-		}
-	}
+        /** This filter is documented in wp-includes/post-template.php */
+        $output .= apply_filters( 'wp_link_pages_link', $link, $next );
+      }
+      $output .= $r['after'];
+    }
+  }
 
-	/**
-	 * Filters the HTML output of page links for paginated posts.
-	 *
-	 * @since 3.6.0
-	 *
-	 * @param string $output HTML output of paginated posts' page links.
-	 * @param array  $args   An array of arguments.
-	 */
-	$html = apply_filters( 'wp_link_pages', $output, $args );
+  /**
+   * Filters the HTML output of page links for paginated posts.
+   *
+   * @since 3.6.0
+   *
+   * @param string $output HTML output of paginated posts' page links.
+   * @param array  $args   An array of arguments.
+   */
+  $html = apply_filters( 'wp_link_pages', $output, $args );
 
-	if ( $r['echo'] ) {
-		echo $html;
-	}
-	return $html;
+  if ( $r['echo'] ) {
+    echo $html;
+  }
+  return $html;
 }
 
 /**
@@ -955,32 +955,32 @@ function wp_link_pages( $args = '' ) {
  * @return string Link.
  */
 function _wp_link_page( $i ) {
-	global $wp_rewrite;
-	$post = get_post();
-	$query_args = array();
+  global $wp_rewrite;
+  $post = get_post();
+  $query_args = array();
 
-	if ( 1 == $i ) {
-		$url = get_permalink();
-	} else {
-		if ( '' == get_option('permalink_structure') || in_array($post->post_status, array('draft', 'pending')) )
-			$url = add_query_arg( 'page', $i, get_permalink() );
-		elseif ( 'page' == get_option('show_on_front') && get_option('page_on_front') == $post->ID )
-			$url = trailingslashit(get_permalink()) . user_trailingslashit("$wp_rewrite->pagination_base/" . $i, 'single_paged');
-		else
-			$url = trailingslashit(get_permalink()) . user_trailingslashit($i, 'single_paged');
-	}
+  if ( 1 == $i ) {
+    $url = get_permalink();
+  } else {
+    if ( '' == get_option('permalink_structure') || in_array($post->post_status, array('draft', 'pending')) )
+      $url = add_query_arg( 'page', $i, get_permalink() );
+    elseif ( 'page' == get_option('show_on_front') && get_option('page_on_front') == $post->ID )
+      $url = trailingslashit(get_permalink()) . user_trailingslashit("$wp_rewrite->pagination_base/" . $i, 'single_paged');
+    else
+      $url = trailingslashit(get_permalink()) . user_trailingslashit($i, 'single_paged');
+  }
 
-	if ( is_preview() ) {
+  if ( is_preview() ) {
 
-		if ( ( 'draft' !== $post->post_status ) && isset( $_GET['preview_id'], $_GET['preview_nonce'] ) ) {
-			$query_args['preview_id'] = wp_unslash( $_GET['preview_id'] );
-			$query_args['preview_nonce'] = wp_unslash( $_GET['preview_nonce'] );
-		}
+    if ( ( 'draft' !== $post->post_status ) && isset( $_GET['preview_id'], $_GET['preview_nonce'] ) ) {
+      $query_args['preview_id'] = wp_unslash( $_GET['preview_id'] );
+      $query_args['preview_nonce'] = wp_unslash( $_GET['preview_nonce'] );
+    }
 
-		$url = get_preview_post_link( $post, $query_args, $url );
-	}
+    $url = get_preview_post_link( $post, $query_args, $url );
+  }
 
-	return '<a href="' . esc_url( $url ) . '">';
+  return '<a href="' . esc_url( $url ) . '">';
 }
 
 //
@@ -996,14 +996,14 @@ function _wp_link_page( $i ) {
  * @return false|string|array Array of values or single value, if only one element exists. False will be returned if key does not exist.
  */
 function post_custom( $key = '' ) {
-	$custom = get_post_custom();
+  $custom = get_post_custom();
 
-	if ( !isset( $custom[$key] ) )
-		return false;
-	elseif ( 1 == count($custom[$key]) )
-		return $custom[$key][0];
-	else
-		return $custom[$key];
+  if ( !isset( $custom[$key] ) )
+    return false;
+  elseif ( 1 == count($custom[$key]) )
+    return $custom[$key][0];
+  else
+    return $custom[$key];
 }
 
 /**
@@ -1015,36 +1015,36 @@ function post_custom( $key = '' ) {
  *
  */
 function the_meta() {
-	if ( $keys = get_post_custom_keys() ) {
-		echo "<ul class='post-meta'>\n";
-		foreach ( (array) $keys as $key ) {
-			$keyt = trim( $key );
-			if ( is_protected_meta( $keyt, 'post' ) ) {
-				continue;
-			}
+  if ( $keys = get_post_custom_keys() ) {
+    echo "<ul class='post-meta'>\n";
+    foreach ( (array) $keys as $key ) {
+      $keyt = trim( $key );
+      if ( is_protected_meta( $keyt, 'post' ) ) {
+        continue;
+      }
 
-			$values = array_map( 'trim', get_post_custom_values( $key ) );
-			$value = implode( $values, ', ' );
+      $values = array_map( 'trim', get_post_custom_values( $key ) );
+      $value = implode( $values, ', ' );
 
-			$html = sprintf( "<li><span class='post-meta-key'>%s</span> %s</li>\n",
-				/* translators: %s: Post custom field name */
-				sprintf( _x( '%s:', 'Post custom field name' ), $key ),
-				$value
-			);
+      $html = sprintf( "<li><span class='post-meta-key'>%s</span> %s</li>\n",
+        /* translators: %s: Post custom field name */
+        sprintf( _x( '%s:', 'Post custom field name' ), $key ),
+        $value
+      );
 
-			/**
-			 * Filters the HTML output of the li element in the post custom fields list.
-			 *
-			 * @since 2.2.0
-			 *
-			 * @param string $html  The HTML output for the li element.
-			 * @param string $key   Meta key.
-			 * @param string $value Meta value.
-			 */
-			echo apply_filters( 'the_meta_key', $html, $key, $value );
-		}
-		echo "</ul>\n";
-	}
+      /**
+       * Filters the HTML output of the li element in the post custom fields list.
+       *
+       * @since 2.2.0
+       *
+       * @param string $html  The HTML output for the li element.
+       * @param string $key   Meta key.
+       * @param string $value Meta value.
+       */
+      echo apply_filters( 'the_meta_key', $html, $key, $value );
+    }
+    echo "</ul>\n";
+  }
 }
 
 //
@@ -1080,58 +1080,58 @@ function the_meta() {
  * @return string HTML content, if not displaying.
  */
 function wp_dropdown_pages( $args = '' ) {
-	$defaults = array(
-		'depth' => 0, 'child_of' => 0,
-		'selected' => 0, 'echo' => 1,
-		'name' => 'page_id', 'id' => '',
-		'class' => '',
-		'show_option_none' => '', 'show_option_no_change' => '',
-		'option_none_value' => '',
-		'value_field' => 'ID',
-	);
+  $defaults = array(
+    'depth' => 0, 'child_of' => 0,
+    'selected' => 0, 'echo' => 1,
+    'name' => 'page_id', 'id' => '',
+    'class' => '',
+    'show_option_none' => '', 'show_option_no_change' => '',
+    'option_none_value' => '',
+    'value_field' => 'ID',
+  );
 
-	$r = wp_parse_args( $args, $defaults );
+  $r = wp_parse_args( $args, $defaults );
 
-	$pages = get_pages( $r );
-	$output = '';
-	// Back-compat with old system where both id and name were based on $name argument
-	if ( empty( $r['id'] ) ) {
-		$r['id'] = $r['name'];
-	}
+  $pages = get_pages( $r );
+  $output = '';
+  // Back-compat with old system where both id and name were based on $name argument
+  if ( empty( $r['id'] ) ) {
+    $r['id'] = $r['name'];
+  }
 
-	if ( ! empty( $pages ) ) {
-		$class = '';
-		if ( ! empty( $r['class'] ) ) {
-			$class = " class='" . esc_attr( $r['class'] ) . "'";
-		}
+  if ( ! empty( $pages ) ) {
+    $class = '';
+    if ( ! empty( $r['class'] ) ) {
+      $class = " class='" . esc_attr( $r['class'] ) . "'";
+    }
 
-		$output = "<select name='" . esc_attr( $r['name'] ) . "'" . $class . " id='" . esc_attr( $r['id'] ) . "'>\n";
-		if ( $r['show_option_no_change'] ) {
-			$output .= "\t<option value=\"-1\">" . $r['show_option_no_change'] . "</option>\n";
-		}
-		if ( $r['show_option_none'] ) {
-			$output .= "\t<option value=\"" . esc_attr( $r['option_none_value'] ) . '">' . $r['show_option_none'] . "</option>\n";
-		}
-		$output .= walk_page_dropdown_tree( $pages, $r['depth'], $r );
-		$output .= "</select>\n";
-	}
+    $output = "<select name='" . esc_attr( $r['name'] ) . "'" . $class . " id='" . esc_attr( $r['id'] ) . "'>\n";
+    if ( $r['show_option_no_change'] ) {
+      $output .= "\t<option value=\"-1\">" . $r['show_option_no_change'] . "</option>\n";
+    }
+    if ( $r['show_option_none'] ) {
+      $output .= "\t<option value=\"" . esc_attr( $r['option_none_value'] ) . '">' . $r['show_option_none'] . "</option>\n";
+    }
+    $output .= walk_page_dropdown_tree( $pages, $r['depth'], $r );
+    $output .= "</select>\n";
+  }
 
-	/**
-	 * Filters the HTML output of a list of pages as a drop down.
-	 *
-	 * @since 2.1.0
-	 * @since 4.4.0 `$r` and `$pages` added as arguments.
-	 *
-	 * @param string $output HTML output for drop down list of pages.
-	 * @param array  $r      The parsed arguments array.
-	 * @param array  $pages  List of WP_Post objects returned by `get_pages()`
- 	 */
-	$html = apply_filters( 'wp_dropdown_pages', $output, $r, $pages );
+  /**
+   * Filters the HTML output of a list of pages as a drop down.
+   *
+   * @since 2.1.0
+   * @since 4.4.0 `$r` and `$pages` added as arguments.
+   *
+   * @param string $output HTML output for drop down list of pages.
+   * @param array  $r      The parsed arguments array.
+   * @param array  $pages  List of WP_Post objects returned by `get_pages()`
+    */
+  $html = apply_filters( 'wp_dropdown_pages', $output, $r, $pages );
 
-	if ( $r['echo'] ) {
-		echo $html;
-	}
-	return $html;
+  if ( $r['echo'] ) {
+    echo $html;
+  }
+  return $html;
 }
 
 /**
@@ -1175,91 +1175,91 @@ function wp_dropdown_pages( $args = '' ) {
  * @return string|void HTML list of pages.
  */
 function wp_list_pages( $args = '' ) {
-	$defaults = array(
-		'depth'        => 0,
-		'show_date'    => '',
-		'date_format'  => get_option( 'date_format' ),
-		'child_of'     => 0,
-		'exclude'      => '',
-		'title_li'     => __( 'Pages' ),
-		'echo'         => 1,
-		'authors'      => '',
-		'sort_column'  => 'menu_order, post_title',
-		'link_before'  => '',
-		'link_after'   => '',
-		'item_spacing' => 'preserve',
-		'walker'       => '',
-	);
+  $defaults = array(
+    'depth'        => 0,
+    'show_date'    => '',
+    'date_format'  => get_option( 'date_format' ),
+    'child_of'     => 0,
+    'exclude'      => '',
+    'title_li'     => __( 'Pages' ),
+    'echo'         => 1,
+    'authors'      => '',
+    'sort_column'  => 'menu_order, post_title',
+    'link_before'  => '',
+    'link_after'   => '',
+    'item_spacing' => 'preserve',
+    'walker'       => '',
+  );
 
-	$r = wp_parse_args( $args, $defaults );
+  $r = wp_parse_args( $args, $defaults );
 
-	if ( ! in_array( $r['item_spacing'], array( 'preserve', 'discard' ), true ) ) {
-		// invalid value, fall back to default.
-		$r['item_spacing'] = $defaults['item_spacing'];
-	}
+  if ( ! in_array( $r['item_spacing'], array( 'preserve', 'discard' ), true ) ) {
+    // invalid value, fall back to default.
+    $r['item_spacing'] = $defaults['item_spacing'];
+  }
 
-	$output = '';
-	$current_page = 0;
+  $output = '';
+  $current_page = 0;
 
-	// sanitize, mostly to keep spaces out
-	$r['exclude'] = preg_replace( '/[^0-9,]/', '', $r['exclude'] );
+  // sanitize, mostly to keep spaces out
+  $r['exclude'] = preg_replace( '/[^0-9,]/', '', $r['exclude'] );
 
-	// Allow plugins to filter an array of excluded pages (but don't put a nullstring into the array)
-	$exclude_array = ( $r['exclude'] ) ? explode( ',', $r['exclude'] ) : array();
+  // Allow plugins to filter an array of excluded pages (but don't put a nullstring into the array)
+  $exclude_array = ( $r['exclude'] ) ? explode( ',', $r['exclude'] ) : array();
 
-	/**
-	 * Filters the array of pages to exclude from the pages list.
-	 *
-	 * @since 2.1.0
-	 *
-	 * @param array $exclude_array An array of page IDs to exclude.
-	 */
-	$r['exclude'] = implode( ',', apply_filters( 'wp_list_pages_excludes', $exclude_array ) );
+  /**
+   * Filters the array of pages to exclude from the pages list.
+   *
+   * @since 2.1.0
+   *
+   * @param array $exclude_array An array of page IDs to exclude.
+   */
+  $r['exclude'] = implode( ',', apply_filters( 'wp_list_pages_excludes', $exclude_array ) );
 
-	// Query pages.
-	$r['hierarchical'] = 0;
-	$pages = get_pages( $r );
+  // Query pages.
+  $r['hierarchical'] = 0;
+  $pages = get_pages( $r );
 
-	if ( ! empty( $pages ) ) {
-		if ( $r['title_li'] ) {
-			$output .= '<li class="pagenav">' . $r['title_li'] . '<ul>';
-		}
-		global $wp_query;
-		if ( is_page() || is_attachment() || $wp_query->is_posts_page ) {
-			$current_page = get_queried_object_id();
-		} elseif ( is_singular() ) {
-			$queried_object = get_queried_object();
-			if ( is_post_type_hierarchical( $queried_object->post_type ) ) {
-				$current_page = $queried_object->ID;
-			}
-		}
+  if ( ! empty( $pages ) ) {
+    if ( $r['title_li'] ) {
+      $output .= '<li class="pagenav">' . $r['title_li'] . '<ul>';
+    }
+    global $wp_query;
+    if ( is_page() || is_attachment() || $wp_query->is_posts_page ) {
+      $current_page = get_queried_object_id();
+    } elseif ( is_singular() ) {
+      $queried_object = get_queried_object();
+      if ( is_post_type_hierarchical( $queried_object->post_type ) ) {
+        $current_page = $queried_object->ID;
+      }
+    }
 
-		$output .= walk_page_tree( $pages, $r['depth'], $current_page, $r );
+    $output .= walk_page_tree( $pages, $r['depth'], $current_page, $r );
 
-		if ( $r['title_li'] ) {
-			$output .= '</ul></li>';
-		}
-	}
+    if ( $r['title_li'] ) {
+      $output .= '</ul></li>';
+    }
+  }
 
-	/**
-	 * Filters the HTML output of the pages to list.
-	 *
-	 * @since 1.5.1
-	 * @since 4.4.0 `$pages` added as arguments.
-	 *
-	 * @see wp_list_pages()
-	 *
-	 * @param string $output HTML output of the pages list.
-	 * @param array  $r      An array of page-listing arguments.
-	 * @param array  $pages  List of WP_Post objects returned by `get_pages()`
-	 */
-	$html = apply_filters( 'wp_list_pages', $output, $r, $pages );
+  /**
+   * Filters the HTML output of the pages to list.
+   *
+   * @since 1.5.1
+   * @since 4.4.0 `$pages` added as arguments.
+   *
+   * @see wp_list_pages()
+   *
+   * @param string $output HTML output of the pages list.
+   * @param array  $r      An array of page-listing arguments.
+   * @param array  $pages  List of WP_Post objects returned by `get_pages()`
+   */
+  $html = apply_filters( 'wp_list_pages', $output, $r, $pages );
 
-	if ( $r['echo'] ) {
-		echo $html;
-	} else {
-		return $html;
-	}
+  if ( $r['echo'] ) {
+    echo $html;
+  } else {
+    return $html;
+  }
 }
 
 /**
@@ -1294,120 +1294,120 @@ function wp_list_pages( $args = '' ) {
  * @return string|void HTML menu
  */
 function wp_page_menu( $args = array() ) {
-	$defaults = array(
-		'sort_column'  => 'menu_order, post_title',
-		'menu_id'      => '',
-		'menu_class'   => 'menu',
-		'container'    => 'div',
-		'echo'         => true,
-		'link_before'  => '',
-		'link_after'   => '',
-		'before'       => '<ul>',
-		'after'        => '</ul>',
-		'item_spacing' => 'discard',
-		'walker'       => '',
-	);
-	$args = wp_parse_args( $args, $defaults );
+  $defaults = array(
+    'sort_column'  => 'menu_order, post_title',
+    'menu_id'      => '',
+    'menu_class'   => 'menu',
+    'container'    => 'div',
+    'echo'         => true,
+    'link_before'  => '',
+    'link_after'   => '',
+    'before'       => '<ul>',
+    'after'        => '</ul>',
+    'item_spacing' => 'discard',
+    'walker'       => '',
+  );
+  $args = wp_parse_args( $args, $defaults );
 
-	if ( ! in_array( $args['item_spacing'], array( 'preserve', 'discard' ) ) ) {
-		// invalid value, fall back to default.
-		$args['item_spacing'] = $defaults['item_spacing'];
-	}
+  if ( ! in_array( $args['item_spacing'], array( 'preserve', 'discard' ) ) ) {
+    // invalid value, fall back to default.
+    $args['item_spacing'] = $defaults['item_spacing'];
+  }
 
-	if ( 'preserve' === $args['item_spacing'] ) {
-		$t = "\t";
-		$n = "\n";
-	} else {
-		$t = '';
-		$n = '';
-	}
+  if ( 'preserve' === $args['item_spacing'] ) {
+    $t = "\t";
+    $n = "\n";
+  } else {
+    $t = '';
+    $n = '';
+  }
 
-	/**
-	 * Filters the arguments used to generate a page-based menu.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @see wp_page_menu()
-	 *
-	 * @param array $args An array of page menu arguments.
-	 */
-	$args = apply_filters( 'wp_page_menu_args', $args );
+  /**
+   * Filters the arguments used to generate a page-based menu.
+   *
+   * @since 2.7.0
+   *
+   * @see wp_page_menu()
+   *
+   * @param array $args An array of page menu arguments.
+   */
+  $args = apply_filters( 'wp_page_menu_args', $args );
 
-	$menu = '';
+  $menu = '';
 
-	$list_args = $args;
+  $list_args = $args;
 
-	// Show Home in the menu
-	if ( ! empty($args['show_home']) ) {
-		if ( true === $args['show_home'] || '1' === $args['show_home'] || 1 === $args['show_home'] )
-			$text = __('Home');
-		else
-			$text = $args['show_home'];
-		$class = '';
-		if ( is_front_page() && !is_paged() )
-			$class = 'class="current_page_item"';
-		$menu .= '<li ' . $class . '><a href="' . home_url( '/' ) . '">' . $args['link_before'] . $text . $args['link_after'] . '</a></li>';
-		// If the front page is a page, add it to the exclude list
-		if (get_option('show_on_front') == 'page') {
-			if ( !empty( $list_args['exclude'] ) ) {
-				$list_args['exclude'] .= ',';
-			} else {
-				$list_args['exclude'] = '';
-			}
-			$list_args['exclude'] .= get_option('page_on_front');
-		}
-	}
+  // Show Home in the menu
+  if ( ! empty($args['show_home']) ) {
+    if ( true === $args['show_home'] || '1' === $args['show_home'] || 1 === $args['show_home'] )
+      $text = __('Home');
+    else
+      $text = $args['show_home'];
+    $class = '';
+    if ( is_front_page() && !is_paged() )
+      $class = 'class="current_page_item"';
+    $menu .= '<li ' . $class . '><a href="' . home_url( '/' ) . '">' . $args['link_before'] . $text . $args['link_after'] . '</a></li>';
+    // If the front page is a page, add it to the exclude list
+    if (get_option('show_on_front') == 'page') {
+      if ( !empty( $list_args['exclude'] ) ) {
+        $list_args['exclude'] .= ',';
+      } else {
+        $list_args['exclude'] = '';
+      }
+      $list_args['exclude'] .= get_option('page_on_front');
+    }
+  }
 
-	$list_args['echo'] = false;
-	$list_args['title_li'] = '';
-	$menu .= wp_list_pages( $list_args );
+  $list_args['echo'] = false;
+  $list_args['title_li'] = '';
+  $menu .= wp_list_pages( $list_args );
 
-	$container = sanitize_text_field( $args['container'] );
+  $container = sanitize_text_field( $args['container'] );
 
-	// Fallback in case `wp_nav_menu()` was called without a container.
-	if ( empty( $container ) ) {
-		$container = 'div';
-	}
+  // Fallback in case `wp_nav_menu()` was called without a container.
+  if ( empty( $container ) ) {
+    $container = 'div';
+  }
 
-	if ( $menu ) {
+  if ( $menu ) {
 
-		// wp_nav_menu doesn't set before and after
-		if ( isset( $args['fallback_cb'] ) &&
-			'wp_page_menu' === $args['fallback_cb'] &&
-			'ul' !== $container ) {
-			$args['before'] = "<ul>{$n}";
-			$args['after'] = '</ul>';
-		}
+    // wp_nav_menu doesn't set before and after
+    if ( isset( $args['fallback_cb'] ) &&
+      'wp_page_menu' === $args['fallback_cb'] &&
+      'ul' !== $container ) {
+      $args['before'] = "<ul>{$n}";
+      $args['after'] = '</ul>';
+    }
 
-		$menu = $args['before'] . $menu . $args['after'];
-	}
+    $menu = $args['before'] . $menu . $args['after'];
+  }
 
-	$attrs = '';
-	if ( ! empty( $args['menu_id'] ) ) {
-		$attrs .= ' id="' . esc_attr( $args['menu_id'] ) . '"';
-	}
+  $attrs = '';
+  if ( ! empty( $args['menu_id'] ) ) {
+    $attrs .= ' id="' . esc_attr( $args['menu_id'] ) . '"';
+  }
 
-	if ( ! empty( $args['menu_class'] ) ) {
-		$attrs .= ' class="' . esc_attr( $args['menu_class'] ) . '"';
-	}
+  if ( ! empty( $args['menu_class'] ) ) {
+    $attrs .= ' class="' . esc_attr( $args['menu_class'] ) . '"';
+  }
 
-	$menu = "<{$container}{$attrs}>" . $menu . "</{$container}>{$n}";
+  $menu = "<{$container}{$attrs}>" . $menu . "</{$container}>{$n}";
 
-	/**
-	 * Filters the HTML output of a page-based menu.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @see wp_page_menu()
-	 *
-	 * @param string $menu The HTML output.
-	 * @param array  $args An array of arguments.
-	 */
-	$menu = apply_filters( 'wp_page_menu', $menu, $args );
-	if ( $args['echo'] )
-		echo $menu;
-	else
-		return $menu;
+  /**
+   * Filters the HTML output of a page-based menu.
+   *
+   * @since 2.7.0
+   *
+   * @see wp_page_menu()
+   *
+   * @param string $menu The HTML output.
+   * @param array  $args An array of arguments.
+   */
+  $menu = apply_filters( 'wp_page_menu', $menu, $args );
+  if ( $args['echo'] )
+    echo $menu;
+  else
+    return $menu;
 }
 
 //
@@ -1427,18 +1427,18 @@ function wp_page_menu( $args = array() ) {
  * @return string
  */
 function walk_page_tree( $pages, $depth, $current_page, $r ) {
-	if ( empty($r['walker']) )
-		$walker = new Walker_Page;
-	else
-		$walker = $r['walker'];
+  if ( empty($r['walker']) )
+    $walker = new Walker_Page;
+  else
+    $walker = $r['walker'];
 
-	foreach ( (array) $pages as $page ) {
-		if ( $page->post_parent )
-			$r['pages_with_children'][ $page->post_parent ] = true;
-	}
+  foreach ( (array) $pages as $page ) {
+    if ( $page->post_parent )
+      $r['pages_with_children'][ $page->post_parent ] = true;
+  }
 
-	$args = array($pages, $depth, $r, $current_page);
-	return call_user_func_array(array($walker, 'walk'), $args);
+  $args = array($pages, $depth, $r, $current_page);
+  return call_user_func_array(array($walker, 'walk'), $args);
 }
 
 /**
@@ -1451,13 +1451,13 @@ function walk_page_tree( $pages, $depth, $current_page, $r ) {
  * @return string
  */
 function walk_page_dropdown_tree() {
-	$args = func_get_args();
-	if ( empty($args[2]['walker']) ) // the user's options are the third parameter
-		$walker = new Walker_PageDropdown;
-	else
-		$walker = $args[2]['walker'];
+  $args = func_get_args();
+  if ( empty($args[2]['walker']) ) // the user's options are the third parameter
+    $walker = new Walker_PageDropdown;
+  else
+    $walker = $args[2]['walker'];
 
-	return call_user_func_array(array($walker, 'walk'), $args);
+  return call_user_func_array(array($walker, 'walk'), $args);
 }
 
 //
@@ -1475,13 +1475,13 @@ function walk_page_dropdown_tree() {
  * @param bool        $permalink    Optional, default is false. Whether to include permalink.
  */
 function the_attachment_link( $id = 0, $fullsize = false, $deprecated = false, $permalink = false ) {
-	if ( !empty( $deprecated ) )
-		_deprecated_argument( __FUNCTION__, '2.5.0' );
+  if ( !empty( $deprecated ) )
+    _deprecated_argument( __FUNCTION__, '2.5.0' );
 
-	if ( $fullsize )
-		echo wp_get_attachment_link($id, 'full', $permalink);
-	else
-		echo wp_get_attachment_link($id, 'thumbnail', $permalink);
+  if ( $fullsize )
+    echo wp_get_attachment_link($id, 'full', $permalink);
+  else
+    echo wp_get_attachment_link($id, 'thumbnail', $permalink);
 }
 
 /**
@@ -1502,45 +1502,45 @@ function the_attachment_link( $id = 0, $fullsize = false, $deprecated = false, $
  * @return string HTML content.
  */
 function wp_get_attachment_link( $id = 0, $size = 'thumbnail', $permalink = false, $icon = false, $text = false, $attr = '' ) {
-	$_post = get_post( $id );
+  $_post = get_post( $id );
 
-	if ( empty( $_post ) || ( 'attachment' !== $_post->post_type ) || ! $url = wp_get_attachment_url( $_post->ID ) ) {
-		return __( 'Missing Attachment' );
-	}
+  if ( empty( $_post ) || ( 'attachment' !== $_post->post_type ) || ! $url = wp_get_attachment_url( $_post->ID ) ) {
+    return __( 'Missing Attachment' );
+  }
 
-	if ( $permalink ) {
-		$url = get_attachment_link( $_post->ID );
-	}
+  if ( $permalink ) {
+    $url = get_attachment_link( $_post->ID );
+  }
 
-	if ( $text ) {
-		$link_text = $text;
-	} elseif ( $size && 'none' != $size ) {
-		$link_text = wp_get_attachment_image( $_post->ID, $size, $icon, $attr );
-	} else {
-		$link_text = '';
-	}
+  if ( $text ) {
+    $link_text = $text;
+  } elseif ( $size && 'none' != $size ) {
+    $link_text = wp_get_attachment_image( $_post->ID, $size, $icon, $attr );
+  } else {
+    $link_text = '';
+  }
 
-	if ( '' === trim( $link_text ) ) {
-		$link_text = $_post->post_title;
-	}
+  if ( '' === trim( $link_text ) ) {
+    $link_text = $_post->post_title;
+  }
 
-	if ( '' === trim( $link_text ) ) {
-		$link_text = esc_html( pathinfo( get_attached_file( $_post->ID ), PATHINFO_FILENAME ) );
-	}
-	/**
-	 * Filters a retrieved attachment page link.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param string       $link_html The page link HTML output.
-	 * @param int          $id        Post ID.
-	 * @param string|array $size      Size of the image. Image size or array of width and height values (in that order).
-	 *                                Default 'thumbnail'.
-	 * @param bool         $permalink Whether to add permalink to image. Default false.
-	 * @param bool         $icon      Whether to include an icon. Default false.
-	 * @param string|bool  $text      If string, will be link text. Default false.
-	 */
-	return apply_filters( 'wp_get_attachment_link', "<a href='" . esc_url( $url ) . "'>$link_text</a>", $id, $size, $permalink, $icon, $text );
+  if ( '' === trim( $link_text ) ) {
+    $link_text = esc_html( pathinfo( get_attached_file( $_post->ID ), PATHINFO_FILENAME ) );
+  }
+  /**
+   * Filters a retrieved attachment page link.
+   *
+   * @since 2.7.0
+   *
+   * @param string       $link_html The page link HTML output.
+   * @param int          $id        Post ID.
+   * @param string|array $size      Size of the image. Image size or array of width and height values (in that order).
+   *                                Default 'thumbnail'.
+   * @param bool         $permalink Whether to add permalink to image. Default false.
+   * @param bool         $icon      Whether to include an icon. Default false.
+   * @param string|bool  $text      If string, will be link text. Default false.
+   */
+  return apply_filters( 'wp_get_attachment_link', "<a href='" . esc_url( $url ) . "'>$link_text</a>", $id, $size, $permalink, $icon, $text );
 }
 
 /**
@@ -1552,43 +1552,43 @@ function wp_get_attachment_link( $id = 0, $size = 'thumbnail', $permalink = fals
  * @return string
  */
 function prepend_attachment($content) {
-	$post = get_post();
+  $post = get_post();
 
-	if ( empty($post->post_type) || $post->post_type != 'attachment' )
-		return $content;
+  if ( empty($post->post_type) || $post->post_type != 'attachment' )
+    return $content;
 
-	if ( wp_attachment_is( 'video', $post ) ) {
-		$meta = wp_get_attachment_metadata( get_the_ID() );
-		$atts = array( 'src' => wp_get_attachment_url() );
-		if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
-			$atts['width'] = (int) $meta['width'];
-			$atts['height'] = (int) $meta['height'];
-		}
-		if ( has_post_thumbnail() ) {
-			$atts['poster'] = wp_get_attachment_url( get_post_thumbnail_id() );
-		}
-		$p = wp_video_shortcode( $atts );
-	} elseif ( wp_attachment_is( 'audio', $post ) ) {
-		$p = wp_audio_shortcode( array( 'src' => wp_get_attachment_url() ) );
-	} else {
-		$p = '<p class="attachment">';
-		// show the medium sized image representation of the attachment if available, and link to the raw file
-		$p .= wp_get_attachment_link(0, 'medium', false);
-		$p .= '</p>';
-	}
+  if ( wp_attachment_is( 'video', $post ) ) {
+    $meta = wp_get_attachment_metadata( get_the_ID() );
+    $atts = array( 'src' => wp_get_attachment_url() );
+    if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+      $atts['width'] = (int) $meta['width'];
+      $atts['height'] = (int) $meta['height'];
+    }
+    if ( has_post_thumbnail() ) {
+      $atts['poster'] = wp_get_attachment_url( get_post_thumbnail_id() );
+    }
+    $p = wp_video_shortcode( $atts );
+  } elseif ( wp_attachment_is( 'audio', $post ) ) {
+    $p = wp_audio_shortcode( array( 'src' => wp_get_attachment_url() ) );
+  } else {
+    $p = '<p class="attachment">';
+    // show the medium sized image representation of the attachment if available, and link to the raw file
+    $p .= wp_get_attachment_link(0, 'medium', false);
+    $p .= '</p>';
+  }
 
-	/**
-	 * Filters the attachment markup to be prepended to the post content.
-	 *
-	 * @since 2.0.0
-	 *
-	 * @see prepend_attachment()
-	 *
-	 * @param string $p The attachment HTML output.
-	 */
-	$p = apply_filters( 'prepend_attachment', $p );
+  /**
+   * Filters the attachment markup to be prepended to the post content.
+   *
+   * @since 2.0.0
+   *
+   * @see prepend_attachment()
+   *
+   * @param string $p The attachment HTML output.
+   */
+  $p = apply_filters( 'prepend_attachment', $p );
 
-	return "$p\n$content";
+  return "$p\n$content";
 }
 
 //
@@ -1604,25 +1604,25 @@ function prepend_attachment($content) {
  * @return string HTML content for password form for password protected post.
  */
 function get_the_password_form( $post = 0 ) {
-	$post = get_post( $post );
-	$label = 'pwbox-' . ( empty($post->ID) ? rand() : $post->ID );
-	$output = '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" class="post-password-form" method="post">
-	<p>' . __( 'This content is password protected. To view it please enter your password below:' ) . '</p>
-	<p><label for="' . $label . '">' . __( 'Password:' ) . ' <input name="post_password" id="' . $label . '" type="password" size="20" /></label> <input type="submit" name="Submit" value="' . esc_attr_x( 'Enter', 'post password form' ) . '" /></p></form>
-	';
+  $post = get_post( $post );
+  $label = 'pwbox-' . ( empty($post->ID) ? rand() : $post->ID );
+  $output = '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" class="post-password-form" method="post">
+  <p>' . __( 'This content is password protected. To view it please enter your password below:' ) . '</p>
+  <p><label for="' . $label . '">' . __( 'Password:' ) . ' <input name="post_password" id="' . $label . '" type="password" size="20" /></label> <input type="submit" name="Submit" value="' . esc_attr_x( 'Enter', 'post password form' ) . '" /></p></form>
+  ';
 
-	/**
-	 * Filters the HTML output for the protected post password form.
-	 *
-	 * If modifying the password field, please note that the core database schema
-	 * limits the password field to 20 characters regardless of the value of the
-	 * size attribute in the form input.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param string $output The password form HTML output.
-	 */
-	return apply_filters( 'the_password_form', $output );
+  /**
+   * Filters the HTML output for the protected post password form.
+   *
+   * If modifying the password field, please note that the core database schema
+   * limits the password field to 20 characters regardless of the value of the
+   * size attribute in the form input.
+   *
+   * @since 2.7.0
+   *
+   * @param string $output The password form HTML output.
+   */
+  return apply_filters( 'the_password_form', $output );
 }
 
 /**
@@ -1640,27 +1640,27 @@ function get_the_password_form( $post = 0 ) {
  * @return bool True on success, false on failure.
  */
 function is_page_template( $template = '' ) {
-	if ( ! is_singular() ) {
-		return false;
-	}
+  if ( ! is_singular() ) {
+    return false;
+  }
 
-	$page_template = get_page_template_slug( get_queried_object_id() );
+  $page_template = get_page_template_slug( get_queried_object_id() );
 
-	if ( empty( $template ) )
-		return (bool) $page_template;
+  if ( empty( $template ) )
+    return (bool) $page_template;
 
-	if ( $template == $page_template )
-		return true;
+  if ( $template == $page_template )
+    return true;
 
-	if ( is_array( $template ) ) {
-		if ( ( in_array( 'default', $template, true ) && ! $page_template )
-			|| in_array( $page_template, $template, true )
-		) {
-			return true;
-		}
-	}
+  if ( is_array( $template ) ) {
+    if ( ( in_array( 'default', $template, true ) && ! $page_template )
+      || in_array( $page_template, $template, true )
+    ) {
+      return true;
+    }
+  }
 
-	return ( 'default' === $template && ! $page_template );
+  return ( 'default' === $template && ! $page_template );
 }
 
 /**
@@ -1671,22 +1671,22 @@ function is_page_template( $template = '' ) {
  *
  * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global $post.
  * @return string|false Page template filename. Returns an empty string when the default page template
- * 	is in use. Returns false if the post does not exist.
+ *   is in use. Returns false if the post does not exist.
  */
 function get_page_template_slug( $post = null ) {
-	$post = get_post( $post );
+  $post = get_post( $post );
 
-	if ( ! $post ) {
-		return false;
-	}
+  if ( ! $post ) {
+    return false;
+  }
 
-	$template = get_post_meta( $post->ID, '_wp_page_template', true );
+  $template = get_post_meta( $post->ID, '_wp_page_template', true );
 
-	if ( ! $template || 'default' == $template ) {
-		return '';
-	}
+  if ( ! $template || 'default' == $template ) {
+    return '';
+  }
 
-	return $template;
+  return $template;
 }
 
 /**
@@ -1699,29 +1699,29 @@ function get_page_template_slug( $post = null ) {
  * @return string|false i18n formatted datetimestamp or localized 'Current Revision'.
  */
 function wp_post_revision_title( $revision, $link = true ) {
-	if ( !$revision = get_post( $revision ) )
-		return $revision;
+  if ( !$revision = get_post( $revision ) )
+    return $revision;
 
-	if ( !in_array( $revision->post_type, array( 'post', 'page', 'revision' ) ) )
-		return false;
+  if ( !in_array( $revision->post_type, array( 'post', 'page', 'revision' ) ) )
+    return false;
 
-	/* translators: revision date format, see https://secure.php.net/date */
-	$datef = _x( 'F j, Y @ H:i:s', 'revision date format' );
-	/* translators: %s: revision date */
-	$autosavef = __( '%s [Autosave]' );
-	/* translators: %s: revision date */
-	$currentf  = __( '%s [Current Revision]' );
+  /* translators: revision date format, see https://secure.php.net/date */
+  $datef = _x( 'F j, Y @ H:i:s', 'revision date format' );
+  /* translators: %s: revision date */
+  $autosavef = __( '%s [Autosave]' );
+  /* translators: %s: revision date */
+  $currentf  = __( '%s [Current Revision]' );
 
-	$date = date_i18n( $datef, strtotime( $revision->post_modified ) );
-	if ( $link && current_user_can( 'edit_post', $revision->ID ) && $link = get_edit_post_link( $revision->ID ) )
-		$date = "<a href='$link'>$date</a>";
+  $date = date_i18n( $datef, strtotime( $revision->post_modified ) );
+  if ( $link && current_user_can( 'edit_post', $revision->ID ) && $link = get_edit_post_link( $revision->ID ) )
+    $date = "<a href='$link'>$date</a>";
 
-	if ( !wp_is_post_revision( $revision ) )
-		$date = sprintf( $currentf, $date );
-	elseif ( wp_is_post_autosave( $revision ) )
-		$date = sprintf( $autosavef, $date );
+  if ( !wp_is_post_revision( $revision ) )
+    $date = sprintf( $currentf, $date );
+  elseif ( wp_is_post_autosave( $revision ) )
+    $date = sprintf( $autosavef, $date );
 
-	return $date;
+  return $date;
 }
 
 /**
@@ -1734,52 +1734,52 @@ function wp_post_revision_title( $revision, $link = true ) {
  * @return string|false gravatar, user, i18n formatted datetimestamp or localized 'Current Revision'.
  */
 function wp_post_revision_title_expanded( $revision, $link = true ) {
-	if ( !$revision = get_post( $revision ) )
-		return $revision;
+  if ( !$revision = get_post( $revision ) )
+    return $revision;
 
-	if ( !in_array( $revision->post_type, array( 'post', 'page', 'revision' ) ) )
-		return false;
+  if ( !in_array( $revision->post_type, array( 'post', 'page', 'revision' ) ) )
+    return false;
 
-	$author = get_the_author_meta( 'display_name', $revision->post_author );
-	/* translators: revision date format, see https://secure.php.net/date */
-	$datef = _x( 'F j, Y @ H:i:s', 'revision date format' );
+  $author = get_the_author_meta( 'display_name', $revision->post_author );
+  /* translators: revision date format, see https://secure.php.net/date */
+  $datef = _x( 'F j, Y @ H:i:s', 'revision date format' );
 
-	$gravatar = get_avatar( $revision->post_author, 24 );
+  $gravatar = get_avatar( $revision->post_author, 24 );
 
-	$date = date_i18n( $datef, strtotime( $revision->post_modified ) );
-	if ( $link && current_user_can( 'edit_post', $revision->ID ) && $link = get_edit_post_link( $revision->ID ) )
-		$date = "<a href='$link'>$date</a>";
+  $date = date_i18n( $datef, strtotime( $revision->post_modified ) );
+  if ( $link && current_user_can( 'edit_post', $revision->ID ) && $link = get_edit_post_link( $revision->ID ) )
+    $date = "<a href='$link'>$date</a>";
 
-	$revision_date_author = sprintf(
-		/* translators: post revision title: 1: author avatar, 2: author name, 3: time ago, 4: date */
-		__( '%1$s %2$s, %3$s ago (%4$s)' ),
-		$gravatar,
-		$author,
-		human_time_diff( strtotime( $revision->post_modified ), current_time( 'timestamp' ) ),
-		$date
-	);
+  $revision_date_author = sprintf(
+    /* translators: post revision title: 1: author avatar, 2: author name, 3: time ago, 4: date */
+    __( '%1$s %2$s, %3$s ago (%4$s)' ),
+    $gravatar,
+    $author,
+    human_time_diff( strtotime( $revision->post_modified ), current_time( 'timestamp' ) ),
+    $date
+  );
 
-	/* translators: %s: revision date with author avatar */
-	$autosavef = __( '%s [Autosave]' );
-	/* translators: %s: revision date with author avatar */
-	$currentf  = __( '%s [Current Revision]' );
+  /* translators: %s: revision date with author avatar */
+  $autosavef = __( '%s [Autosave]' );
+  /* translators: %s: revision date with author avatar */
+  $currentf  = __( '%s [Current Revision]' );
 
-	if ( !wp_is_post_revision( $revision ) )
-		$revision_date_author = sprintf( $currentf, $revision_date_author );
-	elseif ( wp_is_post_autosave( $revision ) )
-		$revision_date_author = sprintf( $autosavef, $revision_date_author );
+  if ( !wp_is_post_revision( $revision ) )
+    $revision_date_author = sprintf( $currentf, $revision_date_author );
+  elseif ( wp_is_post_autosave( $revision ) )
+    $revision_date_author = sprintf( $autosavef, $revision_date_author );
 
-	/**
-	 * Filters the formatted author and date for a revision.
-	 *
-	 * @since 4.4.0
-	 *
-	 * @param string  $revision_date_author The formatted string.
-	 * @param WP_Post $revision             The revision object.
-	 * @param bool    $link                 Whether to link to the revisions page, as passed into
-	 *                                      wp_post_revision_title_expanded().
-	 */
-	return apply_filters( 'wp_post_revision_title_expanded', $revision_date_author, $revision, $link );
+  /**
+   * Filters the formatted author and date for a revision.
+   *
+   * @since 4.4.0
+   *
+   * @param string  $revision_date_author The formatted string.
+   * @param WP_Post $revision             The revision object.
+   * @param bool    $link                 Whether to link to the revisions page, as passed into
+   *                                      wp_post_revision_title_expanded().
+   */
+  return apply_filters( 'wp_post_revision_title_expanded', $revision_date_author, $revision, $link );
 }
 
 /**
@@ -1794,33 +1794,33 @@ function wp_post_revision_title_expanded( $revision, $link = true ) {
  * @param string      $type    'all' (default), 'revision' or 'autosave'
  */
 function wp_list_post_revisions( $post_id = 0, $type = 'all' ) {
-	if ( ! $post = get_post( $post_id ) )
-		return;
+  if ( ! $post = get_post( $post_id ) )
+    return;
 
-	// $args array with (parent, format, right, left, type) deprecated since 3.6
-	if ( is_array( $type ) ) {
-		$type = ! empty( $type['type'] ) ? $type['type']  : $type;
-		_deprecated_argument( __FUNCTION__, '3.6.0' );
-	}
+  // $args array with (parent, format, right, left, type) deprecated since 3.6
+  if ( is_array( $type ) ) {
+    $type = ! empty( $type['type'] ) ? $type['type']  : $type;
+    _deprecated_argument( __FUNCTION__, '3.6.0' );
+  }
 
-	if ( ! $revisions = wp_get_post_revisions( $post->ID ) )
-		return;
+  if ( ! $revisions = wp_get_post_revisions( $post->ID ) )
+    return;
 
-	$rows = '';
-	foreach ( $revisions as $revision ) {
-		if ( ! current_user_can( 'read_post', $revision->ID ) )
-			continue;
+  $rows = '';
+  foreach ( $revisions as $revision ) {
+    if ( ! current_user_can( 'read_post', $revision->ID ) )
+      continue;
 
-		$is_autosave = wp_is_post_autosave( $revision );
-		if ( ( 'revision' === $type && $is_autosave ) || ( 'autosave' === $type && ! $is_autosave ) )
-			continue;
+    $is_autosave = wp_is_post_autosave( $revision );
+    if ( ( 'revision' === $type && $is_autosave ) || ( 'autosave' === $type && ! $is_autosave ) )
+      continue;
 
-		$rows .= "\t<li>" . wp_post_revision_title_expanded( $revision ) . "</li>\n";
-	}
+    $rows .= "\t<li>" . wp_post_revision_title_expanded( $revision ) . "</li>\n";
+  }
 
-	echo "<div class='hide-if-js'><p>" . __( 'JavaScript must be enabled to use this feature.' ) . "</p></div>\n";
+  echo "<div class='hide-if-js'><p>" . __( 'JavaScript must be enabled to use this feature.' ) . "</p></div>\n";
 
-	echo "<ul class='post-revisions hide-if-no-js'>\n";
-	echo $rows;
-	echo "</ul>";
+  echo "<ul class='post-revisions hide-if-no-js'>\n";
+  echo $rows;
+  echo "</ul>";
 }

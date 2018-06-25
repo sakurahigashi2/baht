@@ -11,17 +11,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_306 extends Requests_Exception_HTTP {
-	/**
-	 * HTTP status code
-	 *
-	 * @var integer
-	 */
-	protected $code = 306;
+  /**
+   * HTTP status code
+   *
+   * @var integer
+   */
+  protected $code = 306;
 
-	/**
-	 * Reason phrase
-	 *
-	 * @var string
-	 */
-	protected $reason = 'Switch Proxy';
+  /**
+   * Reason phrase
+   *
+   * @var string
+   */
+  protected $reason = 'Switch Proxy';
 }
