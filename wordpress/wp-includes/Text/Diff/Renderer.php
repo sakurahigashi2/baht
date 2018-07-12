@@ -43,12 +43,12 @@ class Text_Diff_Renderer {
         }
     }
 
-  /**
-   * PHP4 constructor.
-   */
-  public function Text_Diff_Renderer( $params = array() ) {
-    self::__construct( $params );
-  }
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_Diff_Renderer( $params = array() ) {
+		self::__construct( $params );
+	}
 
     /**
      * Get any renderer parameters.

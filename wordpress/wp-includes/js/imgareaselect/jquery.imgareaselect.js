@@ -518,12 +518,12 @@ $.imgAreaSelect = function (img, options) {
     function areaMouseDown(event) {
         if (event.type == 'mousedown' && event.which != 1) return false;
 
-      /*
-       * With mobile browsers, there is no "moving the pointer over" action,
-       * so we need to simulate one mousemove event happening prior to
-       * mousedown/touchstart.
-       */
-      areaMouseMove(event);
+    	/*
+    	 * With mobile browsers, there is no "moving the pointer over" action,
+    	 * so we need to simulate one mousemove event happening prior to
+    	 * mousedown/touchstart.
+    	 */
+    	areaMouseMove(event);
 
         adjust();
 

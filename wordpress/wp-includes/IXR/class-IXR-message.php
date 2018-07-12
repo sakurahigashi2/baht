@@ -27,20 +27,20 @@ class IXR_Message
     // The XML parser
     var $_parser;
 
-  /**
-   * PHP5 constructor.
-   */
+	/**
+	 * PHP5 constructor.
+	 */
     function __construct( $message )
     {
         $this->message =& $message;
     }
 
-  /**
-   * PHP4 constructor.
-   */
-  public function IXR_Message( $message ) {
-    self::__construct( $message );
-  }
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Message( $message ) {
+		self::__construct( $message );
+	}
 
     function parse()
     {

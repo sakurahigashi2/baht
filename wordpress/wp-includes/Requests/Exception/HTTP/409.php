@@ -11,17 +11,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_409 extends Requests_Exception_HTTP {
-  /**
-   * HTTP status code
-   *
-   * @var integer
-   */
-  protected $code = 409;
+	/**
+	 * HTTP status code
+	 *
+	 * @var integer
+	 */
+	protected $code = 409;
 
-  /**
-   * Reason phrase
-   *
-   * @var string
-   */
-  protected $reason = 'Conflict';
+	/**
+	 * Reason phrase
+	 *
+	 * @var string
+	 */
+	protected $reason = 'Conflict';
 }

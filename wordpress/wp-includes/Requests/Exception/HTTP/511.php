@@ -13,17 +13,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_511 extends Requests_Exception_HTTP {
-  /**
-   * HTTP status code
-   *
-   * @var integer
-   */
-  protected $code = 511;
+	/**
+	 * HTTP status code
+	 *
+	 * @var integer
+	 */
+	protected $code = 511;
 
-  /**
-   * Reason phrase
-   *
-   * @var string
-   */
-  protected $reason = 'Network Authentication Required';
+	/**
+	 * Reason phrase
+	 *
+	 * @var string
+	 */
+	protected $reason = 'Network Authentication Required';
 }

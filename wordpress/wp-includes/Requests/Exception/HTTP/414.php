@@ -11,17 +11,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_414 extends Requests_Exception_HTTP {
-  /**
-   * HTTP status code
-   *
-   * @var integer
-   */
-  protected $code = 414;
+	/**
+	 * HTTP status code
+	 *
+	 * @var integer
+	 */
+	protected $code = 414;
 
-  /**
-   * Reason phrase
-   *
-   * @var string
-   */
-  protected $reason = 'Request-URI Too Large';
+	/**
+	 * Reason phrase
+	 *
+	 * @var string
+	 */
+	protected $reason = 'Request-URI Too Large';
 }
