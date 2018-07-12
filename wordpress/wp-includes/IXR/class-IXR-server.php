@@ -13,9 +13,9 @@ class IXR_Server
     var $message;
     var $capabilities;
 
-  /**
-   * PHP5 constructor.
-   */
+	/**
+	 * PHP5 constructor.
+	 */
     function __construct( $callbacks = false, $data = false, $wait = false )
     {
         $this->setCapabilities();
@@ -28,12 +28,12 @@ class IXR_Server
         }
     }
 
-  /**
-   * PHP4 constructor.
-   */
-  public function IXR_Server( $callbacks = false, $data = false, $wait = false ) {
-    self::__construct( $callbacks, $data, $wait );
-  }
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Server( $callbacks = false, $data = false, $wait = false ) {
+		self::__construct( $callbacks, $data, $wait );
+	}
 
     function serve($data = false)
     {

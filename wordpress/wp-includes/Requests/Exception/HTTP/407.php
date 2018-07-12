@@ -11,17 +11,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_407 extends Requests_Exception_HTTP {
-  /**
-   * HTTP status code
-   *
-   * @var integer
-   */
-  protected $code = 407;
+	/**
+	 * HTTP status code
+	 *
+	 * @var integer
+	 */
+	protected $code = 407;
 
-  /**
-   * Reason phrase
-   *
-   * @var string
-   */
-  protected $reason = 'Proxy Authentication Required';
+	/**
+	 * Reason phrase
+	 *
+	 * @var string
+	 */
+	protected $reason = 'Proxy Authentication Required';
 }

@@ -19,7 +19,7 @@
  * @return bool Whether the post has an image attached.
  */
 function has_post_thumbnail( $post = null ) {
-  return (bool) get_post_thumbnail_id( $post );
+	return (bool) get_post_thumbnail_id( $post );
 }
 
 /**
@@ -32,11 +32,11 @@ function has_post_thumbnail( $post = null ) {
  * @return string|int Post thumbnail ID or empty string.
  */
 function get_post_thumbnail_id( $post = null ) {
-  $post = get_post( $post );
-  if ( ! $post ) {
-    return '';
-  }
-  return get_post_meta( $post->ID, '_thumbnail_id', true );
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return '';
+	}
+	return get_post_meta( $post->ID, '_thumbnail_id', true );
 }
 
 /**
@@ -59,7 +59,7 @@ function get_post_thumbnail_id( $post = null ) {
  * @param string|array $attr Optional. Query string or array of attributes. Default empty.
  */
 function the_post_thumbnail( $size = 'post-thumbnail', $attr = '' ) {
-  echo get_the_post_thumbnail( null, $size, $attr );
+	echo get_the_post_thumbnail( null, $size, $attr );
 }
 
 /**
@@ -72,23 +72,23 @@ function the_post_thumbnail( $size = 'post-thumbnail', $attr = '' ) {
  * @param WP_Query $wp_query Optional. A WP_Query instance. Defaults to the $wp_query global.
  */
 function update_post_thumbnail_cache( $wp_query = null ) {
-  if ( ! $wp_query )
-    $wp_query = $GLOBALS['wp_query'];
+	if ( ! $wp_query )
+		$wp_query = $GLOBALS['wp_query'];
 
-  if ( $wp_query->thumbnails_cached )
-    return;
+	if ( $wp_query->thumbnails_cached )
+		return;
 
-  $thumb_ids = array();
-  foreach ( $wp_query->posts as $post ) {
-    if ( $id = get_post_thumbnail_id( $post->ID ) )
-      $thumb_ids[] = $id;
-  }
+	$thumb_ids = array();
+	foreach ( $wp_query->posts as $post ) {
+		if ( $id = get_post_thumbnail_id( $post->ID ) )
+			$thumb_ids[] = $id;
+	}
 
-  if ( ! empty ( $thumb_ids ) ) {
-    _prime_post_caches( $thumb_ids, false, true );
-  }
+	if ( ! empty ( $thumb_ids ) ) {
+		_prime_post_caches( $thumb_ids, false, true );
+	}
 
-  $wp_query->thumbnails_cached = true;
+	$wp_query->thumbnails_cached = true;
 }
 
 /**
@@ -112,71 +112,71 @@ function update_post_thumbnail_cache( $wp_query = null ) {
  * @return string The post thumbnail image tag.
  */
 function get_the_post_thumbnail( $post = null, $size = 'post-thumbnail', $attr = '' ) {
-  $post = get_post( $post );
-  if ( ! $post ) {
-    return '';
-  }
-  $post_thumbnail_id = get_post_thumbnail_id( $post );
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return '';
+	}
+	$post_thumbnail_id = get_post_thumbnail_id( $post );
 
-  /**
-   * Filters the post thumbnail size.
-   *
-   * @since 2.9.0
-   * @since 4.9.0 Added the `$post_id` parameter.
-   *
-   * @param string|array $size    The post thumbnail size. Image size or array of width and height
-   *                              values (in that order). Default 'post-thumbnail'.
-   * @param int          $post_id The post ID.
-   */
-  $size = apply_filters( 'post_thumbnail_size', $size, $post->ID );
+	/**
+	 * Filters the post thumbnail size.
+	 *
+	 * @since 2.9.0
+	 * @since 4.9.0 Added the `$post_id` parameter.
+	 *
+	 * @param string|array $size    The post thumbnail size. Image size or array of width and height
+	 *                              values (in that order). Default 'post-thumbnail'.
+	 * @param int          $post_id The post ID.
+	 */
+	$size = apply_filters( 'post_thumbnail_size', $size, $post->ID );
 
-  if ( $post_thumbnail_id ) {
+	if ( $post_thumbnail_id ) {
 
-    /**
-     * Fires before fetching the post thumbnail HTML.
-     *
-     * Provides "just in time" filtering of all filters in wp_get_attachment_image().
-     *
-     * @since 2.9.0
-     *
-     * @param int          $post_id           The post ID.
-     * @param string       $post_thumbnail_id The post thumbnail ID.
-     * @param string|array $size              The post thumbnail size. Image size or array of width
-     *                                        and height values (in that order). Default 'post-thumbnail'.
-     */
-    do_action( 'begin_fetch_post_thumbnail_html', $post->ID, $post_thumbnail_id, $size );
-    if ( in_the_loop() )
-      update_post_thumbnail_cache();
-    $html = wp_get_attachment_image( $post_thumbnail_id, $size, false, $attr );
+		/**
+		 * Fires before fetching the post thumbnail HTML.
+		 *
+		 * Provides "just in time" filtering of all filters in wp_get_attachment_image().
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param int          $post_id           The post ID.
+		 * @param string       $post_thumbnail_id The post thumbnail ID.
+		 * @param string|array $size              The post thumbnail size. Image size or array of width
+		 *                                        and height values (in that order). Default 'post-thumbnail'.
+		 */
+		do_action( 'begin_fetch_post_thumbnail_html', $post->ID, $post_thumbnail_id, $size );
+		if ( in_the_loop() )
+			update_post_thumbnail_cache();
+		$html = wp_get_attachment_image( $post_thumbnail_id, $size, false, $attr );
 
-    /**
-     * Fires after fetching the post thumbnail HTML.
-     *
-     * @since 2.9.0
-     *
-     * @param int          $post_id           The post ID.
-     * @param string       $post_thumbnail_id The post thumbnail ID.
-     * @param string|array $size              The post thumbnail size. Image size or array of width
-     *                                        and height values (in that order). Default 'post-thumbnail'.
-     */
-    do_action( 'end_fetch_post_thumbnail_html', $post->ID, $post_thumbnail_id, $size );
+		/**
+		 * Fires after fetching the post thumbnail HTML.
+		 *
+		 * @since 2.9.0
+		 *
+		 * @param int          $post_id           The post ID.
+		 * @param string       $post_thumbnail_id The post thumbnail ID.
+		 * @param string|array $size              The post thumbnail size. Image size or array of width
+		 *                                        and height values (in that order). Default 'post-thumbnail'.
+		 */
+		do_action( 'end_fetch_post_thumbnail_html', $post->ID, $post_thumbnail_id, $size );
 
-  } else {
-    $html = '';
-  }
-  /**
-   * Filters the post thumbnail HTML.
-   *
-   * @since 2.9.0
-   *
-   * @param string       $html              The post thumbnail HTML.
-   * @param int          $post_id           The post ID.
-   * @param string       $post_thumbnail_id The post thumbnail ID.
-   * @param string|array $size              The post thumbnail size. Image size or array of width and height
-   *                                        values (in that order). Default 'post-thumbnail'.
-   * @param string       $attr              Query string of attributes.
-   */
-  return apply_filters( 'post_thumbnail_html', $html, $post->ID, $post_thumbnail_id, $size, $attr );
+	} else {
+		$html = '';
+	}
+	/**
+	 * Filters the post thumbnail HTML.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param string       $html              The post thumbnail HTML.
+	 * @param int          $post_id           The post ID.
+	 * @param string       $post_thumbnail_id The post thumbnail ID.
+	 * @param string|array $size              The post thumbnail size. Image size or array of width and height
+	 *                                        values (in that order). Default 'post-thumbnail'.
+	 * @param string       $attr              Query string of attributes.
+	 */
+	return apply_filters( 'post_thumbnail_html', $html, $post->ID, $post_thumbnail_id, $size, $attr );
 }
 
 /**
@@ -190,11 +190,11 @@ function get_the_post_thumbnail( $post = null, $size = 'post-thumbnail', $attr =
  * @return string|false Post thumbnail URL or false if no URL is available.
  */
 function get_the_post_thumbnail_url( $post = null, $size = 'post-thumbnail' ) {
-  $post_thumbnail_id = get_post_thumbnail_id( $post );
-  if ( ! $post_thumbnail_id ) {
-    return false;
-  }
-  return wp_get_attachment_image_url( $post_thumbnail_id, $size );
+	$post_thumbnail_id = get_post_thumbnail_id( $post );
+	if ( ! $post_thumbnail_id ) {
+		return false;
+	}
+	return wp_get_attachment_image_url( $post_thumbnail_id, $size );
 }
 
 /**
@@ -207,10 +207,10 @@ function get_the_post_thumbnail_url( $post = null, $size = 'post-thumbnail' ) {
  *                           Default 'post-thumbnail'.
  */
 function the_post_thumbnail_url( $size = 'post-thumbnail' ) {
-  $url = get_the_post_thumbnail_url( null, $size );
-  if ( $url ) {
-    echo esc_url( $url );
-  }
+	$url = get_the_post_thumbnail_url( null, $size );
+	if ( $url ) {
+		echo esc_url( $url );
+	}
 }
 
 /**
@@ -222,18 +222,18 @@ function the_post_thumbnail_url( $size = 'post-thumbnail' ) {
  * @return string Post thumbnail caption.
  */
 function get_the_post_thumbnail_caption( $post = null ) {
-  $post_thumbnail_id = get_post_thumbnail_id( $post );
-  if ( ! $post_thumbnail_id ) {
-    return '';
-  }
+	$post_thumbnail_id = get_post_thumbnail_id( $post );
+	if ( ! $post_thumbnail_id ) {
+		return '';
+	}
 
-  $caption = wp_get_attachment_caption( $post_thumbnail_id );
+	$caption = wp_get_attachment_caption( $post_thumbnail_id );
 
-  if ( ! $caption ) {
-    $caption = '';
-  }
+	if ( ! $caption ) {
+		$caption = '';
+	}
 
-  return $caption;
+	return $caption;
 }
 
 /**
@@ -244,12 +244,12 @@ function get_the_post_thumbnail_caption( $post = null ) {
  * @param int|WP_Post $post Optional. Post ID or WP_Post object. Default is global `$post`.
  */
 function the_post_thumbnail_caption( $post = null ) {
-  /**
-   * Filters the displayed post thumbnail caption.
-   *
-   * @since 4.6.0
-   *
-   * @param string $caption Caption for the given attachment.
-   */
-  echo apply_filters( 'the_post_thumbnail_caption', get_the_post_thumbnail_caption( $post ) );
+	/**
+	 * Filters the displayed post thumbnail caption.
+	 *
+	 * @since 4.6.0
+	 *
+	 * @param string $caption Caption for the given attachment.
+	 */
+	echo apply_filters( 'the_post_thumbnail_caption', get_the_post_thumbnail_caption( $post ) );
 }

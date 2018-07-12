@@ -101,13 +101,13 @@ endif;
 
 function get_file( $path ) {
 
-  if ( function_exists('realpath') ) {
-    $path = realpath( $path );
-  }
+	if ( function_exists('realpath') ) {
+		$path = realpath( $path );
+	}
 
-  if ( ! $path || ! @is_file( $path ) ) {
-    return '';
-  }
+	if ( ! $path || ! @is_file( $path ) ) {
+		return '';
+	}
 
-  return @file_get_contents( $path );
+	return @file_get_contents( $path );
 }

@@ -18,11 +18,11 @@
  * @return WP_Styles WP_Styles instance.
  */
 function wp_styles() {
-  global $wp_styles;
-  if ( ! ( $wp_styles instanceof WP_Styles ) ) {
-    $wp_styles = new WP_Styles();
-  }
-  return $wp_styles;
+	global $wp_styles;
+	if ( ! ( $wp_styles instanceof WP_Styles ) ) {
+		$wp_styles = new WP_Styles();
+	}
+	return $wp_styles;
 }
 
 /**
@@ -40,28 +40,28 @@ function wp_styles() {
  * @return array On success, a processed array of WP_Dependencies items; otherwise, an empty array.
  */
 function wp_print_styles( $handles = false ) {
-  if ( '' === $handles ) { // for wp_head
-    $handles = false;
-  }
-  /**
-   * Fires before styles in the $handles queue are printed.
-   *
-   * @since 2.6.0
-   */
-  if ( ! $handles ) {
-    do_action( 'wp_print_styles' );
-  }
+	if ( '' === $handles ) { // for wp_head
+		$handles = false;
+	}
+	/**
+	 * Fires before styles in the $handles queue are printed.
+	 *
+	 * @since 2.6.0
+	 */
+	if ( ! $handles ) {
+		do_action( 'wp_print_styles' );
+	}
 
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  global $wp_styles;
-  if ( ! ( $wp_styles instanceof WP_Styles ) ) {
-    if ( ! $handles ) {
-      return array(); // No need to instantiate if nothing is there.
-    }
-  }
+	global $wp_styles;
+	if ( ! ( $wp_styles instanceof WP_Styles ) ) {
+		if ( ! $handles ) {
+			return array(); // No need to instantiate if nothing is there.
+		}
+	}
 
-  return wp_styles()->do_items( $handles );
+	return wp_styles()->do_items( $handles );
 }
 
 /**
@@ -81,19 +81,19 @@ function wp_print_styles( $handles = false ) {
  * @return bool True on success, false on failure.
  */
 function wp_add_inline_style( $handle, $data ) {
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  if ( false !== stripos( $data, '</style>' ) ) {
-    _doing_it_wrong( __FUNCTION__, sprintf(
-      /* translators: 1: <style>, 2: wp_add_inline_style() */
-      __( 'Do not pass %1$s tags to %2$s.' ),
-      '<code>&lt;style&gt;</code>',
-      '<code>wp_add_inline_style()</code>'
-    ), '3.7.0' );
-    $data = trim( preg_replace( '#<style[^>]*>(.*)</style>#is', '$1', $data ) );
-  }
+	if ( false !== stripos( $data, '</style>' ) ) {
+		_doing_it_wrong( __FUNCTION__, sprintf(
+			/* translators: 1: <style>, 2: wp_add_inline_style() */
+			__( 'Do not pass %1$s tags to %2$s.' ),
+			'<code>&lt;style&gt;</code>',
+			'<code>wp_add_inline_style()</code>'
+		), '3.7.0' );
+		$data = trim( preg_replace( '#<style[^>]*>(.*)</style>#is', '$1', $data ) );
+	}
 
-  return wp_styles()->add_inline_style( $handle, $data );
+	return wp_styles()->add_inline_style( $handle, $data );
 }
 
 /**
@@ -118,9 +118,9 @@ function wp_add_inline_style( $handle, $data ) {
  * @return bool Whether the style has been registered. True on success, false on failure.
  */
 function wp_register_style( $handle, $src, $deps = array(), $ver = false, $media = 'all' ) {
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  return wp_styles()->add( $handle, $src, $deps, $ver, $media );
+	return wp_styles()->add( $handle, $src, $deps, $ver, $media );
 }
 
 /**
@@ -133,9 +133,9 @@ function wp_register_style( $handle, $src, $deps = array(), $ver = false, $media
  * @param string $handle Name of the stylesheet to be removed.
  */
 function wp_deregister_style( $handle ) {
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  wp_styles()->remove( $handle );
+	wp_styles()->remove( $handle );
 }
 
 /**
@@ -162,15 +162,15 @@ function wp_deregister_style( $handle ) {
  *                                 '(orientation: portrait)' and '(max-width: 640px)'.
  */
 function wp_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  $wp_styles = wp_styles();
+	$wp_styles = wp_styles();
 
-  if ( $src ) {
-    $_handle = explode('?', $handle);
-    $wp_styles->add( $_handle[0], $src, $deps, $ver, $media );
-  }
-  $wp_styles->enqueue( $handle );
+	if ( $src ) {
+		$_handle = explode('?', $handle);
+		$wp_styles->add( $_handle[0], $src, $deps, $ver, $media );
+	}
+	$wp_styles->enqueue( $handle );
 }
 
 /**
@@ -183,9 +183,9 @@ function wp_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $m
  * @param string $handle Name of the stylesheet to be removed.
  */
 function wp_dequeue_style( $handle ) {
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  wp_styles()->dequeue( $handle );
+	wp_styles()->dequeue( $handle );
 }
 
 /**
@@ -199,9 +199,9 @@ function wp_dequeue_style( $handle ) {
  * @return bool Whether style is queued.
  */
 function wp_style_is( $handle, $list = 'enqueued' ) {
-  _wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
+	_wp_scripts_maybe_doing_it_wrong( __FUNCTION__ );
 
-  return (bool) wp_styles()->query( $handle, $list );
+	return (bool) wp_styles()->query( $handle, $list );
 }
 
 /**
@@ -227,5 +227,5 @@ function wp_style_is( $handle, $list = 'enqueued' ) {
  * @return bool True on success, false on failure.
  */
 function wp_style_add_data( $handle, $key, $value ) {
-  return wp_styles()->add_data( $handle, $key, $value );
+	return wp_styles()->add_data( $handle, $key, $value );
 }

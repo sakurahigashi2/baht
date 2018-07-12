@@ -50,7 +50,7 @@ add_action( 'admin_menu', '_wp_privacy_hook_requests_page' );
 
 // Prerendering.
 if ( ! is_customize_preview() ) {
-  add_filter( 'admin_print_styles', 'wp_resource_hints', 1 );
+	add_filter( 'admin_print_styles', 'wp_resource_hints', 1 );
 }
 
 add_action( 'admin_print_scripts-post.php',     'wp_page_reload_on_back_button_js' );

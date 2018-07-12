@@ -11,9 +11,9 @@ class IXR_IntrospectionServer extends IXR_Server
     var $signatures;
     var $help;
 
-  /**
-   * PHP5 constructor.
-   */
+	/**
+	 * PHP5 constructor.
+	 */
     function __construct()
     {
         $this->setCallbacks();
@@ -48,12 +48,12 @@ class IXR_IntrospectionServer extends IXR_Server
         );
     }
 
-  /**
-   * PHP4 constructor.
-   */
-  public function IXR_IntrospectionServer() {
-    self::__construct();
-  }
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_IntrospectionServer() {
+		self::__construct();
+	}
 
     function addCallback($method, $callback, $args, $help)
     {

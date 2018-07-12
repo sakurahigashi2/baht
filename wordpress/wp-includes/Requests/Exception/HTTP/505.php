@@ -11,17 +11,17 @@
  * @package Requests
  */
 class Requests_Exception_HTTP_505 extends Requests_Exception_HTTP {
-  /**
-   * HTTP status code
-   *
-   * @var integer
-   */
-  protected $code = 505;
+	/**
+	 * HTTP status code
+	 *
+	 * @var integer
+	 */
+	protected $code = 505;
 
-  /**
-   * Reason phrase
-   *
-   * @var string
-   */
-  protected $reason = 'HTTP Version Not Supported';
+	/**
+	 * Reason phrase
+	 *
+	 * @var string
+	 */
+	protected $reason = 'HTTP Version Not Supported';
 }

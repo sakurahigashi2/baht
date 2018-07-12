@@ -7,12 +7,12 @@
  * This file is here for backward compatibility with old themes and will be removed in a future version.
  */
 _deprecated_file(
-  /* translators: %s: template name */
-  sprintf( __( 'Theme without %s' ), basename( __FILE__ ) ),
-  '3.0.0',
-  null,
-  /* translators: %s: template name */
-  sprintf( __( 'Please include a %s template in your theme.' ), basename( __FILE__ ) )
+	/* translators: %s: template name */
+	sprintf( __( 'Theme without %s' ), basename( __FILE__ ) ),
+	'3.0.0',
+	null,
+	/* translators: %s: template name */
+	sprintf( __( 'Please include a %s template in your theme.' ), basename( __FILE__ ) )
 );
 ?>
 <!DOCTYPE html>
@@ -33,9 +33,9 @@ _deprecated_file(
 // Checks to see whether it needs a sidebar
 if ( empty($withcomments) && !is_single() ) {
 ?>
-  #page { background: url("<?php bloginfo('stylesheet_directory'); ?>/images/kubrickbg-<?php bloginfo('text_direction'); ?>.jpg") repeat-y top; border: none; }
+	#page { background: url("<?php bloginfo('stylesheet_directory'); ?>/images/kubrickbg-<?php bloginfo('text_direction'); ?>.jpg") repeat-y top; border: none; }
 <?php } else { // No sidebar ?>
-  #page { background: url("<?php bloginfo('stylesheet_directory'); ?>/images/kubrickbgwide.jpg") repeat-y top; border: none; }
+	#page { background: url("<?php bloginfo('stylesheet_directory'); ?>/images/kubrickbgwide.jpg") repeat-y top; border: none; }
 <?php } ?>
 
 </style>
@@ -49,9 +49,9 @@ if ( empty($withcomments) && !is_single() ) {
 <div id="page">
 
 <div id="header" role="banner">
-  <div id="headerimg">
-    <h1><a href="<?php echo home_url(); ?>/"><?php bloginfo('name'); ?></a></h1>
-    <div class="description"><?php bloginfo('description'); ?></div>
-  </div>
+	<div id="headerimg">
+		<h1><a href="<?php echo home_url(); ?>/"><?php bloginfo('name'); ?></a></h1>
+		<div class="description"><?php bloginfo('description'); ?></div>
+	</div>
 </div>
 <hr />

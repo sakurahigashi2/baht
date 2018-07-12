@@ -9,10 +9,10 @@ class IXR_Value {
     var $data;
     var $type;
 
-  /**
-   * PHP5 constructor.
-   */
-  function __construct( $data, $type = false )
+	/**
+	 * PHP5 constructor.
+	 */
+	function __construct( $data, $type = false )
     {
         $this->data = $data;
         if (!$type) {
@@ -32,12 +32,12 @@ class IXR_Value {
         }
     }
 
-  /**
-   * PHP4 constructor.
-   */
-  public function IXR_Value( $data, $type = false ) {
-    self::__construct( $data, $type );
-  }
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Value( $data, $type = false ) {
+		self::__construct( $data, $type );
+	}
 
     function calculateType()
     {
@@ -103,7 +103,7 @@ class IXR_Value {
             case 'struct':
                 $return = '<struct>'."\n";
                 foreach ($this->data as $name => $value) {
-          $name = htmlspecialchars($name);
+					$name = htmlspecialchars($name);
                     $return .= "  <member><name>$name</name><value>";
                     $return .= $value->getXml()."</value></member>\n";
                 }

@@ -18,12 +18,12 @@ $_COOKIE = array();
 // A bug in PHP < 5.2.2 makes $HTTP_RAW_POST_DATA not set by default,
 // but we can do it ourself.
 if ( !isset( $HTTP_RAW_POST_DATA ) ) {
-  $HTTP_RAW_POST_DATA = file_get_contents( 'php://input' );
+	$HTTP_RAW_POST_DATA = file_get_contents( 'php://input' );
 }
 
 // fix for mozBlog and other cases where '<?xml' isn't on the very first line
 if ( isset($HTTP_RAW_POST_DATA) )
-  $HTTP_RAW_POST_DATA = trim($HTTP_RAW_POST_DATA);
+	$HTTP_RAW_POST_DATA = trim($HTTP_RAW_POST_DATA);
 
 /** Include the bootstrap for setting up WordPress environment */
 include( dirname( __FILE__ ) . '/wp-load.php' );
@@ -47,7 +47,7 @@ header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
        * Add additional APIs to the Really Simple Discovery (RSD) endpoint.
        *
        * @link http://cyber.law.harvard.edu/blogs/gems/tech/rsd.html
-     *
+	   *
        * @since 3.5.0
        */
       do_action( 'xmlrpc_rsd_apis' );
@@ -95,7 +95,7 @@ exit;
  * @param string $msg Information describing logging reason.
  */
 function logIO( $io, $msg ) {
-  _deprecated_function( __FUNCTION__, '3.4.0', 'error_log()' );
-  if ( ! empty( $GLOBALS['xmlrpc_logging'] ) )
-    error_log( $io . ' - ' . $msg );
+	_deprecated_function( __FUNCTION__, '3.4.0', 'error_log()' );
+	if ( ! empty( $GLOBALS['xmlrpc_logging'] ) )
+		error_log( $io . ' - ' . $msg );
 }
