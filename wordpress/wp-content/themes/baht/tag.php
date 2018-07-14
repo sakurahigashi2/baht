@@ -9,14 +9,15 @@
     </div><!-- //.container -->
   </div><!-- //.header-pankuzu -->
   <?php
+  $current_tag_id = $wp_query->query_vars['tag_id'];
   $tag_args = array(
     'post_type'=>'post',
     'posts_per_page' => 30,
-    'query_vars' => 'tag_id',
+    'tag_id' => $current_tag_id,
     'paged' => $paged
   );
   $tag_query = new WP_Query($tag_args);
-  $tag_array = get_posts($args)[0];
+  $tag_array = get_posts($tag_args)[0];
   ?>
   <div class="header-pages-catch d-sm-none">
     <img src="<?php echo get_the_post_thumbnail_url($tag_array->ID, 'large');?>">
