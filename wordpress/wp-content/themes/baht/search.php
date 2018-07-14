@@ -45,7 +45,7 @@ $search_query = get_search_query();
                         <?php echo mb_substr(strip_tags($post-> post_content), 0, 60).'...'; ?>
                       </p>
                       <p class="media-body-meta">
-                        <span class="media-body-meta-date"><?php the_time("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
+                        <span class="media-body-meta-date"><?php the_modified_date("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
                       </p>
                     </div>
                   </div>
