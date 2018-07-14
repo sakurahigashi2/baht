@@ -19,6 +19,13 @@ function add_css_files() {
 }
 add_action('wp_enqueue_scripts', 'add_css_files');
 
+// favicon設定
+function set_myfavicon() {
+  echo '<link rel="shortcut icon" href="' . get_template_directory_uri() . '/assets/img/baht.ico">' . "\n";
+  echo '<link rel="apple-touch-icon" href="' . get_template_directory_uri() . '/assets/img/baht_180x180.png" sizes="180x180">' . "\n";
+}
+add_action('wp_head', 'set_myfavicon');
+
 // pcサイズ用ページネーション
 function pc_pagination($pages = '', $range = 2) {
   $showitems = ($range * 2) + 1; // 表示するページ数（５ページを表示）
