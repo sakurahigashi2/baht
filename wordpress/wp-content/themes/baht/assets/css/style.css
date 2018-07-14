@@ -725,6 +725,14 @@ img {
   }
 }
 
+.article-ttl-sub--min {
+  border-left: 4px solid #ccc;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+  padding: 0 0 5px 10px;
+}
+
 .article-txt {
   font-size: 1.2rem;
   margin-bottom: 3.55rem;
@@ -815,6 +823,7 @@ img {
 }
 
 .article-spot-img {
+  flex-shrink: 0;
   height: 150px;
   width: 150px;
 }
