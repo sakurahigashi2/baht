@@ -49,20 +49,16 @@
             <h2 class="media-list-ttl">この記事に関連するタグ</h2>
             <ul class="list-unstyled d-flex flex-wrap align-items-center mb-0 mt-4">
               <?php
-              $args = array(
-                'orderby' => 'count',
-                'order' => 'desc',
-                'number' => 10
-              );
-              $tags = get_terms('post_tag', $args);
-              foreach($tags as $value) :
-                echo '<li class="widget-tag"><a class="tag" href="'. get_tag_link($value->term_id) .'">'. $value->name .'</a></li>';
-              endforeach
+              $current_tags = get_the_tags();
+              if ($current_tags) :
+                foreach($current_tags as $tag) :
+                  echo '<li class="widget-tag"><a class="tag" href="'. get_tag_link($tag->term_id) .'">'. $tag->name .'</a></li>';
+                endforeach;
+              endif;
               ?>
             </ul>
           </div>
           <?php
-          $current_tags = get_the_tags();
           if ($current_tags) :
             foreach ( $current_tags as $tag ) {
               $current_tag_list[] = $tag->term_id;
