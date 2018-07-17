@@ -15,7 +15,9 @@
     <!-- <p class="text-right"><a class="widget-more" href="/tags/">タグ一覧&nbsp;&gt;</a></p> -->
   </div><!-- //.widget -->
   <div class="widget">
-    <div style="width:100%;height:300px;background:#ececec;">広告</div>
+    <?php if (is_active_sidebar('sidebar_top_ads')) : ?>
+      <?php dynamic_sidebar('sidebar_top_ads'); ?>
+    <?php endif; ?>
   </div><!-- //.widget -->
   <div class="widget">
     <h3 class="widget-ttl">エリア一覧</h3>
@@ -66,7 +68,9 @@
     </div><!-- //.widget -->
   <?php endif; wp_reset_postdata(); ?>
   <div class="widget">
-    <div style="width:100%;height:300px;background:#ececec;">広告</div>
+    <?php if (is_active_sidebar('sidebar_bottom_ads')) : ?>
+      <?php dynamic_sidebar('sidebar_bottom_ads'); ?>
+    <?php endif; ?>
   </div><!-- //.widget -->
   <div class="widget">
     <h3 class="widget-ttl">新着特集</h3>

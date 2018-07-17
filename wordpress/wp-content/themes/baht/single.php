@@ -39,10 +39,14 @@
           </div><!-- //.article -->
           <div class="main-ad d-md-flex justify-content-between">
             <div class="ad-img">
-              <div style="width:300px;height:250px;background:#ececec;">広告</div>
+              <?php if (is_active_sidebar('article_bottom_ads')) : ?>
+                <?php dynamic_sidebar('article_bottom_ads'); ?>
+              <?php endif; ?>
             </div>
             <div class="ad-img">
-              <div style="width:300px;height:250px;background:#ececec;">広告</div>
+              <?php if (is_active_sidebar('article_bottom_ads')) : ?>
+                <?php dynamic_sidebar('article_bottom_ads'); ?>
+              <?php endif; ?>
             </div>
           </div><!-- //.main-ad -->
           <div class="widget-main">

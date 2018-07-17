@@ -26,6 +26,44 @@ function set_myfavicon() {
 }
 add_action('wp_head', 'set_myfavicon');
 
+// widget追加
+function sidebar_bottom_ads_widgets_init() {
+  register_sidebar(
+    array(
+      'name' => 'サイドバー広告エリア下',
+      'id' => 'sidebar_bottom_ads',
+      'before_widget' => '<div>',
+      'after_widget' => '</div>',
+    )
+  );
+}
+
+function sidebar_top_ads_widgets_init() {
+  register_sidebar(
+    array(
+      'name' => 'サイドバー広告エリア上',
+      'id' => 'sidebar_top_ads',
+      'before_widget' => '<div>',
+      'after_widget' => '</div>',
+    )
+  );
+}
+
+function article_bottom_ads_widgets_init() {
+  register_sidebar(
+    array(
+      'name' => '記事下部広告エリア',
+      'id' => 'article_bottom_ads',
+      'before_widget' => '<div>',
+      'after_widget' => '</div>',
+    )
+  );
+}
+
+add_action('widgets_init', 'sidebar_top_ads_widgets_init');
+add_action('widgets_init', 'sidebar_bottom_ads_widgets_init');
+add_action('widgets_init', 'article_bottom_ads_widgets_init');
+
 // pcサイズ用ページネーション
 function pc_pagination($pages = '', $range = 2) {
   $showitems = ($range * 2) + 1; // 表示するページ数（５ページを表示）
