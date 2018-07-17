@@ -3,7 +3,11 @@
     <h3 class="widget-ttl">人気のお遊びタグ</h3>
     <ul class="list-unstyled d-flex flex-wrap align-items-center mb-0">
       <?php
-      $posttag_args = array('number' => 15);
+      $posttag_args = array(
+       'orderby' => 'count',
+       'order' => 'desc',
+       'number' => 15
+      );
       $posttags = get_tags($posttag_args);
       if($posttags) :
         foreach($posttags as $tag) :

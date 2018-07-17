@@ -8,7 +8,11 @@
             <dd>
               <ul class="list-unstyled d-flex flex-wrap align-items-center mb-0">
                 <?php
-                $posttag_args = array('number' => 10);
+                $posttag_args = array(
+                 'orderby' => 'count',
+                 'order' => 'desc',
+                 'number' => 10
+                );
                 $posttags = get_tags($posttag_args);
                 if($posttags) :
                   foreach($posttags as $tag) :
