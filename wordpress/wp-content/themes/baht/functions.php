@@ -1,4 +1,21 @@
 <?php
+//　head内（ヘッダー）から不要なコード削除
+remove_action( 'wp_head', 'wp_generator' );
+remove_action( 'wp_head', 'rsd_link' );
+remove_action( 'wp_head', 'wlwmanifest_link' );
+remove_action( 'wp_head', 'index_rel_link' );
+remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0 );
+//head内（ヘッダー）絵文字削除
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('admin_print_scripts', 'print_emoji_detection_script');
+remove_action('wp_print_styles', 'print_emoji_styles' );
+remove_action('admin_print_styles', 'print_emoji_styles');
+//head内（ヘッダー）Embed系の記述削除
+remove_action('wp_head','rest_output_link_wp_head');
+remove_action('wp_head','wp_oembed_add_discovery_links');
+remove_action('wp_head','wp_oembed_add_host_js');
+remove_action('template_redirect', 'rest_output_link_header', 11 );
+
 // アイキャッチ画像を有効にする。
 add_theme_support('post-thumbnails');
 
