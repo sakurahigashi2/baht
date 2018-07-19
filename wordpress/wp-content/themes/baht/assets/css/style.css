@@ -654,6 +654,30 @@ img {
   letter-spacing: .05rem;
 }
 
+.article-pc-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.article-pc-flex img {
+  max-width: 98%;
+}
+
+@media screen and (max-width: 575px) {
+
+  .article-pc-flex {
+    display: block;
+  }
+
+  .article-pc-flex img {
+    max-width: 100%;
+  }
+}
+
 .article-ttl {
   color: #343a40;
   font-size: 2.2rem;
