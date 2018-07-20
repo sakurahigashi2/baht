@@ -155,11 +155,7 @@ function breadcrumb() {
   //投稿記事ページとカテゴリーページでの、カテゴリーの階層を表示
   $cats = '';
   $cat_id = '';
-  if ( is_single() ) {
-    $cats = get_the_category();
-    if( isset($cats[0]->term_id) ) $cat_id = $cats[0]->term_id;
-  }
-  else if ( is_category() ) {
+  if (is_category()) {
     $cats = get_queried_object();
     $cat_id = $cats->parent;
   }
