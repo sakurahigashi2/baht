@@ -1215,3 +1215,52 @@ img {
 .header-pages-info-txt {
   color: #6c757d;
 }
+
+
+/*********************
+  For ADs
+*********************/
+/**** レクタングル350x300 ****/
+.fam_rec {
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fam_rec a {
+  /* バナーの横幅 */
+  width: 350px;
+  /* バナーの縦幅 */
+  height: 300px;
+  float: left;
+  display: block;
+  margin-left: 2px;
+  margin-right: 2px;
+  overflow: hidden;
+}
+
+.fam_rec a div span {
+  /* テキストサイズ */
+  font-size: 100%;
+  /* バナーの横幅 -10px */
+  width: 350px !important;
+  /* バナーの横幅の半分をマイナスで指定 */
+  margin-left: -175px !important;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+* html .clearfix { zoom: 1; }
+
+.clear {
+  clear: both;
+}
+
+*:first-child+html .clearfix { zoom: 1; }
