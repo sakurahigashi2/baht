@@ -6,6 +6,11 @@
   <?php if(is_home()) : ?>
     <title><?php bloginfo('name') ?> - タイ夜遊びキュレーションメディア</title>
     <meta name="description" content="<?php bloginfo('description') ?>">
+    <meta property="og:site_name" content="<?php bloginfo('name') ?>">
+    <meta property="og:title" content="<?php bloginfo('name') ?> - タイ夜遊びキュレーションメディア">
+    <meta property="og:description" content="<?php bloginfo('description') ?>">
+    <meta property="og:url" content="<?php site_url() ?>">
+    <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
   <?php elseif(is_single()) : ?>
     <?php
     $description = $post->post_content;
@@ -14,6 +19,10 @@
     ?>
     <title><?php the_title('',' | Baht(バーツ)') ?></title>
     <meta name="description" content="<?php echo mb_strimwidth($description, 0, 340, '...'); ?>">
+    <meta property="og:title" content="<?php the_title('',' | Baht(バーツ)') ?>">
+    <meta property="og:description" content="<?php echo mb_strimwidth($description, 0, 340, '...'); ?>">
+    <meta property="og:url" content="<?php echo get_permalink($post->ID) ?>">
+    <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
   <?php elseif(is_category()): ?>
     <title>「<?php single_cat_title() ?>」に関する記事一覧 | <?php bloginfo('name') ?></title>
   <?php elseif(is_tag()): ?>
@@ -24,6 +33,8 @@
     <title><?php bloginfo('name') ?> - タイ夜遊びキュレーションメディア</title>
   <?php endif; ?>
   <meta name="keywords" content="タイ,バンコク,パタヤ,バーツ,baht,夜遊び,ゴーゴーバー,置屋,ペイバー,バーファイン,東南アジア">
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="ja_JP">
   <?php wp_head(); ?>
 </head>
 
