@@ -39,6 +39,9 @@
 </head>
 
 <body>
+<?php if (is_active_sidebar('start_body_hidden')) : ?>
+  <?php dynamic_sidebar('start_body_hidden'); ?>
+<?php endif; ?>
 <header>
   <div class="header container-fluid d-flex justify-content-between align-items-center">
     <div class="col-md-4 d-none d-md-block">
