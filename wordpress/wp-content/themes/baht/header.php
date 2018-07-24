@@ -11,6 +11,7 @@
     <meta property="og:description" content="<?php bloginfo('description') ?>">
     <meta property="og:url" content="<?php site_url() ?>">
     <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
+    <meta name="twitter:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
   <?php elseif(is_single()) : ?>
     <?php
     $description = $post->post_content;
@@ -23,6 +24,7 @@
     <meta property="og:description" content="<?php echo mb_strimwidth($description, 0, 340, '...'); ?>">
     <meta property="og:url" content="<?php echo get_permalink($post->ID) ?>">
     <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
+    <meta name="twitter:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
   <?php elseif(is_category()): ?>
     <title>「<?php single_cat_title() ?>」に関する記事一覧 | <?php bloginfo('name') ?></title>
   <?php elseif(is_tag()): ?>
@@ -35,6 +37,7 @@
   <meta name="keywords" content="タイ,バンコク,パタヤ,バーツ,baht,夜遊び,ゴーゴーバー,置屋,ペイバー,バーファイン,東南アジア">
   <meta property="og:type" content="article">
   <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
   <?php wp_head(); ?>
 </head>
 
