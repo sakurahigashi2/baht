@@ -1,5 +1,10 @@
 <div class="sidebar col-12 col-lg-4">
   <div class="widget">
+    <?php if (is_active_sidebar('sidebar_top_ads')) : ?>
+      <?php dynamic_sidebar('sidebar_top_ads'); ?>
+    <?php endif; ?>
+  </div><!-- //.widget -->
+  <div class="widget">
     <h3 class="widget-ttl">人気のお遊びタグ</h3>
     <ul class="list-unstyled d-flex flex-wrap align-items-center mb-0">
       <?php
@@ -17,11 +22,6 @@
       ?>
     </ul>
     <!-- <p class="text-right"><a class="widget-more" href="/tags/">タグ一覧&nbsp;&gt;</a></p> -->
-  </div><!-- //.widget -->
-  <div class="widget">
-    <?php if (is_active_sidebar('sidebar_top_ads')) : ?>
-      <?php dynamic_sidebar('sidebar_top_ads'); ?>
-    <?php endif; ?>
   </div><!-- //.widget -->
   <div class="widget">
     <h3 class="widget-ttl">エリア一覧</h3>
