@@ -573,8 +573,9 @@ img {
   font-family: 'timeburnerbold';
   height: 25px;
   left: 0;
-  padding: 4px 0 4px 9px;
+  padding: 4px 0;
   position: absolute;
+  text-align: center;
   top: 0;
   width: 25px;
 }
