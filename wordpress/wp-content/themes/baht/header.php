@@ -17,6 +17,7 @@
     $description = $post->post_content;
     $description = str_replace(array("\r\n","\r","\n","&nbsp;"),'',$description);
     $description = wp_strip_all_tags($description);
+    $author = get_userdata($post->post_author);
     ?>
     <title><?php the_title('',' | Baht(バーツ)') ?></title>
     <meta name="description" content="<?php echo mb_strimwidth($description, 0, 340, '...'); ?>">
@@ -25,6 +26,35 @@
     <meta property="og:url" content="<?php echo get_permalink($post->ID) ?>">
     <meta property="og:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
     <meta name="twitter:image" content="<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>">
+    <script type="application/ld+json">
+      {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "<?php echo get_permalink($post->ID) ?>"
+        },
+        "headline": "<?php the_title() ?>",
+        "image": [
+          "<?php echo get_the_post_thumbnail_url($post->ID, 'large') ?>"
+        ],
+        "datePublished": "<?php echo get_the_date('Y-m-d') ?>",
+        "dateModified": "<?php the_modified_date('Y-m-d') ?>",
+        "author": {
+          "@type": "Person",
+          "name": "<?php echo the_author_meta('nickname', $author->ID) ?>"
+        },
+         "publisher": {
+          "@type": "Organization",
+          "name": "<?php echo the_author_meta('nickname', $author->ID) ?>",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "<?php echo get_template_directory_uri() . '/assets/img/baht_180x180.png' ?>"
+          }
+        },
+        "description": "<?php echo mb_strimwidth($description, 0, 340, '...'); ?>"
+      }
+    </script>
   <?php elseif(is_category()): ?>
     <title>「<?php single_cat_title() ?>」に関する記事一覧 | <?php bloginfo('name') ?></title>
   <?php elseif(is_tag()): ?>
