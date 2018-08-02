@@ -69,6 +69,7 @@
             }
             $relative_args = array(
               'tag__in'        => $current_tag_list,
+              'orderby'        => 'rand',
               'post__not_in'   => array($post->ID),
               'posts_per_page' => 5
             );
