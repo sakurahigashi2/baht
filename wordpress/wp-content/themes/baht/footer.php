@@ -109,7 +109,9 @@
     </div>
   </div>
 </footer>
-
+<?php if (is_active_sidebar('article_bottom_ads')) : ?>
+  <?php dynamic_sidebar('end_body_hidden'); ?>
+<?php endif; ?>
 <?php wp_footer(); ?>
 
 </body>

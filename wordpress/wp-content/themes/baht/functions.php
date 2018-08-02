@@ -88,10 +88,22 @@ function start_body_hidden_widgets_init() {
   );
 }
 
+function end_body_hidden_widgets_init() {
+  register_sidebar(
+    array(
+      'name' => 'body終了タグ直前script用タグ',
+      'id' => 'end_body_hidden',
+      'before_widget' => '<div hidden>',
+      'after_widget' => '</div>',
+    )
+  );
+}
+
 add_action('widgets_init', 'sidebar_top_ads_widgets_init');
 add_action('widgets_init', 'sidebar_bottom_ads_widgets_init');
 add_action('widgets_init', 'article_bottom_ads_widgets_init');
 add_action('widgets_init', 'start_body_hidden_widgets_init');
+add_action('widgets_init', 'end_body_hidden_widgets_init');
 
 // pcサイズ用ページネーション
 function pc_pagination($pages = '', $range = 2) {
