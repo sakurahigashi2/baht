@@ -26,7 +26,7 @@
           <div class="band-catch-info">
             <p class="band-catch-info-ttl"><?php echo mb_strimwidth(get_the_title(), 0, 76, '...'); ?></p>
             <p class="band-catch-info-meta">
-              <span class="band-catch-info-date"><?php the_modified_date("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="band-catch-info-author"><?php the_author(); ?></span>
+              <span class="band-catch-info-date"><?php the_modified_date("Y/m/d") ?></span>&nbsp;|&nbsp;<span class="band-catch-info-author"><?php the_author(); ?></span>
             </p>
           </div>
         </a>
@@ -66,7 +66,7 @@
                         <?php echo mb_substr(strip_tags($post-> post_content), 0, 60).'...'; ?>
                       </p>
                       <p class="media-body-meta">
-                        <span class="media-body-meta-date"><?php the_modified_date("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
+                        <span class="media-body-meta-date"><?php the_modified_date("Y/m/d") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
                       </p>
                     </div>
                   </div>

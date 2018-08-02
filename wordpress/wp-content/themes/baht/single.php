@@ -27,7 +27,7 @@
                 </div>
                 <div class="article-author-name mr-4"><?php the_author(); ?></div>
               </div>
-              <div class="article-author-update">更新日：<?php the_modified_date("Y/m/j") ?></div>
+              <div class="article-author-update">更新日：<?php the_modified_date("Y/m/d") ?></div>
             </div><!-- //.article-author -->
             <div class="article-catch article-img d-none d-sm-block">
               <img src="<?php the_post_thumbnail_url('large'); ?>">
@@ -92,7 +92,7 @@
                               <?php echo mb_substr(strip_tags($post-> post_content), 0, 60).'...'; ?>
                             </p>
                             <p class="media-body-meta">
-                              <span class="media-body-meta-date"><?php the_modified_date("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
+                              <span class="media-body-meta-date"><?php the_modified_date("Y/m/d") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
                             </p>
                           </div>
                         </div>
@@ -128,7 +128,7 @@
                             <?php echo mb_substr(strip_tags($post-> post_content), 0, 60).'...'; ?>
                           </p>
                           <p class="media-body-meta">
-                            <span class="media-body-meta-date"><?php the_modified_date("Y/m/j") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
+                            <span class="media-body-meta-date"><?php the_modified_date("Y/m/d") ?></span>&nbsp;|&nbsp;<span class="media-body-meta-author"><?php the_author(); ?></span>
                           </p>
                         </div>
                       </div>
