@@ -13,6 +13,9 @@
 */wp-content/mu-plugins/
 */wp-content/wp-cache-config.php
 */wp-content/plugins/hello.php
+*/wp-content/w3tc-config
+*/wp-content/db.php
+*/wp-content/object-cache.php
 
 db/data/
 config/*.env
