@@ -66,11 +66,22 @@ function sidebar_top_ads_widgets_init() {
   );
 }
 
-function article_bottom_ads_widgets_init() {
+function article_bottom_left_ads_widgets_init() {
   register_sidebar(
     array(
-      'name' => '記事下部広告エリア',
-      'id' => 'article_bottom_ads',
+      'name' => '記事下部広告エリア左(上)',
+      'id' => 'article_bottom_left_ads',
+      'before_widget' => '<div>',
+      'after_widget' => '</div>',
+    )
+  );
+}
+
+function article_bottom_right_ads_widgets_init() {
+  register_sidebar(
+    array(
+      'name' => '記事下部広告エリア右(下)',
+      'id' => 'article_bottom_right_ads',
       'before_widget' => '<div>',
       'after_widget' => '</div>',
     )
@@ -101,7 +112,8 @@ function end_body_hidden_widgets_init() {
 
 add_action('widgets_init', 'sidebar_top_ads_widgets_init');
 add_action('widgets_init', 'sidebar_bottom_ads_widgets_init');
-add_action('widgets_init', 'article_bottom_ads_widgets_init');
+add_action('widgets_init', 'article_bottom_left_ads_widgets_init');
+add_action('widgets_init', 'article_bottom_right_ads_widgets_init');
 add_action('widgets_init', 'start_body_hidden_widgets_init');
 add_action('widgets_init', 'end_body_hidden_widgets_init');
 

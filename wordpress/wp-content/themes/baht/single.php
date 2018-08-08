@@ -39,13 +39,13 @@
           </div><!-- //.article -->
           <div class="main-ad d-md-flex justify-content-between">
             <div class="ad-img">
-              <?php if (is_active_sidebar('article_bottom_ads')) : ?>
-                <?php dynamic_sidebar('article_bottom_ads'); ?>
+              <?php if (is_active_sidebar('article_bottom_left_ads')) : ?>
+                <?php dynamic_sidebar('article_bottom_left_ads'); ?>
               <?php endif; ?>
             </div>
             <div class="ad-img">
-              <?php if (is_active_sidebar('article_bottom_ads')) : ?>
-                <?php dynamic_sidebar('article_bottom_ads'); ?>
+              <?php if (is_active_sidebar('article_bottom_right_ads')) : ?>
+                <?php dynamic_sidebar('article_bottom_right_ads'); ?>
               <?php endif; ?>
             </div>
           </div><!-- //.main-ad -->
