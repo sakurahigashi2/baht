@@ -650,6 +650,9 @@ img {
 /*********************
   Article Parts
 *********************/
+.table {
+  margin-bottom: 3.55rem
+}
 
 .article p {
   letter-spacing: .05rem;
