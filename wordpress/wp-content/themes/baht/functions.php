@@ -375,3 +375,18 @@ add_filter('get_image_tag_class', 'add_image_class');
   function add_image_class($classes) {
   return $classes . ' article-img';
 }
+
+// ショートコード
+function calculate_translate($attr) {
+  global $wpdb;
+  $query = "SELECT * FROM $wpdb->currency_rates LIMIT 1;";
+  $rows = $wpdb->get_results($query);
+  if($rows){
+    foreach ($rows as $row) {
+      $baht_rate = $row->rate;
+    }
+  }
+  $yen_rate = intval($attr[0]) * $baht_rate;
+  return $yen_rate;
+}
+add_shortcode('calculate_translate', 'calculate_translate');
