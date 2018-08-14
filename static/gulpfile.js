@@ -1,19 +1,21 @@
 // 必要パッケージ定義
 const gulp = require('gulp');
 const babel = require('gulp-babel');
-const gulpUglify = require('gulp-uglify');
+const uglify = require('gulp-uglify');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
 const cleanCSS = require('gulp-clean-css');
 const postcss = require('gulp-postcss');
 const postcssPresetEnv = require('postcss-preset-env');
 const postcssNested = require('postcss-nested');
+const postcssCustomMedia = require("postcss-custom-media")
 const atImport = require('postcss-import');
-const plumber = require('gulp-plumber');
-const notify = require('gulp-notify');
 
 // gulp-postcssのプラグイン設定
 const postcssPlugins = [
   atImport,
   postcssNested(),
+  postcssCustomMedia(),
   postcssPresetEnv({
     browsers: 'last 2 versions'
   }),
@@ -21,14 +23,14 @@ const postcssPlugins = [
 
 // postCSS出入力パス指定
 const postcss_paths = {
-  'src': 'assets/css/postcss/*.css',
-  'dist': 'assets/css'
+  'src': './assets/css/postcss/**/*.css',
+  'dist': './assets/css'
 };
 
 // JS出入パス指定
 const js_paths = {
-  'src': 'assets/js/es6/*.js',
-  'dist': 'assets/js'
+  'src': './assets/js/es6/**/*.js',
+  'dist': './assets/js'
 };
 
 // postcssをCSSに変換用gulpタスク設定
@@ -53,7 +55,7 @@ gulp.task('jsCompile', function() {
         }]
       ]
     }))
-    .pipe(gulpUglify({compress: true}))
+    .pipe(uglify({compress: true}))
     .pipe(gulp.dest(js_paths.dist));
 });
 
@@ -76,7 +78,7 @@ gulp.task('allSetAssets', ()=>{
         }]
       ]
     }))
-    .pipe(gulpUglify({compress: true}))
+    .pipe(uglify({compress: true}))
     .pipe(gulp.dest(js_paths.dist));
 });
 
