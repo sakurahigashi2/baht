@@ -1,33 +1,89 @@
 // 必要パッケージ定義
 const gulp = require('gulp');
+const babel = require('gulp-babel');
+const gulpUglify = require('gulp-uglify');
+const cleanCSS = require('gulp-clean-css');
 const postcss = require('gulp-postcss');
-const cssnext = require('postcss-cssnext');
+const postcssPresetEnv = require('postcss-preset-env');
+const postcssNested = require('postcss-nested');
 const atImport = require('postcss-import');
+const plumber = require('gulp-plumber');
+const notify = require('gulp-notify');
 
-// gulp-postcssの設定
+// gulp-postcssのプラグイン設定
 const postcssPlugins = [
   atImport,
-  cssnext({
-    browsers: ['ie >= 10', 'last 2 versions']
-  })
+  postcssNested(),
+  postcssPresetEnv({
+    browsers: 'last 2 versions'
+  }),
 ];
 
-// 出入力パス指定
-const paths = {
-  'src': './assets/css/postcss/**.css',
-  'dist': './assets/css'
+// postCSS出入力パス指定
+const postcss_paths = {
+  'src': 'assets/css/postcss/*.css',
+  'dist': 'assets/css'
 };
 
-// gulpタスク設定
+// JS出入パス指定
+const js_paths = {
+  'src': 'assets/js/es6/*.js',
+  'dist': 'assets/js'
+};
+
+// postcssをCSSに変換用gulpタスク設定
 gulp.task('postcssToCss', ()=>{
-  return gulp.src(paths.src)
+  gulp.src(postcss_paths.src)
+    .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
     .pipe(postcss(postcssPlugins))
-    .pipe(gulp.dest(paths.dist));
+    .pipe(cleanCSS())
+    .pipe(gulp.dest(postcss_paths.dist));
 });
 
-// 監視対象設定
+// JSをコンパイル
+gulp.task('jsCompile', function() {
+  gulp.src(js_paths.src)
+    .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
+    .pipe(babel({
+      presets: [
+        ['env', {
+          'targets': {
+            'browsers': ['last 2 versions']
+          }
+        }]
+      ]
+    }))
+    .pipe(gulpUglify({compress: true}))
+    .pipe(gulp.dest(js_paths.dist));
+});
+
+// 全てのassets変換用gulpタスク設定
+gulp.task('allSetAssets', ()=>{
+  gulp.src(postcss_paths.src)
+    .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
+    .pipe(postcss(postcssPlugins))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest(postcss_paths.dist));
+
+  gulp.src(js_paths.src)
+    .pipe(plumber({errorHandler: notify.onError('<%= error.message %>')}))
+    .pipe(babel({
+      presets: [
+        ['env', {
+          'targets': {
+            'browsers': ['last 2 versions']
+          }
+        }]
+      ]
+    }))
+    .pipe(gulpUglify({compress: true}))
+    .pipe(gulp.dest(js_paths.dist));
+});
+
+// CSS,JS変更監視設定
 gulp.task('watch', ()=>{
-  gulp.watch(paths.src, ['postcssToCss']);
+  gulp.watch(postcss_paths.src, ['postcssToCss']);
+  gulp.watch(js_paths.src, ['jsCompile']);
 });
 
-gulp.task('default', ['postcssToCss']);
+gulp.task('default', ['allSetAssets']);
