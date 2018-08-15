@@ -1,6 +1,6 @@
 # Bahtについて
-BahtはWordPressテーマ。  
-Docker上でWordPressを動かす構成になっている。
+BahtはWordPressテーマ。Docker上でWordPressを動かす構成になっている。  
+この構成で運用しているサイト <https://baht.tokyo/>
 ## 初回構築手順
 構築手順は以下の通り。
 ## サーバーの設定
@@ -55,6 +55,25 @@ RewriteRule . /index.php [L]
 </IfModule>
 # END WordPress
 ```
+## 起動
+### コンテナ起動
+dockerディレクトリまで移動してdocker-composeコマンドを実行。
+```
+$ docker-compose up -d
+```
+### SSLへ登録(Let's Encryptを利用)
+SSLに登録する場合のみ以下のコマンドを実行。  
+※ [Let's Encrypt](https://letsencrypt.jp)について。
+```
+$ docker exec baht-app letsencrypt.sh
+```
+### SSLの自動更新
+90日間で証明書の有効期限が切れるので、cronでSSL更新確認コマンドを定期実行することを推奨。  
+```
+$ echo "0 3 1,15 * *   docker exec baht-app letsencrypt.sh" >> /var/spool/cron/crontabs/root
+```
+### ブラウザからアクセス
+<http://localhost>
 ## バッチの設定
 ### 環境設定ファイルの用意
 config配下に `db.env` を配置。
@@ -76,25 +95,23 @@ $ ruby /usr/local/batch/currency_exchange/runner.rb  "CurrencyExchangeBatch.exec
 ```
 $ docker exec baht-batch ruby /usr/local/batch/currency_exchange/runner.rb  "CurrencyExchangeBatch.execute"
 ```
-## 起動
-### コンテナ起動
-dockerディレクトリまで移動してdocker-composeコマンドを実行。
+## DBバックアップ
+`db/backup` 直下に `wordpress_<実行日>.sql` で出力される。  
+※ `wordpress` はデータベース名
+#### コンテナ内から
 ```
-$ docker-compose up -d
+$ mysql_bk.sh wordpress
 ```
-### SSLへ登録(Let's Encryptを利用)
-SSLに登録する場合のみ以下のコマンドを実行。  
-※ [Let's Encrypt](https://letsencrypt.jp)について。
+#### コンテナ外から
 ```
-$ docker exec baht-app letsencrypt.sh
+$ docker exec baht-mysql mysql_bk.sh wordpress
 ```
-### SSLの自動更新
-90日間で証明書の有効期限が切れるので、cronでSSL更新確認コマンドを定期実行することを推奨。  
+## DB復旧
+※ `wordpress` はデータベース名
+#### コンテナ内から
 ```
-$ echo "0 3 1,15 * *   docker exec baht-app letsencrypt.sh" >> /var/spool/cron/crontabs/root
+$ mysql -u<ユーザ名> -p<パスワード> wordpress < <バックアップファイル名>
 ```
-### ブラウザからアクセス
-<http://localhost>
 ## 備考
 ### エラー関連
 2回目以降の起動時にDBコンテナが起動せず、エラーになってしまう場合には `db/data/tc.log` を削除してから起動する。
@@ -108,7 +125,7 @@ $ mysql -u root -p
 フロントエンドは `gulpfile` を使用してコンパイルしたソースを `wordpress/wp-content/themes/baht/assets` 配下に設置している。  
 ※コンパイル前のソースは `wordpress/wp-content/themes/baht/frontend` に配置している。
 #### コンパイル手順
-##### 1. `yarn` または `npm` をグローバルにインストール
+##### 1. `yarn` をグローバルにインストール
 ```
 $  brew install yarn
 ```
@@ -118,16 +135,16 @@ $  brew install yarn
 ```
 $ yarn install
 ```
-または
+`npm` の場合は
 ```
 $ npm install
 ```
 ##### 使い方
-postCSS,JSを変換
+postCSS,JSをコンパイル
 ```
 $ gulp allSetAssets
 ```
-ファイルの変更監視実
+ファイルの変更監視
 ```
 $ gulp watch
 ```
