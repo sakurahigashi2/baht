@@ -134,6 +134,12 @@ img {
   }
 }
 
+.table-responsive {
+  & td,th {
+    white-space: nowrap;
+  }
+}
+
 /**** .header ****/
 .header {
   height: 85px;
