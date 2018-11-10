@@ -6,9 +6,9 @@
       <?php
       $band_post_ids;
       $band_args = array(
-        'post_type'=>'post',
+        'post_type'      =>'post',
         'posts_per_page' => 3,
-        'orderby' => 'rand'
+        'orderby'        => 'rand'
       );
       $band_query = new WP_Query($band_args);
       global $band_catch_counter;
@@ -45,10 +45,11 @@
           <ul class="medias-list list-unstyled">
             <?php
             $main_args = array(
-              'post_type'=>'post',
+              'post_type'      =>'post',
               'posts_per_page' => 30,
-              'post__not_in' => $band_post_ids,
-              'paged' => $paged
+              'post__not_in'   => $band_post_ids,
+              'orderby'        => 'modified',
+              'paged'          => $paged
             );
             $main_query = new WP_Query($main_args);
             ?>
