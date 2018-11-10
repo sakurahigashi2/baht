@@ -11,27 +11,28 @@
         'orderby' => 'rand'
       );
       $band_query = new WP_Query($band_args);
+      global $band_catch_counter;
       ?>
       <?php if($band_query->have_posts()) : while ($band_query->have_posts()) : $band_query->the_post(); ?>
-        <?php
-        $counter++;
-        $band_post_ids[] = get_the_ID();
-        ?>
-        <?php if($counter == 1) : ?>
-          <div class="col-12 col-lg-4 p-0">
-        <?php else : ?>
-          <div class="col-6 col-lg-4 p-0">
-        <?php endif; ?>
-        <a href="<?php echo get_permalink(); ?>" class="band-catch" style="background-image: url(<?php the_post_thumbnail_url('large'); ?>)">
-          <div class="band-catch-info">
-            <p class="band-catch-info-ttl"><?php echo mb_strimwidth(get_the_title(), 0, 76, '...'); ?></p>
-            <p class="band-catch-info-meta">
-              <span class="band-catch-info-date"><?php the_modified_date("Y/m/d") ?></span>&nbsp;|&nbsp;<span class="band-catch-info-author"><?php the_author(); ?></span>
-            </p>
-          </div>
-        </a>
-      </div>
-      <?php endwhile; endif; ?>
+      <?php
+      $band_catch_counter++;
+      $band_post_ids[] = get_the_ID();
+      ?>
+      <?php if($band_catch_counter == 1) : ?>
+      <div class="col-12 col-lg-4 p-0">
+      <?php else : ?>
+      <div class="col-6 col-lg-4 p-0">
+      <?php endif; ?>
+      <a href="<?php echo get_permalink(); ?>" class="band-catch" style="background-image: url(<?php the_post_thumbnail_url('large'); ?>)">
+        <div class="band-catch-info">
+          <p class="band-catch-info-ttl"><?php echo mb_strimwidth(get_the_title(), 0, 76, '...'); ?></p>
+          <p class="band-catch-info-meta">
+            <span class="band-catch-info-date"><?php the_modified_date("Y/m/d") ?></span>&nbsp;|&nbsp;<span class="band-catch-info-author"><?php the_author(); ?></span>
+          </p>
+        </div>
+      </a>
+    </div>
+    <?php endwhile; endif; ?>
     </div><!-- //.band -->
   </div><!-- //.container-fluid -->
   <div class="container">
