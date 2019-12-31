@@ -291,7 +291,7 @@ img {
     padding: 25px 12px 12px 12px;
   }
   @media (--xs) {
-    padding-top: 12px;
+    padding: 12px 12px 0 12px;
   }
 }
 
@@ -300,6 +300,9 @@ img {
   padding: 35px 0;
   @media (--md) {
     padding: 15px;
+  }
+  @media (--xs) {
+    padding: 0 15px;
   }
 }
 
