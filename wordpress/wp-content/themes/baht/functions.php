@@ -44,6 +44,17 @@ function set_myfavicon() {
 add_action('wp_head', 'set_myfavicon');
 
 // widget追加
+function sp_article_top_ads_widgets_init() {
+  register_sidebar(
+    array(
+      'name' => 'SPタイトル下広告エリア',
+      'id' => 'sp_article_top_ads',
+      'before_widget' => '<div>',
+      'after_widget' => '</div>',
+    )
+  );
+}
+
 function sidebar_bottom_ads_widgets_init() {
   register_sidebar(
     array(
@@ -110,6 +121,7 @@ function end_body_hidden_widgets_init() {
   );
 }
 
+add_action('widgets_init', 'sp_article_top_ads_widgets_init');
 add_action('widgets_init', 'sidebar_top_ads_widgets_init');
 add_action('widgets_init', 'sidebar_bottom_ads_widgets_init');
 add_action('widgets_init', 'article_bottom_left_ads_widgets_init');

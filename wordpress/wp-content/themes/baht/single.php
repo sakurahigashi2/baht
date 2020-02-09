@@ -35,6 +35,11 @@
                 <?php echo get_post(get_post_thumbnail_id())->post_excerpt; ?>
               </p>
             </div>
+            <?php if (is_active_sidebar('sidebar_top_ads')) : ?>
+              <div class="d-sm-none">
+                <?php dynamic_sidebar('sp_article_top_ads'); ?>
+              </div>
+            <?php endif; ?>
             <?php the_content(); ?>
           </div><!-- //.article -->
           <div class="main-ad d-md-flex justify-content-between">
