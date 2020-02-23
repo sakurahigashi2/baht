@@ -36,7 +36,7 @@
               </p>
             </div>
             <div class="article-ad-btn">
-              <a class="btn btn-primary" href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3410527&pid=885326320&vc_url=https%3A%2F%2Fwww.expedia.co.jp%2FDestinations-In-Thailand.d178.Flight-Destinations%3Feapid%3D0-28%26affcid%3Djp.network.valuecommerce.general_mylink." rel="nofollow"><img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3410527&pid=885326320" height="1" width="0" border="0">片道¥9900〜！タイへの格安航空券を探す</a>
+              <a class="btn btn-primary" href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3410527&pid=885326320&vc_url=https%3A%2F%2Fwww.expedia.co.jp%2FDestinations-In-Thailand.d178.Flight-Destinations%3Feapid%3D0-28%26affcid%3Djp.network.valuecommerce.general_mylink." target="_blank" rel="nofollow"><img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3410527&pid=885326320" height="1" width="0" border="0">片道¥9900〜！タイへの格安航空券を探す</a>
             </div>
             <?php if (is_active_sidebar('sidebar_top_ads')) : ?>
               <div class="d-sm-none">
@@ -46,7 +46,7 @@
             <?php the_content(); ?>
           </div><!-- //.article -->
           <div class="article-ad-btn">
-            <a class="btn btn-primary" href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3410527&pid=885326320&vc_url=https%3A%2F%2Fwww.expedia.co.jp%2FDestinations-In-Thailand.d178.Flight-Destinations%3Feapid%3D0-28%26affcid%3Djp.network.valuecommerce.general_mylink." rel="nofollow"><img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3410527&pid=885326320" height="1" width="0" border="0">片道¥9900〜！タイへの格安航空券を探す</a>
+            <a class="btn btn-primary" href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3410527&pid=885326320&vc_url=https%3A%2F%2Fwww.expedia.co.jp%2FDestinations-In-Thailand.d178.Flight-Destinations%3Feapid%3D0-28%26affcid%3Djp.network.valuecommerce.general_mylink." target="_blank" rel="nofollow"><img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3410527&pid=885326320" height="1" width="0" border="0">片道¥9900〜！タイへの格安航空券を探す</a>
           </div>
           <div class="main-ad d-md-flex justify-content-between">
             <div class="ad-img">
