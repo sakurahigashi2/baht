@@ -17,7 +17,7 @@ class Extension_NewRelic_Plugin_Admin {
 		$extensions['newrelic'] = array (
 			'name' => 'New Relic',
 			'author' => 'W3 EDGE',
-			'description' =>  __( 'New Relic is software analytics platform offering app performance management and mobile monitoring solutions.', 'w3-total-cache' ),
+			'description' =>  __( 'Legacy: New Relic is software analytics platform offering app performance management and mobile monitoring solutions.', 'w3-total-cache' ),
 			'author_uri' => 'https://www.w3-edge.com/',
 			'extension_uri' => 'https://www.w3-edge.com/',
 			'extension_id' => 'newrelic',
@@ -72,14 +72,19 @@ class Extension_NewRelic_Plugin_Admin {
 				) );
 		}
 
-		add_action( 'admin_init_w3tc_dashboard', array(
-				'\W3TC\Extension_NewRelic_Widget',
-				'admin_init_w3tc_dashboard' ) );
-		add_action( 'w3tc_ajax', array(
-				'\W3TC\Extension_NewRelic_Widget',
-				'w3tc_ajax' ) );
+		$v = $this->_config->get_string( array( 'newrelic', 'api_key' ) );
+		$new_relic_configured = !empty( $v );
 
-		add_filter( 'w3tc_notes', array( $this, 'w3tc_notes' ) );
+		if ( $new_relic_configured ) {
+			add_action( 'admin_init_w3tc_dashboard', array(
+					'\W3TC\Extension_NewRelic_Widget',
+					'admin_init_w3tc_dashboard' ) );
+			add_action( 'w3tc_ajax', array(
+					'\W3TC\Extension_NewRelic_Widget',
+					'w3tc_ajax' ) );
+
+			add_filter( 'w3tc_notes', array( $this, 'w3tc_notes' ) );
+		}
 	}
 
 

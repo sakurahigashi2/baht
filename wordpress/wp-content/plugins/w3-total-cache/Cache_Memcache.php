@@ -13,10 +13,10 @@ class Cache_Memcache extends Cache_Base {
 	private $_memcache = null;
 
 	/*
-     * Used for faster flushing
-     *
-     * @var integer $_key_version
-     */
+	 * Used for faster flushing
+	 *
+	 * @var integer $_key_version
+	 */
 	private $_key_version = array();
 
 	/**
@@ -33,12 +33,8 @@ class Cache_Memcache extends Cache_Base {
 			$persistent = isset( $config['persistent'] ) ? (boolean) $config['persistent'] : false;
 
 			foreach ( (array) $config['servers'] as $server ) {
-				if ( substr( $server, 0, 5 ) == 'unix:' )
-					$this->_memcache->addServer( trim( $server ), 0, $persistent );
-				else {
-					list( $ip, $port ) = explode( ':', $server );
-					$this->_memcache->addServer( trim( $ip ), (integer) trim( $port ), $persistent );
-				}
+				list( $ip, $port ) = Util_Content::endpoint_to_host_port( $server );
+				$this->_memcache->addServer( $ip, $port, $persistent );
 			}
 		} else {
 			return false;
@@ -325,7 +321,9 @@ class Cache_Memcache extends Cache_Base {
 
 	public function get_item_key( $name ) {
 		// memcached doesn't survive spaces in a key
-		$key = sprintf( 'w3tc_%s_%d_%s_%s', $this->_host, $this->_blog_id, $this->_module, md5( $name ) );
+		$key = sprintf( 'w3tc_%d_%s_%d_%s_%s',
+			$this->_instance_id, $this->_host, $this->_blog_id,
+			$this->_module, md5( $name ) );
 		return $key;
 	}
 }

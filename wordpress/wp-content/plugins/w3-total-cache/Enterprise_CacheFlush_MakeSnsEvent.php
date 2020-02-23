@@ -58,6 +58,12 @@ class Enterprise_CacheFlush_MakeSnsEvent extends Enterprise_SnsBase {
 		$this->_prepare_message( array( 'action' => 'browsercache_flush' ) );
 	}
 
+	function cdn_purge_all( $extras = null ) {
+		return $this->_prepare_message( array(
+			'action' => 'cdn_purge_all',
+			'extras' => $extras ) );
+	}
+
 	/**
 	 * Purges Files from Varnish (If enabled) and CDN
 	 *
@@ -80,18 +86,6 @@ class Enterprise_CacheFlush_MakeSnsEvent extends Enterprise_SnsBase {
 	 */
 	function opcache_flush() {
 		$this->_prepare_message( array( 'action' => 'opcache_flush' ) );
-	}
-
-	/**
-	 * Reloads/compiles a PHP file.
-	 *
-	 * @param string  $filename
-	 * @return mixed
-	 */
-	function opcache_flush_file( $filename ) {
-		return $this->_prepare_message( array(
-				'action' => 'opcache_flush_file',
-				'filename' => $filename ) );
 	}
 
 	/**
@@ -227,9 +221,12 @@ class Enterprise_CacheFlush_MakeSnsEvent extends Enterprise_SnsBase {
 			}
 			$this->_log( 'Backtrace ', $backtrace_optimized );
 
-			$r = $api->publish( $this->_topic_arn, $v );
-			if ( $r->status != 200 ) {
-				$this->_log( "Error: {$r->body->Error->Message}" );
+			$r = $api->publish( array(
+				'Message' => $v,
+				'TopicArn' => $this->_topic_arn ) );
+			if ( $r['@metadata']['statusCode'] != 200 ) {
+				$this->_log( "Error" );
+				$this->_log( json_encode($r) );
 				return false;
 			}
 		} catch ( \Exception $e ) {

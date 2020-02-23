@@ -28,6 +28,7 @@ class Cdn_Util {
 				's3',
 				's3_compatible',
 				'stackpath',
+				'stackpath2',
 			) );
 	}
 
@@ -41,7 +42,7 @@ class Cdn_Util {
 		return in_array( $engine, array(
 				'mirror', 'maxcdn', 'cotendo', 'cf2', 'akamai',
 				'edgecast', 'att', 'highwinds', 'limelight', 'rackspace_cdn',
-				'stackpath' ) );
+				'stackpath', 'stackpath2' ) );
 	}
 
 	static public function is_engine_push( $engine ) {
@@ -57,12 +58,14 @@ class Cdn_Util {
 	static public function can_purge_all( $engine ) {
 		return in_array( $engine, array(
 				'att',
+				'cf2',
 				'cotendo',
 				'edgecast',
 				'highwinds',
 				'limelight',
 				'maxcdn',
 				'stackpath',
+				'stackpath2',
 			) );
 	}
 
@@ -89,6 +92,7 @@ class Cdn_Util {
 				's3',
 				's3_compatible',
 				'stackpath',
+				'stackpath2',
 			) );
 	}
 
