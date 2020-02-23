@@ -725,6 +725,17 @@ img {
   }
 }
 
+.article-ad-btn {
+  margin-bottom: var(--article-parts-margin-bottom);
+  text-align: center;
+  @media (--xs) {
+    margin-bottom: 15px;
+  }
+  & .btn {
+    padding: 10px;
+  }
+}
+
 .article-spot {
   background-color: var(--light);
   border: 1px solid var(--gray-light);
