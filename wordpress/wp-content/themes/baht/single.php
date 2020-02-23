@@ -82,7 +82,7 @@
               'tag__in'        => $current_tag_list,
               'orderby'        => 'rand',
               'post__not_in'   => array($post->ID),
-              'posts_per_page' => 5
+              'posts_per_page' => 5,
             );
             $related_posts = new WP_Query($relative_args);
             if($related_posts->have_posts()) : ?>
@@ -118,7 +118,8 @@
           <?php
           $new_args = array(
             'post__not_in'   => array($post->ID),
-            'posts_per_page' => 5
+            'posts_per_page' => 5,
+            'orderby' => 'modified'
           );
           $new_posts = new WP_Query($new_args);
           if($new_posts->have_posts()) : ?>
