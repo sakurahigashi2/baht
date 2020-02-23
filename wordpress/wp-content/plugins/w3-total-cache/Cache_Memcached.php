@@ -13,17 +13,17 @@ class Cache_Memcached extends Cache_Base {
 	private $_memcache = null;
 
 	/*
-     * Used for faster flushing
-     *
-     * @var integer $_key_version
-     */
+	 * Used for faster flushing
+	 *
+	 * @var integer $_key_version
+	 */
 	private $_key_version = array();
 
 	/*
-     * Configuration used to reinitialize persistent object
-     *
-     * @var integer $_key_version
-     */
+	 * Configuration used to reinitialize persistent object
+	 *
+	 * @var integer $_key_version
+	 */
 	private $_config = null;
 
 	/**
@@ -60,6 +60,14 @@ class Cache_Memcached extends Cache_Base {
 			$this->_memcache->setOption( \Memcached::OPT_REMOVE_FAILED_SERVERS, true );
 		}
 
+		if ( isset( $config['binary_protocol'] ) && !empty( $config['binary_protocol'] ) && defined( '\Memcached::OPT_BINARY_PROTOCOL' ) ) {
+			$this->_memcache->setOption( \Memcached::OPT_BINARY_PROTOCOL, true );
+		}
+
+		if ( defined( '\Memcached::OPT_TCP_NODELAY' ) ) {
+			$this->_memcache->setOption( \Memcached::OPT_TCP_NODELAY, true );
+		}
+
 		if ( isset( $config['aws_autodiscovery'] ) &&
 			$config['aws_autodiscovery'] &&
 			defined( '\Memcached::OPT_CLIENT_MODE' ) &&
@@ -68,19 +76,15 @@ class Cache_Memcached extends Cache_Base {
 				\Memcached::DYNAMIC_CLIENT_MODE );
 
 		foreach ( (array)$config['servers'] as $server ) {
-			if ( substr( $server, 0, 5 ) == 'unix:' )
-				$this->_memcache->addServer( trim( $server ), 0 );
-			else {
-				list( $ip, $port ) = explode( ':', $server );
-				$this->_memcache->addServer( trim( $ip ), (integer) trim( $port ) );
-			}
+			list( $ip, $port ) = Util_Content::endpoint_to_host_port( $server );
+			$this->_memcache->addServer( $ip, $port );
 		}
 
 		if ( isset( $config['username'] ) && !empty( $config['username'] ) &&
-			method_exists( $this->_memcache, 'setSaslAuthData' ) &&
-			ini_get( 'memcached.use_sasl' ) )
+			method_exists( $this->_memcache, 'setSaslAuthData' ) ) {
 			$this->_memcache->setSaslAuthData( $config['username'],
 				$config['password'] );
+		}
 
 		// when disabled - no extra requests are made to obtain key version,
 		// but flush operations not supported as a result
@@ -370,7 +374,7 @@ class Cache_Memcached extends Cache_Base {
 			return true;
 
 		$storage_key = $this->get_item_key( $key );
-		$r = @$this->_memcache->increment( $storage_key, $value );
+		$r = $this->_memcache->increment( $storage_key, $value, 0, 3600 );
 		if ( !$r )   // it doesnt initialize counter by itself
 			$this->counter_set( $key, 0 );
 
@@ -397,7 +401,9 @@ class Cache_Memcached extends Cache_Base {
 
 	public function get_item_key( $name ) {
 		// memcached doesn't survive spaces in a key
-		$key = sprintf( 'w3tc_%s_%d_%s_%s', $this->_host, $this->_blog_id, $this->_module, md5( $name ) );
+		$key = sprintf( 'w3tc_%d_%s_%d_%s_%s',
+			$this->_instance_id, $this->_host, $this->_blog_id,
+			$this->_module, md5( $name ) );
 		return $key;
 	}
 }

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Themes - Twenty Fifteen package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2017-11-16 12:18:35+0000\n"
+"PO-Revision-Date: 2019-02-15 14:28:37+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11,13 +11,53 @@ msgstr ""
 "Language: ja_JP\n"
 "Project-Id-Version: Themes - Twenty Fifteen\n"
 
-#. Description of the plugin/theme
+#. Description of the theme
 msgid "Our 2015 default theme is clean, blog-focused, and designed for clarity. Twenty Fifteen's simple, straightforward typography is readable on a wide variety of screen sizes, and suitable for multiple languages. We designed it using a mobile-first approach, meaning your content takes center-stage, regardless of whether your visitors arrive by smartphone, tablet, laptop, or desktop computer."
 msgstr "2015年のデフォルトテーマはクリーンでブログ向けに、分かりやすさを考えて設計されています。Twenty Fifteen の単純明快なタイポグラフィは多様な画面サイズで読みやすく、複数の言語に適しています。このテーマは「モバイル・ファースト」アプローチを使ってデザインしました。つまり、サイトの訪問者がスマートフォン・タブレット・ノートまたはデスクトップパソコンのどれを使ってサイトに訪れていても、あなたのコンテンツに最も注目が注がれるようになっているという意味です。"
 
-#. Theme Name of the plugin/theme
+#. Theme Name of the theme
 msgid "Twenty Fifteen"
 msgstr "Twenty Fifteen"
+
+#: functions.php:243
+msgid "Light Blue"
+msgstr "ライトブルー"
+
+#: functions.php:238
+msgid "Bright Blue"
+msgstr "ブライトブルー"
+
+#: functions.php:193
+msgid "Light Gray"
+msgstr "ライトグレー"
+
+#: functions.php:188
+msgid "Dark Gray"
+msgstr "ダークグレー"
+
+#: functions.php:208
+msgid "Dark Brown"
+msgstr "ダークブラウン"
+
+#: functions.php:198
+msgid "White"
+msgstr "白"
+
+#: functions.php:218
+msgid "Light Pink"
+msgstr "ライトピンク"
+
+#: functions.php:213
+msgid "Medium Pink"
+msgstr "ピンク"
+
+#: functions.php:233
+msgid "Blue Gray"
+msgstr "ブルーグレー"
+
+#: functions.php:223
+msgid "Dark Purple"
+msgstr "ダークパープル"
 
 #. translators: %s: post title
 #: comments.php:31
@@ -101,47 +141,47 @@ msgstr "過去のコメント"
 msgid "Comment navigation"
 msgstr "コメントナビゲーション"
 
-#: inc/customizer.php:226
+#: inc/customizer.php:237
 msgid "Blue"
 msgstr "青"
 
-#: inc/customizer.php:215
+#: inc/customizer.php:226 functions.php:228
 msgid "Purple"
 msgstr "紫"
 
-#: inc/customizer.php:204
+#: inc/customizer.php:215
 msgid "Pink"
 msgstr "ピンク"
 
-#: inc/customizer.php:193
+#: inc/customizer.php:204 functions.php:203
 msgid "Yellow"
 msgstr "黄"
 
-#: inc/customizer.php:182
+#: inc/customizer.php:193
 msgid "Dark"
 msgstr "ダークカラー"
 
-#: inc/customizer.php:171
+#: inc/customizer.php:182
 msgid "Default"
 msgstr "デフォルト"
 
-#: inc/customizer.php:93
+#: inc/customizer.php:103
 msgid "Header and Sidebar Background Color"
 msgstr "ヘッダー・サイドバー背景色"
 
-#: inc/customizer.php:72 inc/customizer.php:94 inc/customizer.php:101
+#: inc/customizer.php:79 inc/customizer.php:104 inc/customizer.php:111
 msgid "Applied to the header on small screens and the sidebar on wide screens."
 msgstr "﻿小さい画面上のヘッダーと、幅広い画面上のサイドバーに適用されます。"
 
-#: inc/customizer.php:71
+#: inc/customizer.php:78
 msgid "Header and Sidebar Text Color"
 msgstr "ヘッダー・テキスト色"
 
-#: inc/customizer.php:51
+#: inc/customizer.php:55
 msgid "Base Color Scheme"
 msgstr "ベース配色"
 
-#: inc/back-compat.php:37 inc/back-compat.php:48 inc/back-compat.php:62
+#: inc/back-compat.php:37 inc/back-compat.php:48 inc/back-compat.php:64
 msgid "Twenty Fifteen requires at least WordPress version 4.1. You are running version %s. Please upgrade and try again."
 msgstr "Twenty Fifteen には WordPress バージョン 4.1 以上が必要です。現在のバージョンは %s です。アップグレードしてもう一度お試しください。"
 
@@ -158,59 +198,47 @@ msgstr "次の画像"
 msgid "Previous Image"
 msgstr "前の画像"
 
-#: header.php:49
+#: header.php:50
 msgid "Menu and widgets"
 msgstr "﻿メニューとウィジェット"
 
-#: header.php:26
+#: header.php:27
 msgid "Skip to content"
 msgstr "コンテンツへスキップ"
 
-#: functions.php:312
+#: functions.php:399
 msgid "collapse child menu"
 msgstr "サブメニューを閉じる"
 
-#: functions.php:311
+#: functions.php:398
 msgid "expand child menu"
 msgstr "サブメニューを展開"
 
-#. Translators: To add an additional character subset specific to your
-#. language, translate this to 'greek', 'cyrillic', 'devanagari' or
-#. 'vietnamese'. Do not translate into your own language.
-#: functions.php:238
+#: functions.php:319
 msgctxt "Add new subset (greek, cyrillic, devanagari, vietnamese)"
 msgid "no-subset"
 msgstr "no-subset"
 
-#. Translators: If there are characters in your language that are not supported
-#. by Inconsolata, translate this to 'off'. Do not translate into your own
-#. language.
-#: functions.php:230
+#: functions.php:311
 msgctxt "Inconsolata font: on or off"
 msgid "on"
 msgstr "on"
 
-#. Translators: If there are characters in your language that are not supported
-#. by Noto Serif, translate this to 'off'. Do not translate into your own
-#. language.
-#: functions.php:222
+#: functions.php:303
 msgctxt "Noto Serif font: on or off"
 msgid "on"
 msgstr "on"
 
-#. Translators: If there are characters in your language that are not supported
-#. by Noto Sans, translate this to 'off'. Do not translate into your own
-#. language.
-#: functions.php:214
+#: functions.php:295
 msgctxt "Noto Sans font: on or off"
 msgid "on"
 msgstr "on"
 
-#: functions.php:187
+#: functions.php:268
 msgid "Add widgets here to appear in your sidebar."
 msgstr "サイドバーに表示されるウィジェットを追加できます。"
 
-#: functions.php:185
+#: functions.php:266
 msgid "Widget Area"
 msgstr "﻿ウィジェット エリア"
 
@@ -225,12 +253,6 @@ msgstr "メインメニュー"
 #: footer.php:31
 msgid "Proudly powered by %s"
 msgstr "Proudly powered by %s"
-
-#. #-#-#-#-#  twentyfifteen.pot (Twenty Fifteen 2.0)  #-#-#-#-#
-#. Author URI of the plugin/theme
-#: footer.php:30
-msgid "https://wordpress.org/"
-msgstr "https://ja.wordpress.org/"
 
 #: content-none.php:31
 msgid "It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps searching can help."
@@ -248,17 +270,17 @@ msgstr "最初の投稿をする準備ができましたか ?  <a href=\"%1$s\">
 msgid "Nothing Found"
 msgstr "見つかりません"
 
-#: content-link.php:60 content-page.php:37 content-search.php:28
-#: content-search.php:33 content.php:61 image.php:74
+#: content-link.php:60 content-page.php:37 image.php:74 content-search.php:28
+#: content-search.php:33 content.php:61
 msgid "Edit"
 msgstr "編集"
 
-#: content-link.php:39 content-page.php:26 content.php:41 image.php:61
+#: content-link.php:39 content-page.php:26 image.php:61 content.php:41
 msgid "Pages:"
 msgstr "ページ:"
 
 #. translators: %s: Name of current post
-#: content-link.php:32 content.php:34 inc/template-tags.php:249
+#: inc/template-tags.php:249 content-link.php:32 content.php:34
 msgid "Continue reading %s"
 msgstr "続きを読む %s"
 
@@ -281,8 +303,8 @@ msgstr "%s の投稿をすべて表示"
 msgid "Published by"
 msgstr "投稿者:"
 
-#: archive.php:53 content-link.php:43 content-page.php:30 content.php:45
-#: image.php:65 index.php:50 search.php:43
+#: archive.php:53 content-link.php:43 index.php:50 content-page.php:30
+#: image.php:65 content.php:45 search.php:43
 msgid "Page"
 msgstr "ページ"
 
@@ -302,10 +324,15 @@ msgstr "こちらには何もありません。検索をお試しください。
 msgid "Oops! That page can&rsquo;t be found."
 msgstr "このページは見つかりません。"
 
-#. Author of the plugin/theme
+#. Author of the theme
 msgid "the WordPress team"
 msgstr "WordPress チーム"
 
-#. Theme URI of the plugin/theme
+#. Theme URI of the theme
 msgid "https://wordpress.org/themes/twentyfifteen/"
 msgstr "https://ja.wordpress.org/themes/twentyfifteen/"
+
+#. Author URI of the theme
+#: footer.php:30
+msgid "https://wordpress.org/"
+msgstr "https://ja.wordpress.org/"

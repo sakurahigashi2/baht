@@ -32,11 +32,11 @@ class CdnEngine {
 				break;
 
 			case 'cf':
-				$instances[$instance_key] = new CdnEngine_S3_Cf_S3( $config );
+				$instances[$instance_key] = new CdnEngine_CloudFront( $config );
 				break;
 
 			case 'cf2':
-				$instances[$instance_key] = new CdnEngine_S3_Cf_Custom( $config );
+				$instances[$instance_key] = new CdnEngine_Mirror_CloudFront( $config );
 				break;
 
 			case 'cotendo':
@@ -90,6 +90,10 @@ class CdnEngine {
 
 			case 'stackpath':
 				$instances[$instance_key] = new CdnEngine_Mirror_StackPath( $config );
+				break;
+
+			case 'stackpath2':
+				$instances[$instance_key] = new CdnEngine_Mirror_StackPath2( $config );
 				break;
 
 			default :

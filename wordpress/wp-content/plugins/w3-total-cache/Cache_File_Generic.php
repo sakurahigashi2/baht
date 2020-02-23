@@ -92,21 +92,44 @@ class Cache_File_Generic extends Cache_File {
 			}
 
 			if ( isset( $var['headers'] ) ) {
-				$links = '';
-
+				$headers = array();
 				foreach ( $var['headers'] as $h ) {
-					if ( isset($h['n']) && isset($h['v']) && $h['n'] == 'Link' ) {
-						$value = $h['v'];
-						if ( false !== strpos( $value, 'rel=preload' ) ) {
-							$links .= "    Header add Link '" . trim($value) . "'\n";
+					if ( isset( $h['n'] ) && isset( $h['v'] ) ) {
+						$h2 = apply_filters( 'w3tc_pagecache_set_header', $h, $h,
+							'file_generic' );
+
+						if ( !empty( $h2 ) ) {
+							$name_escaped = $this->escape_header_name( $h2['n'] );
+							if ( !isset( $headers[$name_escaped] ) ) {
+								$headers[$name_escaped] = array(
+									'values' => array(),
+									'files_match' => $h2['files_match']
+								);
+							}
+
+							$value_escaped = $this->escape_header_value( $h2['v'] );
+							if ( !empty( $value_escaped ) ) {
+								$headers[$name_escaped]['values'][] =
+									"        Header add " .
+									$name_escaped .
+									" '" . $value_escaped . "'\n";
+							}
 						}
 					}
 				}
 
-				if ( !empty( $links) ) {
+				$header_rules = '';
+				foreach ( $headers as $name_escaped => $value ) {
+					// Link header doesnt apply to .xml assets
+					$header_rules .= '    <FilesMatch "' . $value['files_match'] . "\">\n";
+					$header_rules .= "        Header unset $name_escaped\n";
+					$header_rules .= implode( "\n", $value['values'] );
+					$header_rules .= "    </FilesMatch>\n";
+				}
+
+				if ( !empty( $header_rules ) ) {
 					$rules .= "<IfModule mod_headers.c>\n";
-					$rules .= "    Header unset Link\n";
-					$rules .= $links;
+					$rules .= $header_rules;
 					$rules .= "</IfModule>\n";
 				}
 			}
@@ -118,6 +141,16 @@ class Cache_File_Generic extends Cache_File {
 		}
 
 		return true;
+	}
+
+	private function escape_header_name( $v ) {
+		return preg_replace( '~[^0-9A-Za-z\-]~m', '_', $v );
+	}
+
+	private function escape_header_value( $v ) {
+		return str_replace( "'", "\\'",
+			str_replace( "\\", "\\\\\\", // htaccess need escape of \ to \\\
+			preg_replace( '~[\r\n]~m', '_', trim( $v ) ) ) );
 	}
 
 	/**
@@ -187,9 +220,14 @@ class Cache_File_Generic extends Cache_File {
 		if ( $this->_locking )
 			@flock( $fp, LOCK_UN );
 
+		$headers = array();
+		if ( substr( $path, -4 ) == '.xml' ) {
+			$headers['Content-type'] = 'text/xml';
+		}
+
 		return array(
 			'404' => false,
-			'headers' => array(),
+			'headers' => $headers,
 			'time' => null,
 			'content' => $var
 		);
@@ -208,6 +246,11 @@ class Cache_File_Generic extends Cache_File {
 
 		if ( !file_exists( $path ) )
 			return true;
+
+		$dir = dirname( $path );
+		if ( file_exists( $dir . DIRECTORY_SEPARATOR . '.htaccess' ) ) {
+			@unlink( $dir . DIRECTORY_SEPARATOR . '.htaccess' );
+		}
 
 		$old_entry_path = $path . '_old';
 		if ( ! @rename( $path, $old_entry_path ) ) {

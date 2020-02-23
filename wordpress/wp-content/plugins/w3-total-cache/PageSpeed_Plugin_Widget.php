@@ -29,9 +29,9 @@ class PageSpeed_Plugin_Widget {
 
 	public function admin_init_w3tc_dashboard() {
 		add_action( 'w3tc_widget_setup',
-			array( $this, 'wp_dashboard_setup' ), 500 );
+			array( $this, 'wp_dashboard_setup' ), 3000 );
 		add_action( 'w3tc_network_dashboard_setup',
-			array( $this, 'wp_dashboard_setup' ), 500 );
+			array( $this, 'wp_dashboard_setup' ), 3000 );
 
 		wp_enqueue_script( 'w3tc-widget-pagespeed',
 			plugins_url( 'PageSpeed_Widget_View.js', W3TC_FILE ),
@@ -129,6 +129,10 @@ class PageSpeed_Plugin_Widget {
 
 
 	public function w3tc_monitoring_score( $score ) {
+		if ( empty( $_SERVER['HTTP_REFERER'] ) ) {
+			return 'n/a';
+		}
+		
 		$url = $_SERVER['HTTP_REFERER'];
 
 		$config = Dispatcher::config();

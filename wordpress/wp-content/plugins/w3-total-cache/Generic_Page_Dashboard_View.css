@@ -1,6 +1,7 @@
 #w3tc-dashboard-widgets.metabox-holder {
     background-color: #FFF;
     margin:0;padding:0;
+    display: flex;
 }
 #w3tc-dashboard-widgets .hndle {
     height: 36px;
@@ -21,7 +22,12 @@
     margin-right: 200px;
     border: none;
     background-color: #fff;
+    flex-grow: 1;
 }
+#w3tc-dashboard-widgets #postbox-container-right {
+	float: none;
+}
+
 #w3tc-dashboard-widgets .handlediv {
     display: none;
 }
@@ -99,6 +105,14 @@
     height: 35px;
     background: url("pub/img/w3tc_maxcdn-logo.png") 0 5px no-repeat;
     float: left;
+}
+
+.w3tc-widget-boldgrid-logo {
+	width: 70%;
+    height: 100%;
+    background: url("Generic_WidgetBoldGrid_Logo.svg") 0 0px no-repeat;
+    float: left;
+	margin-right: 10px;
 }
 
 #normal-sortables .postbox {

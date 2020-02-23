@@ -41,6 +41,9 @@ class Generic_Plugin_Admin {
 		add_action( 'admin_init_w3tc_dashboard', array(
 				'\W3TC\Generic_WidgetServices',
 				'admin_init_w3tc_dashboard' ) );
+		add_action( 'admin_init_w3tc_dashboard', array(
+				'\W3TC\Generic_WidgetBoldGrid',
+				'admin_init_w3tc_dashboard' ) );
 
 		add_action( 'admin_enqueue_scripts', array(
 				$this,
@@ -245,14 +248,14 @@ class Generic_Plugin_Admin {
 	function admin_head() {
 		if ( isset( $_GET['page'] ) && $_GET['page'] == 'w3tc_dashboard' ) {
 ?>
-            <script type="text/javascript">
-            jQuery(function() {
-                jQuery('#normal-sortables').masonry({
-                    itemSelector: '.postbox'
-                });
-            });
-            </script>
-            <?php
+			<script type="text/javascript">
+			jQuery(function() {
+				jQuery('#normal-sortables').masonry({
+					itemSelector: '.postbox'
+				});
+			});
+			</script>
+			<?php
 		}
 
 		if ( $this->_config->get_boolean( 'common.track_usage' ) && $this->is_w3tc_page ) {
@@ -267,66 +270,49 @@ class Generic_Plugin_Admin {
 				$profile = 'UA-2264433-8';
 
 ?>
-            <script type="text/javascript">
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			<script type="text/javascript">
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','https://api.w3-edge.com/v1/analytics','w3tc_ga');
 
-            ga('create', '<?php echo $profile ?>', 'auto');
-            ga('set', {
-                'dimension1': 'w3-total-cache',
-                'dimension2': '<?php echo W3TC_VERSION ?>',
-                'dimension3': '<?php global $wp_version; echo $wp_version; ?>',
-                'dimension4': 'php<?php echo phpversion() ?>',
-                'dimension5': '<?php echo esc_attr( $_SERVER["SERVER_SOFTWARE"] ) ?>',
-                'dimension6': 'mysql<?php global $wpdb; echo $wpdb->db_version() ?>',
-                'dimension7': '<?php echo Util_Environment::home_url_host() ?>',
-                'userId': '<?php echo $current_user->user_email ?>',
-                'page': '<?php echo $page ?>'
-            });
+			if (window.w3tc_ga) {
+				w3tc_ga('create', '<?php echo $profile ?>', 'auto');
+				w3tc_ga('set', {
+					'dimension1': 'w3-total-cache',
+					'dimension2': '<?php echo W3TC_VERSION ?>',
+					'dimension3': '<?php global $wp_version; echo $wp_version; ?>',
+					'dimension4': 'php<?php echo phpversion() ?>',
+					'dimension5': '<?php echo esc_attr( $_SERVER["SERVER_SOFTWARE"] ) ?>',
+					'dimension6': 'mysql<?php global $wpdb; echo $wpdb->db_version() ?>',
+					'dimension7': '<?php echo Util_Environment::home_url_host() ?>',
+					'userId': '<?php echo $current_user->user_email ?>',
+					'page': '<?php echo $page ?>'
+				});
 
-            ga('send', 'pageview');
+				w3tc_ga('send', 'pageview');
+			}
 
-            </script>
-            <?php
+			</script>
+			<?php
 		}
 
 ?>
-        <style type="text/css" media="screen">
-        #toplevel_page_w3tc_dashboard .wp-menu-image {
-            background: url(<?php echo plugins_url( 'pub/img/w3tc-sprite.png', W3TC_FILE )?>) no-repeat 0 -32px !important;
-        }
-        #toplevel_page_w3tc_dashboard:hover .wp-menu-image,
-        #toplevel_page_w3tc_dashboard.wp-has-current-submenu .wp-menu-image {
-            background-position:0 0 !important;
-        }
-        #icon-edit.icon32-posts-casestudy {
-            background: url(<?php echo plugins_url( 'pub/img/w3tc-sprite.png', W3TC_FILE ) ?>) no-repeat;
-        }
-        /**
-        * HiDPI Displays
-        */
-        @media print,
-        (-o-min-device-pixel-ratio: 5/4),
-        (-webkit-min-device-pixel-ratio: 1.25),
-        (min-resolution: 120dpi) {
-
-            #toplevel_page_w3tc_dashboard .wp-menu-image {
-                background-image: url(<?php echo plugins_url( 'pub/img/w3tc-sprite-retina.png', W3TC_FILE )?>) !important;
-                background-size: 30px 64px !important;
-            }
-            #toplevel_page_w3tc_dashboard:hover .wp-menu-image,
-            #toplevel_page_w3tc_dashboard.wp-has-current-submenu .wp-menu-image {
-                background-position:0 0 !important;
-            }
-            #icon-edit.icon32-posts-casestudy {
-                background-image: url(<?php echo plugins_url( 'pub/img/w3tc-sprite-retina.png', W3TC_FILE ) ?>) !important;
-                background-size: 30px 64px !important;
-            }
-        }
-        </style>
-        <?php
+		<style type="text/css" media="screen">
+		li.toplevel_page_w3tc_dashboard .wp-menu-image:before{
+			content:'\0041';
+			top: 2px;
+			font-family: 'w3tc';
+		}
+		</style>
+		<script>
+		jQuery(document).ready( function($) {
+			$('#toplevel_page_w3tc_dashboard ul li').find('a[href*="w3tc_faq"]')
+				.prop('target','_blank')
+				.prop('href', <?php echo json_encode(W3TC_FAQ_URL) ?>);
+		});
+		</script>
+		<?php
 	}
 
 
@@ -438,30 +424,30 @@ class Generic_Plugin_Admin {
 
 	function print_plugins_page_css() {
 		echo "
-            <style type=\"text/css\">
-            .w3tc-missing-files ul {
-                margin-left: 20px;
-                list-style-type: disc;
-            }
-            #w3tc {
-                padding: 0;
-            }
-            #w3tc span {
-                font-size: 0.6em;
-                font-style: normal;
-                text-shadow: none;
-            }
-            ul.w3tc-incomp-plugins, ul.w3-bullet-list {
-                list-style: disc outside;
-                margin-left: 17px;
-                margin-top: 0;
-                margin-bottom: 0;
-            }
-            ul.w3tc-incomp-plugins li div {
-                width: 170px;
-                display: inline-block;
-            }
-            </style>";
+			<style type=\"text/css\">
+			.w3tc-missing-files ul {
+				margin-left: 20px;
+				list-style-type: disc;
+			}
+			#w3tc {
+				padding: 0;
+			}
+			#w3tc span {
+				font-size: 0.6em;
+				font-style: normal;
+				text-shadow: none;
+			}
+			ul.w3tc-incomp-plugins, ul.w3-bullet-list {
+				list-style: disc outside;
+				margin-left: 17px;
+				margin-top: 0;
+				margin-bottom: 0;
+			}
+			ul.w3tc-incomp-plugins li div {
+				width: 170px;
+				display: inline-block;
+			}
+			</style>";
 	}
 
 	/**
@@ -706,8 +692,8 @@ class Generic_Plugin_Admin {
 		}
 
 		/*
-         * Filesystem environment fix, if needed
-         */
+		 * Filesystem environment fix, if needed
+		 */
 		try {
 			$environment = Dispatcher::component( 'Root_Environment' );
 			$environment->fix_in_wpadmin( $this->_config );

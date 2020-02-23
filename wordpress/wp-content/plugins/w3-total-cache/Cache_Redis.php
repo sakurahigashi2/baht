@@ -86,12 +86,14 @@ class Cache_Redis extends Cache_Base {
 		$v = $accessor->get( $storage_key );
 		$v = @unserialize( $v );
 
-		if ( !is_array( $v ) || !isset( $v['key_version'] ) )
+		if ( !is_array( $v ) || !isset( $v['key_version'] ) ) {
 			return array( null, $has_old_data );
+		}
 
 		$key_version = $this->_get_key_version( $group );
-		if ( $v['key_version'] == $key_version )
+		if ( $v['key_version'] == $key_version ) {
 			return array( $v, $has_old_data );
+		}
 
 		if ( $v['key_version'] > $key_version ) {
 			$this->_set_key_version( $v['key_version'], $group );
@@ -152,7 +154,8 @@ class Cache_Redis extends Cache_Base {
 				return true;
 			}
 		}
-		return $accessor->delete( $storage_key );
+
+		return $accessor->setex( $storage_key, 1, '' );
 	}
 
 	/**
@@ -167,7 +170,7 @@ class Cache_Redis extends Cache_Base {
 		if ( is_null( $accessor ) )
 			return false;
 
-		return $accessor->delete( $storage_key );
+		return $accessor->setex( $storage_key, 1, '' );
 	}
 
 	/**
@@ -178,8 +181,10 @@ class Cache_Redis extends Cache_Base {
 	 */
 	function flush( $group = '' ) {
 		$this->_get_key_version( $group );   // initialize $this->_key_version
-		$this->_key_version[$group]++;
-		$this->_set_key_version( $this->_key_version[$group], $group );
+		if (isset($this->_key_version[$group])) {
+			$this->_key_version[$group]++;
+			$this->_set_key_version( $this->_key_version[$group], $group );
+		}
 
 		return true;
 	}
@@ -216,9 +221,15 @@ class Cache_Redis extends Cache_Base {
 			if ( is_null( $accessor ) )
 				return 0;
 
-			$v = $accessor->get( $storage_key );
-			$v = intval( $v );
-			$this->_key_version[$group] = ( $v > 0 ? $v : 1 );
+			$v_original = $accessor->get( $storage_key );
+			$v = intval( $v_original );
+			$v = ( $v > 0 ? $v : 1 );
+
+			if ( (string)$v_original !== (string)$v ) {
+				$accessor->set( $storage_key, $v );
+			}
+
+			$this->_key_version[$group] = $v;
 		}
 
 		return $this->_key_version[$group];
@@ -332,19 +343,21 @@ class Cache_Redis extends Cache_Base {
 				$accessor = new \Redis();
 
 				if ( substr( $server, 0, 5 ) == 'unix:' ) {
-					if ( $this->_persistent )
+					if ( $this->_persistent ) {
 						$accessor->pconnect( trim( substr( $server, 5 ) ),
 							null, null, $this->_instance_id . '_' . $this->_dbid );
-					else
+					} else {
 						$accessor->connect( trim( substr( $server, 5 ) ) );
+					}
 				} else {
-					list( $ip, $port ) = explode( ':', $server );
+					list( $ip, $port ) = Util_Content::endpoint_to_host_port( $server, null );
 
-					if ( $this->_persistent )
-						$accessor->pconnect( trim( $ip ), (integer) trim( $port ),
+					if ( $this->_persistent ) {
+						$accessor->pconnect( $ip, $port,
 							null, $this->_instance_id . '_' . $this->_dbid );
-					else
-						$accessor->connect( trim( $ip ), (integer) trim( $port ) );
+					} else {
+						$accessor->connect( $ip, $port );
+					}
 				}
 
 				if ( !empty( $this->_password ) )

@@ -184,21 +184,21 @@ class Util_Ui {
 		$b2_id = 'w3tc_default_save_and_flush_' . $id;
 
 ?>
-        <p class="submit">
-            <?php echo Util_Ui::nonce_field( 'w3tc' ); ?>
-            <input type="submit" id="<?php echo $b1_id ?>"
-                name="w3tc_save_options"
-                class="w3tc-button-save button-primary"
-                value="<?php _e( 'Save all settings', 'w3-total-cache' ); ?>" />
-            <?php echo $extra ?>
-            <?php if ( !is_network_admin() ): ?>
-            <input type="submit" id="<?php echo $b2_id ?>"
-                name="w3tc_default_save_and_flush" style="float: right"
-                class="w3tc-button-save button-primary"
-                value="<?php _e( 'Save Settings & Purge Caches', 'w3-total-cache' ); ?>" />
-            <?php endif ?>
-        </p>
-        <?php
+		<p class="submit">
+			<?php echo Util_Ui::nonce_field( 'w3tc' ); ?>
+			<input type="submit" id="<?php echo $b1_id ?>"
+				name="w3tc_save_options"
+				class="w3tc-button-save button-primary"
+				value="<?php _e( 'Save all settings', 'w3-total-cache' ); ?>" />
+			<?php echo $extra ?>
+			<?php if ( !is_network_admin() ): ?>
+			<input type="submit" id="<?php echo $b2_id ?>"
+				name="w3tc_default_save_and_flush" style="float: right"
+				class="w3tc-button-save button-primary"
+				value="<?php _e( 'Save Settings & Purge Caches', 'w3-total-cache' ); ?>" />
+			<?php endif ?>
+		</p>
+		<?php
 	}
 
 	static public function sealing_disabled( $key ) {
@@ -304,6 +304,21 @@ class Util_Ui {
 	}
 
 	/**
+	 * Returns an input text element
+	 *
+	 * @param string  $id
+	 * @param string  $name
+	 * @param string  $value
+	 * @param bool    $disabled
+	 * @param int     $size
+	 */
+	static public function r_hidden( $id, $name, $value ) {
+		return '<input type="hidden" id="' . esc_attr( $id ) .
+			'" name="' . esc_attr( $name ) .
+			'" value="' . esc_attr( $value ) . '" />';
+	}
+
+	/**
 	 * Echos an input text element
 	 *
 	 * @param string  $id
@@ -313,9 +328,7 @@ class Util_Ui {
 	 * @param int     $size
 	 */
 	static public function hidden( $id, $name, $value ) {
-		echo '<input type="hidden" id="' . esc_attr( $id ) .
-			'" name="' . esc_attr( $name ) .
-			'" value="' . esc_attr( $value ) . '" />';
+		echo self::r_hidden( $id, $name, $value );
 	}
 
 	/**
@@ -339,12 +352,20 @@ class Util_Ui {
 	 * @param bool    $disabled
 	 * @param int     $size
 	 */
-	static public function textbox( $id, $name, $value, $disabled = false, $size = 40 ) {
-		echo '<input class="enabled" type="text" id="' . esc_attr( $id ) .
+	static public function textbox( $id, $name, $value, $disabled = false,
+			$size = 40, $type = 'text', $placeholder = '' ) {
+		echo '<input class="enabled" type="' . esc_attr( $type ) .
+			'" id="' . esc_attr( $id ) .
 			'" name="' . esc_attr( $name ) .
-			'" value="' . esc_attr( $value ) . '" ';
+			'" value="' . esc_attr( $value ) . '"';
 		disabled( $disabled );
-		echo ' size="' . esc_attr( $size ) . '" />';
+		echo ' size="' . esc_attr( $size ) . '"';
+
+		if ( !empty( $placeholder ) ) {
+			echo ' placeholder="' . esc_attr( $placeholder ) . '"';
+		}
+
+		echo ' />';
 	}
 
 	/**
@@ -444,22 +465,36 @@ class Util_Ui {
 			$label = '';
 			$item_disabled = false;
 			$postfix = '';
+			$pro_feature = false;
 
 			if ( !is_array( $label_or_array ) ) {
 				$label = $label_or_array;
 			} else {
 				$label = $label_or_array['label'];
 				$item_disabled = $label_or_array['disabled'];
-				$postfix = $label_or_array['postfix'];
+				$postfix = isset( $label_or_array['postfix'] ) ?
+					$label_or_array['postfix'] : '';
+				$pro_feature = isset( $label_or_array['pro_feature'] ) ?
+					$label_or_array['pro_feature'] : false;
 			}
 
-			echo '<label><input type="radio" name="' . esc_attr( $name )  .
+			if ( $pro_feature ) {
+				Util_Ui::pro_wrap_maybe_start();
+			}
+			echo '<label><input type="radio" id="' . esc_attr( $name . '__' . $key )  .
+				'" name="' . esc_attr( $name )  .
 				'" value="' . esc_attr( $key ) . '"';
 			checked( $value, $key );
 			disabled( $disabled || $item_disabled );
 			echo ' />';
 			echo $label;
 			echo '</label>' . $postfix . "\n";
+			if ( $pro_feature ) {
+				Util_Ui::pro_wrap_description( $label_or_array['pro_excerpt'],
+					$label_or_array['pro_description'] );
+
+				Util_Ui::pro_wrap_maybe_end( $name . '__' . $key );
+			}
 		}
 	}
 
@@ -472,10 +507,10 @@ class Util_Ui {
 	 * @param bool    $disabled
 	 */
 	static public function textarea( $id, $name, $value, $disabled = false ) {?>
-        <textarea class="enabled" id="<?php echo esc_attr( $id )?>"
-            name="<?php echo esc_attr( $name )?>" rows="5" cols=25 style="width: 100%"
-            <?php disabled( $disabled ) ?>><?php echo esc_textarea( $value )?></textarea>
-    <?php
+		<textarea class="enabled" id="<?php echo esc_attr( $id )?>"
+			name="<?php echo esc_attr( $name )?>" rows="5" cols=25 style="width: 100%"
+			<?php disabled( $disabled ) ?>><?php echo esc_textarea( $value )?></textarea>
+	<?php
 	}
 
 	/**
@@ -531,6 +566,83 @@ class Util_Ui {
 		}
 	}
 
+	static public function checkbox2( $e ) {
+		Util_Ui::checkbox( $e['name'],
+			$e['name'],
+			$e['value'],
+			( isset( $e['disabled'] ) ? $e['disabled'] : false ),
+			( isset( $e['label'] ) ? $e['label'] : null ) );
+	}
+
+	static public function radiogroup2( $e ) {
+		Util_Ui::radiogroup( $e['name'], $e['value'], $e['values'],
+			$e['disabled'], $e['separator'] );
+	}
+
+	static public function selectbox2( $e ) {
+		Util_Ui::selectbox( $e['name'], $e['name'], $e['value'], $e['values'],
+			( isset( $e['disabled'] ) ? $e['disabled'] : false ),
+			( isset( $e['optgroups'] ) ? $e['optgroups'] : null ) );
+	}
+
+	static public function textbox2( $e ) {
+		Util_Ui::textbox( $e['name'], $e['name'], $e['value'],
+			( isset( $e['disabled'] ) ? $e['disabled'] : false ),
+			( !empty( $e['size'] ) ? $e['size'] : 20 ),
+			( !empty( $e['type'] ) ? $e['type'] : 'text' ),
+			( !empty( $e['placeholder'] ) ? $e['placeholder'] : '' ) );
+	}
+
+	static public function textarea2( $e ) {
+		Util_Ui::textarea( $e['name'], $e['name'], $e['value'],
+			( isset( $e['disabled'] ) ? $e['disabled'] : false ) );
+	}
+
+	static public function control2( $a ) {
+		if ( $a['control'] == 'checkbox' ) {
+			Util_Ui::checkbox2( array(
+				'name' => $a['control_name'],
+				'value' => $a['value'],
+				'disabled' => $a['disabled'],
+				'label' => $a['checkbox_label']
+			) );
+		} elseif ( $a['control'] == 'radiogroup' ) {
+			Util_Ui::radiogroup2( array(
+				'name' => $a['control_name'],
+				'value' => $a['value'],
+				'disabled' => $a['disabled'],
+				'values' => $a['radiogroup_values'],
+				'separator' => isset( $a['radiogroup_separator'] ) ?
+					$a['radiogroup_separator'] : ''
+			) );
+		} elseif ( $a['control'] == 'selectbox' ) {
+			Util_Ui::selectbox2( array(
+				'name' => $a['control_name'],
+				'value' => $a['value'],
+				'disabled' => $a['disabled'],
+				'values' => $a['selectbox_values'],
+				'optgroups' => isset( $a['selectbox_optgroups'] ) ?
+				$a['selectbox_optgroups'] : null
+			) );
+		} elseif ( $a['control'] == 'textbox' ) {
+			Util_Ui::textbox2( array(
+				'name' => $a['control_name'],
+				'value' => $a['value'],
+				'disabled' => $a['disabled'],
+				'type' => isset( $a['textbox_type'] ) ? $a['textbox_type'] : null,
+				'size' => isset( $a['textbox_size'] ) ? $a['textbox_size'] : null,
+				'placeholder' => isset( $a['textbox_placeholder'] ) ?
+					$a['textbox_placeholder'] : null
+			) );
+		} elseif ( $a['control'] == 'textarea' ) {
+			Util_Ui::textarea2( array(
+				'name' => $a['control_name'],
+				'value' => $a['value'],
+				'disabled' => $a['disabled']
+			) );
+		}
+	}
+
 
 
 	/**
@@ -546,19 +658,15 @@ class Util_Ui {
 		$id = isset( $a['id'] ) ? $a['id'] : '';
 		$a = apply_filters( 'w3tc_ui_settings_item', $a );
 
-		if ( isset( $a['style'] ) ) {
-			echo '<tr><th colspan="2">';
-		} else {
-			echo '<tr><th';
+		echo '<tr><th';
 
-			if ( isset( $a['label_class'] ) )
-				echo ' class="' . $a['label_class'] . '"';
-			echo '>';
-			if ( isset( $a['label'] ) )
-				Util_Ui::label( $id, $a['label'] );
+		if ( isset( $a['label_class'] ) )
+			echo ' class="' . $a['label_class'] . '"';
+		echo '>';
+		if ( isset( $a['label'] ) )
+			Util_Ui::label( $id, $a['label'] );
 
-			echo "</th>\n<td>\n";
-		}
+		echo "</th>\n<td>\n";
 
 		foreach ( $a as $key => $e ) {
 			if ( $key == 'checkbox' )
@@ -568,7 +676,7 @@ class Util_Ui {
 					( isset( $e['disabled'] ) ? $e['disabled'] : false ),
 					( isset( $e['label'] ) ? $e['label'] : null ) );
 			elseif ( $key == 'description' )
-				echo '<br /><span class="description">' . $e . '</span>';
+				echo '<p class="description">' . $e . '</p>';
 			elseif ( $key == 'hidden' )
 				Util_Ui::hidden( '', $e['name'], $e['value'] );
 			elseif ( $key == 'html' )
@@ -583,17 +691,15 @@ class Util_Ui {
 			elseif ( $key == 'textbox' )
 				Util_Ui::textbox( $id, $e['name'], $e['value'],
 					( isset( $e['disabled'] ) ? $e['disabled'] : false ),
-					( !empty( $e['size'] ) ? $e['size'] : 20 ) );
+					( !empty( $e['size'] ) ? $e['size'] : 20 ),
+					( !empty( $e['type'] ) ? $e['type'] : 'text' ),
+					( !empty( $e['placeholder'] ) ? $e['placeholder'] : '' ) );
 			elseif ( $key == 'textarea' )
 				Util_Ui::textarea( $id, $e['name'], $e['value'],
 					( isset( $e['disabled'] ) ? $e['disabled'] : false ) );
 		}
 
-		if ( isset( $a['style'] ) )
-			echo "</th>";
-		else
-			echo "</td>";
-
+		echo "</td>";
 		echo "</tr>\n";
 	}
 
@@ -615,6 +721,68 @@ class Util_Ui {
 	 *   description => description shown to the user below
 	 */
 	static public function config_item( $a ) {
+		$a = Util_Ui::config_item_preprocess( $a );
+
+		if ( $a['label_class'] == 'w3tc_single_column' ) {
+			echo '<tr><th colspan="2">';
+		} else {
+			echo '<tr><th class="' . $a['label_class'] . '">';
+
+			if ( !empty( $a['label'] ) ) {
+				Util_Ui::label( $a['control_name'], $a['label'] );
+			}
+
+			echo "</th>\n<td>\n";
+		}
+
+		Util_Ui::control2( $a );
+
+		if ( isset( $a['control_after'] ) ) {
+			echo $a['control_after'];
+		}
+		if ( isset( $a['description'] ) ) {
+			echo '<p class="description">' . $a['description'] . '</p>';
+		}
+
+		echo ( isset( $a['style'] ) ? "</th>" : "</td>" );
+		echo "</tr>\n";
+	}
+
+
+
+	static public function config_item_pro( $a ) {
+		$a = Util_Ui::config_item_preprocess( $a );
+
+		if ( $a['label_class'] != 'w3tc_no_trtd' ) {
+			echo '<tr><th class="' . $a['label_class'] . '">';
+
+			if ( !empty( $a['label'] ) ) {
+				Util_Ui::label( $a['control_name'], $a['label'] );
+			}
+
+			echo "</th>\n<td>\n";
+		}
+
+		Util_Ui::pro_wrap_maybe_start();
+
+		Util_Ui::control2( $a );
+
+		if ( isset( $a['control_after'] ) ) {
+			echo $a['control_after'];
+		}
+
+		Util_Ui::pro_wrap_description( $a['excerpt'], $a['description'] );
+		Util_Ui::pro_wrap_maybe_end( $a['control_name'] );
+
+		if ( $a['label_class'] != 'w3tc_no_trtd' ) {
+			echo "</th>";
+			echo "</tr>\n";
+		}
+	}
+
+
+
+	static private function config_item_preprocess( $a ) {
 		$c = Dispatcher::config();
 
 		if ( !isset( $a['value'] ) || is_null( $a['value'] ) ) {
@@ -623,77 +791,26 @@ class Util_Ui {
 				$a['value'] = implode( "\n", $a['value'] );
 		}
 
-		if ( isset( $a['disabled'] ) && !is_null( $a['disabled'] ) )
-			$disabled = $a['disabled'];
-		else
-			$disabled = $c->is_sealed( $a['key'] );
+		if ( !isset( $a['disabled'] ) || is_null( $a['disabled'] ) ) {
+			$a['disabled'] = $c->is_sealed( $a['key'] );
+		}
 
-		if ( empty( $a['label'] ) )
+		if ( empty( $a['label'] ) ) {
 			$a['label'] = Util_Ui::config_label( $a['key'] );
+		}
+
+		$a['control_name'] = Util_Ui::config_key_to_http_name( $a['key'] );
+		$a['label_class'] = empty( $a['label_class'] ) ? '' : $a['label_class'];
+		if ( empty( $a['label_class'] ) && $a['control'] == 'checkbox' ) {
+			$a['label_class'] = 'w3tc_config_checkbox';
+		}
 
 		$action_key = $a['key'];
-		if ( is_array( $action_key ) )
+		if ( is_array( $action_key ) ) {
 			$action_key = 'extension.' . $action_key[0] . '.' . $action_key[1];
+		}
 
-		$a = apply_filters( 'w3tc_ui_config_item_' . $action_key, $a );
-
-		// convert to table_tr data
-		$table_tr = array(
-			'id' => Util_Ui::config_key_to_http_name( $a['key'] ),
-			'label' => $a['label']
-		);
-
-		if ( isset( $a['style'] ) )
-			$table_tr['style'] = $a['style'];
-
-		if ( $a['control'] == 'checkbox' ) {
-			$table_tr['label_class'] = 'w3tc_config_checkbox';
-			$table_tr['checkbox'] = array(
-				'name' => Util_Ui::config_key_to_http_name( $a['key'] ),
-				'value' => $a['value'],
-				'disabled' => $disabled,
-				'label' => $a['checkbox_label']
-			);
-		} else if ( $a['control'] == 'radiogroup' ) {
-				$table_tr['radiogroup'] = array(
-					'name' => Util_Ui::config_key_to_http_name( $a['key'] ),
-					'value' => $a['value'],
-					'disabled' => $disabled,
-					'values' => $a['radiogroup_values'],
-					'separator' => isset( $a['radiogroup_separator'] ) ?
-						$a['radiogroup_separator'] : ''
-				);
-			} else if ( $a['control'] == 'selectbox' ) {
-				$table_tr['selectbox'] = array(
-					'name' => Util_Ui::config_key_to_http_name( $a['key'] ),
-					'value' => $a['value'],
-					'disabled' => $disabled,
-					'values' => $a['selectbox_values'],
-					'optgroups' => isset( $a['selectbox_optgroups'] ) ?
-					$a['selectbox_optgroups'] : null
-				);
-			} else if ( $a['control'] == 'textbox' ) {
-				$table_tr['textbox'] = array(
-					'name' => Util_Ui::config_key_to_http_name( $a['key'] ),
-					'value' => $a['value'],
-					'disabled' => $disabled,
-					'size' => isset( $a['textbox_size'] ) ?  $a['textbox_size'] : null
-				);
-			} else if ( $a['control'] == 'textarea' ) {
-				$table_tr['textarea'] = array(
-					'name' => Util_Ui::config_key_to_http_name( $a['key'] ),
-					'value' => $a['value'],
-					'disabled' => $disabled
-				);
-			}
-
-		if ( isset( $a['control_after'] ) )
-			$table_tr['html'] = $a['control_after'];
-
-		if ( isset( $a['description'] ) )
-			$table_tr['description'] = $a['description'];
-
-		Util_Ui::table_tr( $table_tr );
+		return apply_filters( 'w3tc_ui_config_item_' . $action_key, $a );
 	}
 
 
@@ -755,6 +872,87 @@ class Util_Ui {
 					__( 'Multiple Servers:', 'w3-total-cache' )
 				),
 			) );
+	}
+
+
+
+	static public function pro_wrap_maybe_start() {
+		if ( Util_Environment::is_w3tc_pro( Dispatcher::config() ) ) {
+			return;
+		}
+
+		?>
+		<div class="w3tc-gopro">
+			<div>
+		<?php
+	}
+
+
+
+	static public function pro_wrap_description( $excerpt, $description ) {
+		echo '<p class="description w3tc-gopro-excerpt">' . $excerpt . '</p>';
+
+		if ( !empty( $description ) ) {
+			$d = array_map(
+				function($e) {
+					return "<p class='description'>$e</p>";
+				},
+			   $description
+			);
+
+			echo '<div class="w3tc-gopro-description">' . implode( "\n", $d ) . '</div>';
+			echo '<a href="#" class="w3tc-gopro-more">Show More <span class="dashicons dashicons-arrow-down-alt2"></span></a>';
+		}
+	}
+
+
+
+	static public function pro_wrap_maybe_end( $button_data_src ) {
+		if ( Util_Environment::is_w3tc_pro( Dispatcher::config() ) ) {
+			return;
+		}
+
+		?>
+			</div>
+			<div class="w3tc-gopro-action">
+				<i>Pro Feature!</i>
+				<button class="button w3tc-gopro-button button-buy-plugin" data-src="<?php echo esc_attr( $button_data_src ) ?>">
+					Learn more about Pro
+				</button>
+			</div>
+		</div>
+		<?php
+	}
+
+
+
+	static public function pro_wrap_maybe_start2() {
+		if ( Util_Environment::is_w3tc_pro( Dispatcher::config() ) ) {
+			return;
+		}
+
+		?>
+		<div class="updated w3tc_note" id="licensing_terms" style="display: flex; align-items: center">
+			<p style="flex-grow: 1">
+		<?php
+	}
+
+
+
+	static public function pro_wrap_maybe_end2( $button_data_src ) {
+		if ( Util_Environment::is_w3tc_pro( Dispatcher::config() ) ) {
+			return;
+		}
+
+		?>
+			</p>
+			<div style="text-align: right">
+				<button class="button w3tc-gopro-button button-buy-plugin" data-src="<?php echo esc_attr( $button_data_src ) ?>">
+					Unlock Feature
+				</button>
+			</div>
+		</div>
+		<?php
 	}
 
 
@@ -855,9 +1053,9 @@ class Util_Ui {
 
 
 	/*
-     * Converts configuration key returned in http _GET/_POST
-     * to configuration key
-     */
+	 * Converts configuration key returned in http _GET/_POST
+	 * to configuration key
+	 */
 	static public function config_key_from_http_name( $http_key ) {
 		$a = explode( '___', $http_key );
 		if ( count( $a ) == 2 ) {
