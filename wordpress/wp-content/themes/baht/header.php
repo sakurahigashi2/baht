@@ -3,6 +3,26 @@
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    console.log('\n' +
+      'BBBBBBBBBBBBBBBBB                     hhhhhhh                      tttt          \n' +
+      'B::::::::::::::::B                    h:::::h                   ttt:::t          \n' +
+      'B::::::BBBBBB:::::B                   h:::::h                   t:::::t          \n' +
+      'BB:::::B     B:::::B                  h:::::h                   t:::::t          \n' +
+      '  B::::B     B:::::B  aaaaaaaaaaaaa    h::::h hhhhh       ttttttt:::::ttttttt    \n' +
+      '  B::::B     B:::::B  a::::::::::::a   h::::hh:::::hhh    t:::::::::::::::::t    \n' +
+      '  B::::BBBBBB:::::B   aaaaaaaaa:::::a  h::::::::::::::hh  t:::::::::::::::::t    \n' +
+      '  B:::::::::::::BB             a::::a  h:::::::hhh::::::h tttttt:::::::tttttt    \n' +
+      '  B::::BBBBBB:::::B     aaaaaaa:::::a  h::::::h   h::::::h      t:::::t          \n' +
+      '  B::::B     B:::::B  aa::::::::::::a  h:::::h     h:::::h      t:::::t          \n' +
+      '  B::::B     B:::::B a::::aaaa::::::a  h:::::h     h:::::h      t:::::t          \n' +
+      '  B::::B     B:::::Ba::::a    a:::::a  h:::::h     h:::::h      t:::::t    tttttt\n' +
+      'BB:::::BBBBBB::::::Ba::::a    a:::::a  h:::::h     h:::::h      t::::::tttt:::::t\n' +
+      'B:::::::::::::::::B a:::::aaaa::::::a  h:::::h     h:::::h      tt::::::::::::::t\n' +
+      'B::::::::::::::::B   a::::::::::aa:::a h:::::h     h:::::h        tt:::::::::::tt\n' +
+      'BBBBBBBBBBBBBBBBB     aaaaaaaaaa  aaaa hhhhhhh     hhhhhhh          ttttttttttt  \n'
+    )
+  </script>
   <?php if(is_home()) : ?>
     <title><?php bloginfo('name') ?> - タイ夜遊びキュレーションメディア</title>
     <meta name="description" content="<?php bloginfo('description') ?>">
