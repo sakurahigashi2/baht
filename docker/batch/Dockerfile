@@ -9,7 +9,7 @@ RUN yum -y install git bzip2 gcc make openssh-server iputils iproute which opens
 
 # 環境変数設定
 ENV RBENV_ROOT /usr/local/rbenv
-ENV RUBY_V 2.5.1
+ENV RUBY_V 2.6.5
 ENV PATH $RBENV_ROOT/bin:$PATH
 ENV PATH $RBENV_ROOT/shims:$PATH
 
@@ -21,6 +21,12 @@ RUN git clone git://github.com/sstephenson/ruby-build.git $RBENV_ROOT/plugins/ru
 RUN rbenv install $RUBY_V && \
     rbenv rehash && \
     rbenv global $RUBY_V
-RUN gem install mysql2
+
+# gemのインストール
+WORKDIR /usr/local/batch
+COPY ./Gemfile .
+COPY ./Gemfile.lock .
+RUN gem install bundler -v 2.1.4
+RUN bundle install
 
 CMD ["/sbin/init"]
